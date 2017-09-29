@@ -1,0 +1,91 @@
+								PROJECT PROPOSAL
+					   DOMESTIC UAV PATH SYNCHRONIZATION
+
+
+OVERVIEW
+--------------------
+
+	With the world constantly advancing in technology, there is now a higher
+	requirement of unmanned vehicles. In the last few years, there has been an ever
+	increasing interest in UAVs (Unmanned Aerial Vehicles). UAVs are controlled
+	remotely or via a program.
+
+	UAVs have a vast application set, such as items delivery, application in
+	security and military, etc. However with the requirement of human serveillance
+	on these machines, they are not yet trully autonomous. In order to achieve this,
+	we require smart programs to control the paths of these UAVs, in a synchronized
+	manner.
+
+
+GOAL
+--------------------
+
+	Although there are methods to synchronize UAVs such as 'swarming' and
+	'flocking', however these methods are more goal specific are not applicable to
+	domestic UAVs. Our goal is to implement an app where registered/authorized
+	domestic UAVs can be register which are then controlled programmatically to
+	achieve a specific task it has been registered for. This will allow us extending
+	the applications of UAVs to many more fields, such as agriculture and product
+	delivery.
+
+
+IMPLEMENTAION
+--------------------
+
+	We will create an app which will allow users to register their UAVs (licensed)
+	with all the UAV specifications, such as maximum and minimum UAV speed, maximum
+	and minimum height, etc. and then based on these specifications and the goal of
+	the UAV, we create a path for the UAV to follow with all the time constraints
+	satisfied.
+
+	This will involve complex algorithms to minimize energy consumption and optimize
+	paths. We will also need to verify the UAV state, such as necessary amount of
+	battery/fuel, as well as the weather conditions prior to the flight.
+
+	We will also require to map the area that the UAV will cover, considering all
+	buildings/aerial blockages, and no-enter zones. The path we choose for the UAV
+	should cover all constraints and yet optimize it sufficiently.
+
+
+CHALLENGES
+--------------------
+
+	The path we decide should be flexible enough so that in case the UAV observes
+	any incoming hinderance, such as birds, we should immediately change the path
+	slightly. For this, the UAV must be equipped with adequate sensors to detect
+	such aerial motions.
+
+	There might unlicensed UAVs in the air during the time of the flight. This must
+	be detected from the UAV itself, and if possible also be reported.
+
+
+COST OVERVIEW
+-------------------
+
+	The cost of app production itself should not be high, however testing purposes
+	require a heavy budget. One year requirement for the project can be overviewed
+	as -
+
+		>>	App Development				-	500,000		-/
+		>>	App Testing (Simulations)	-	200,000		-/
+		>>	App Testing (IRL)			-	10,000,000	-/
+
+
+EVALUATION METRICS
+--------------------
+
+	Major Goals - 
+
+		>>	Project Presentation			-	2 weeks
+		>>	Algorithm Presentation			-	4 months
+		>>	Algorithm Implementation		-	6 months
+		>>	Beta App Testing (Simulation)	-	7 months
+		>>	Beta App Testing (IRL)			-	10 months
+		>>	App Release						-	12 months
+
+
+REFERENCES
+--------------------
+
+	[1] http://cegt201.bradley.edu/projects/proj2015/ballmer/Team Ballmer Project Proposal.pdf
+	[2] https://www.engineersgarage.com/contribution/unmanned-aerial-vehicle

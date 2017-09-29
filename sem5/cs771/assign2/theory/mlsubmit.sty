@@ -1,0 +1,50 @@
+%% mlsubmit.sty v20170827
+%% (c) 2017 Purushottam Kar (Indian Institute of Technology Kanpur)
+%% 
+%% Draws upon style elements from 
+%% the style file for the course CS773 by Purushottam Kar
+%% the style file for the course CS289 by Alexander Sherstov
+%% the class file for the publication NOW FnT(R)-ML by Neal Parikh
+%% the style file for the proceedings of the NIPS 2015 conference
+
+\usepackage{ml}
+
+\newcounter{mlanswer}
+
+\newenvironment{mlsolution}
+{\refstepcounter{mlanswer}\makeheader}
+{\clearpage}
+
+\newcommand{\initmlsubmision}[3]{
+	\setcounter{mlseries}{#1}
+	\newcommand{\studentname}{#2}
+	\newcommand{\studentroll}{#3}
+}
+
+% The big fancy header
+\newcommand{\makeheader}{
+	\noindent
+	\parbox{0.75\textwidth}{
+		{\sffamily\bfseries Indian Institute of Technology Kanpur}\\
+		{\sffamily\bfseries CS771 Introduction to Machine Learning, 2017-18-a}\\
+		\rule{0mm}{6mm}%
+		{\it Assignment Number:} {\themlseries}\\
+		{\it Student Name:}	{\studentname}\\
+		{\it Roll Number:}   {\studentroll}\\
+		{\it Date:} {\today}
+	}
+\hfill
+\begin{tabular}{c@{}}
+{\sffamily\bfseries\Large QUESTION}\\
+\rule{0mm}{20mm}\scalebox{6.6}{\sffamily\themlanswer}
+\end{tabular}
+
+\def\toptitlebar{\hrule height1pt\vskip .25in\vskip-\parskip}
+\def\bottomtitlebar{\vskip .1in\vskip-\parskip\hrule height1pt\vskip.09in}
+
+\vbox{
+	\hsize\textwidth\linewidth\hsize
+	\phantom{\hspace{\textwidth}}
+	\bottomtitlebar
+}
+}

@@ -1,0 +1,230 @@
+\documentclass{article}
+
+\usepackage{assign3-style}
+
+\title{Theoretical Assignment 3}
+\author{Gurpreet Singh | 150259 $\cdot$ Nikita Awasthi | 150453}
+\date{Hard Version}
+
+\begin{document}
+
+\maketitle
+
+\begin{question}
+    
+	\begin{qsection}{Pseudocode}
+
+		\begin{algorithm}[h!]
+			\begin{algorithmic}[1]
+			\caption{Assigning weights to edges for unique path ids}
+
+				\Procedure{UniquePathID}{$G, s, t$}									\Comment{where $G$ is the DAG, $s$ amd $t$ are the root and exit vertex }
+					\State\ $T = $ \Call{TopologicalSorting}{$G$}					\Comment{As discussed in class}
+					\\\\															\Comment{Loop through the vertices in the topological sorting in the reverse order, i.e.\ sink to source}
+					\For{$v$ in $reverse(T)$}									
+						\If{$Outgoing[v] = 0$}										\Comment{Outgoing holds the number of outgoing edges from the vertex v}
+							\If{$v = t$}
+								\State\ $pathCount[v] = 1$							\Comment{pathCount holds the number of paths from the vertex v to t}
+							\Else\
+								\State\ $pathCount[v] = 0$
+							\EndIf\
+						\Else\
+							\State\ $pathCount[v] = 0$
+							\For{$e = (v, w) \in E$}
+								\State\ $e.weight = pathCount[v]$					\Comment{Assigning weight to edge e}
+								\State\ $pathCount[v] += pathCount[w]$
+							\EndFor\
+						\EndIf\
+					\EndFor\
+				\EndProcedure\
+			\end{algorithmic}
+		\end{algorithm}
+
+	\end{qsection}
+
+	\begin{qsection}{Proof of Correctness}
+
+		\begin{qproof}{At every iteration of the outer loop, $pathCount[v]$ stores the number of paths from vertex $v$ to $t$ and assigns weights such that each path from $v$ to $t$ has unique pathid from 0 to $pathCount[v]-1$}
+			
+			We consider induction on the number of vertices in the graph. For any vertex, we will remove that vertex and treat all the subtrees formed.\br\
+
+			\tb{Base Case:} The number of vertices is 2, i.e the source vertex $s$ and the sink vertex $t$. Since there is one and only one path in this case, the weight on the edge $(s, t)$ will be zero, and path count from and our claim is true.
+			
+			\tb{Induction Hypothesis:} Suppose our claim holds for all graphs which have less than $n$ vertices in the graph.
+
+			\tb{Induction:} \sbr\
+
+			Consider all vertices $w_i$ such that $(v, w_i) \in E$. If we remove $v$ from the graph and assume $w_i$ to be the source vertex (one by one), our induction hypothesis holds. Hence the vertices $w_i$ will hold all the paths count from $w_i$ to $t$ and weights are assigned to edges such that each path from $w_i$ to $t$ has a unique pathid from 0 to $pathCount[w_i]-1$. \br\
+
+			Since the the number of paths from $v$ to $t$ will be nothing but the sum of the number of paths from $w_i$ to $t$ for all $i$, the definition of $pathCount$ is well held. Now since for every edge $(v, w_i)$, we add the number of paths of $w_k$ for all $k \in [i]$, it is impossible to get any path that has its pathId equal to the pathId of any other path. Since the paths from $w_k$ to $t$ will have pathId $<$ the weight of the edge $(v, w_i)$. Hence, we can say that all paths from $v$ to $t$ have distinct path ids. Also, the minimum pathId will be 0 and the maximum pathId will be $pathCount[v] - 1$. This can be easily observed from the weights of the edges from $v$. \br\
+			
+			Hence, our claim holds for this graph also. Therefore, via induction, we proved that our claim is true for all DAG graphs with a source and a sink vertex.
+
+		\end{qproof}
+		
+		As can be seen, at the end of the iteration for the source vertex $s$, $pathCount[s]$ will store the number of paths from $s$ to $t$ and weights would be assigned to edges such that each path from $s$ to $t$ will have unique pathid from $0$ to $N-1$ where $N$ is number of paths from $s$ to $t$.
+
+	\end{qsection}
+
+	\begin{qsection}{Analysis}
+
+		As discussed in class, computing topological ordering of the given DAG will have $O(m + n)$ time complexity. For any given vertex, we do $O(m_i)$ computation where $m_i$ is the number of outgoing edges plus some $O(1)$ computations. Since each edge is handled only once, the total time complexity for the later part of the algorithm is $O(m + n)$. Therefore, the total time complexity of the given algorithm is $O(m + n)$.
+
+	\end{qsection}
+
+\end{question}
+
+
+\clearpage
+
+
+\begin{question}
+	
+	\begin{qsection}{Pseudocode}
+
+		\begin{algorithm}[h!]
+			\begin{algorithmic}[1]
+			\caption{Augmenting DFS to check if graph is a unique path graph}
+				\State\ $globalCount = 0$
+				\State\ $uniquePathGraph = TRUE$
+				\\				
+				\Procedure{DFS}{$u$}
+					\State\ $D[u] = globalCount++$										\Comment{D stores the Start Time / DFN Number of a vertex}
+					\State\ $visited[u] = TRUE$
+					\\
+					\State\ $ancestor[u] = -1$
+					\\
+					\For{each each $(u,v) \in E(G)$}
+						\If{$visited[v]$}
+							\If{$finished[v]$}
+								\State\ $uniquePathGraph = FALSE$
+								\State\ break
+							\Else\
+							\If{$D[v] < D[u]$}/											\Comment{If v is an ancestor of u}
+									\If{$ancestor[u] \ne -1$}
+										\State\ $uniquePathGraph = FALSE$
+									\Else\
+										\State\ $ancestor[u] = D[v]$
+									\EndIf\
+								\EndIf\
+							\EndIf\
+						\Else\
+							\State\ \Call{DFS}{$v$}
+							\If{$ancestor[v] < D[u]$}
+								\If{$ancestor[u] \ne -1$}
+									\State\ $uniquePathGraph = FALSE$
+								\Else\
+									\State\ $ancestor[u] = ancestor[v]$
+								\EndIf\
+							\EndIf\
+						\EndIf\
+					\EndFor\
+					\\
+					\State\ $Finished[v] = TRUE$
+				\EndProcedure\
+				\\
+				\Procedure{isUniquePathGraph}{$s$}
+					\State\ $uniquePathGraph = TRUE$
+					\State\ $DFS(s)$
+					\\
+					\State\ \Return\ $uniquePathGraph$
+				\EndProcedure\
+			\end{algorithmic}
+		\end{algorithm}
+
+	\end{qsection}
+
+	\clearpage
+
+	\begin{qsection}{Proof of Correctness}
+		
+		Consider a DFS tree of the graph, with the DFS starting at $s$, the source vertex. We do not need to worry about the tree edges as the DFS tree is a unique path graph. The only additions would be the non-tree edges. There can be three types of non-tree edges, namely ``Forward Edge'', ``Cross Edge'' and ``Back Edge''. Let us consider all three cases. \br\
+
+		\begin{qcase}{1}{If there is at least one forward edge in G}
+
+			Let this edge be $(u, v)$. Since this is a forward edge, there must be a path from $u$ to $v$ in the DFS tree, i.e. $u$ must be an ancestor of $v$. Consider this path to be a sequence of vertices $v_1, v_2 \cdots v_k$ where $v_1 = u$ and $v_k = v$. Since $(u, v) \in E(G)$, clearly this is another path from $u$ to $v$. \br\
+
+			Hence in this case, we can say that the graph G cannot be a unique path graph.
+
+		\end{qcase}
+
+		\begin{qcase}{2}{If there is at least one cross edge in G}
+
+			Let this edge be $(u, v)$. Since this is a cross edge, the vertices $u$ and $v$ belong to different subtrees, and will have at least one common ancestor (i.e. LCA). Let $w = LCA(u, v)$. Therefore, there is a path from $w$ to $u$ say $v_1, v_2 \cdots v_k$ where $v_1 = w$ and $v_k = u$. There will also be a path from $w$ to $v$ which does not include $u$ as they are in two different subtrees rooted at children of $w$. Consider this path, say $\pr{v}_1, \pr{v}_2 \cdots \pr{v}_{\pr{k}}$, where $\pr{v}_1 = w$ and $\pr{v}_{\pr{k}} = v$. \br\
+			
+			Since $(u, v) \in E(G)$, we can find a path from $w$ to $v$ going through $u$, i.e. $v_1, v_2 \cdots v_k, v$, where $v_1 = w$ and $v_k = u$. Hence there are two paths from $w$ to $v$. \br\
+
+			Hence, in this case too, we can say that the graph G cannot be a unique path graph,
+			
+		\end{qcase}
+
+		\begin{qcase}{3}{If there is at least one back edge in G}
+
+			Nothing can be inferred directly in this case, as already discussed in the class. However, there are cases in which multiple back edges will eliminate the chance of a unique path graph.
+			
+		\end{qcase}
+
+		Our code is handling the first two cases in the part where we are checking if the vertex $v$ is visited and finished as well. This is because any cross edge and forward edge to a vertex $v$ assures that $v$ has been visited and its DFS has finished. \br\
+
+		\note{From here on, we assume that the graph G has no forward or cross edge.} \br\
+
+		The additional cases are when we have two back edges from a subtree. We are defining a back edge from a subtree as follows \sbr\
+
+		\defn{Consider a subtree of the DFS tree rooted at vertex $u$. An edge $(v, w)$ is a back edge from this subtree if $v \in Tree(u)$ and $w \notin Tree(u)$, and $w$ is an ancestor of $u$ in the DFS tree.} \br\
+
+		\begin{qproof}{G is not a unique path graph if for any vertex $u \in V(G)$, there are at least two back edges from the subtree rooted at $u$ in the DFS tree of G}
+			
+			Let us say that the back edges are $(v_1, w_1), (v_2, w_2) \in E(G)$. Here the two edges follow the definition provided above. \br\
+
+			Since both $w_1$ and $w_2$ are ancestors of $u$, it is not possible that they are parts of different subtrees in the DFS tree. Hence, either $w_1 = w_2$ or one is the ancestor of the other. Without loss of generality, we can assume that $w_2 \in Tree(w_1)$. This generalizes both the cases. \br\
+
+			Since $v_1, v_2 \in Tree(u)$, we can say that there is a path from $u$ to both the vertices. Also, there are back edges from $v_1$ to $w_1$ and $v_2$ to $w_2$. Hence, we can say that there is a path from $u$ to both $w_1$ and $w_2$ (not passing through $w_2$).
+
+			Now, since $w_2 \in Tree(w_1)$, there is a path from $w_1$ to $w_2$ not passing through $u$ (as $w_2$ is an ancestor of $u$, and therefore there will be such a path in the DFS tree). Therefore, we have a path from $u$ to $w_2$ passing through $w_1$ as well. Hence we have found two paths from $u$ to $w_2$.
+
+			Therefore, G cannot be a unique path graph in this case. Hence our claim is true.
+
+		\end{qproof}
+
+		\note{We are representing the subtree rooted at $u$ as $Tree(u)$} \br\
+
+		\begin{qproof}{G is a unique path graph if there is no vertex $u \in V(G)$ such that there are two back edges from the subtree rooted at $u$}
+
+			We will prove the contrapositive of this statement. Therefore, we assume that the graph G is not a unique path graph. Then, we need to prove that there is at least one vertex $u \in V(G)$ such that there are at least two back edges from the subtree rooted at $u$. \br\
+
+			Since the graph is not a unique path graph, there is a pair of vertices, say $u$ and $v$, such that there are two distinct paths from $u$ to $v$. \br\
+
+			If the vertices are located in two different subtrees in the DFS tree of the graph, then there must be at least one cross edge. This violates our assumptions. Also, if $u$ is an ancestor of $v$, then there must be either a cross edge or a forward edge. This also violates our assumptions. Hence, we can say that $v$ has to be the ancestor of $u$. \br\
+
+			Since $v$ is an ancestor of $u$, for any path from $u$ to $v$, there has to at least one back edge in this path. Also, if the back edge is from a vertex, say $w$, then $w \in Tree(u)$, otherwise, there will be some other vertex for which this is true. Therefore, this back edge is a back edge from the subtree rooted at $u$. \br\
+
+			This is valid for both the paths from $u$ to $v$. Hence we have two back edges from the subtree rooted at $u$. These two back edges are distinct because the paths are distinct, and cannot have any common edge or vertex. \br\
+
+			This proves the contrapositive statement, and hence our claim.
+			
+		\end{qproof}
+
+		This is handled in our code in the part where we check for the reachable ancestor (ancestor of subtree of child node) for all the children of a node, and for all back edges of a node. If the reachable ancestor is an ancestor of this node (checked using the DFS number), we can say that this is a valid reachable ancestor for this node. If for any node, we have already set the ancestor vertex, and we get another reachable ancestor, we reach the first claim, and hence output false. \br\
+
+		Using the above claims and conditions, we can conclude ---
+
+		\begin{itemize}
+			\item The graph G is not a unique path graph if there is any forward edge in any DFS tree
+			\item The graph G is not a unique path graph if there is any cross edge in any DFS tree
+			\item The graph G is not a unique path graph if there is any vertex $u$ such that there are two back edges from the subtree rooted at $u$ in the DFS tree
+			\item The graph G is a unique path graph otherwise
+		\end{itemize}
+
+		Since our code handles all the above conditions, we can say that the algorithm is correct, and outputs TRUE iff the graph G is a unique path graph, else returns FALSE\@.
+
+	\end{qsection}
+
+	\begin{qsection}{Time Complexity Analysis}
+		
+		Since we are not using anything other that simple $O(1)$ augmentation in DFS, the time complexity will remain the same as in DFS which is $(|V| + |E|)$ as discussed in class.
+
+	\end{qsection}
+
+\end{question}
+
+\end{document}

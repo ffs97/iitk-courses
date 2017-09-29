@@ -1,0 +1,53 @@
+Please compile the programs as follows.
+
+gcc -O3 server.c -o server
+gcc -O3 client.c -o client
+gcc -O3 fork_msg.c -o fork_msg
+gcc -O3 chat.c -o chat
+gcc -O3 fork_shm.c -o fork_shm
+gcc -O3 fork_shm_ftok.c -o fork_shm_ftok
+gcc -O3 -pthread pthread.c -o pthread
+gcc -O3 clone_shm.c -o clone_shm
+gcc -O3 clone_shm_thread_1.c -o clone_shm_thread_1
+gcc -O3 clone_shm_thread_2.c -o clone_shm_thread_2
+gcc -O3 server_signal.c -o server_signal
+gcc -O3 signal.c -o signal
+gcc -O3 sigchld.c -o sigchld
+gcc -O3 setjmp_longjmp.c -o setjmp_longjmp
+
+In the server/client example (server.c, client.c), launch the server first. Launch the 
+client on a different terminal (but on the same machine) so that you can see the progress 
+of both. You can launch multiple concurrent clients on different terminals as well. They 
+will all connect to the same server and communicate with it.
+
+The chat program takes the username of the chat partner as a command line argument. For a chat
+session to work correctly, two users must invoke the chat program on the same machine.
+
+Observe that clone_shm creates two processes with different PIDs. On the other hand,
+clone_shm_thread_1, clone_shm_thread_2, and pthread create threads that share the PID with the creator. This
+PID is known as the thread group id. Within each thread group, each thread gets a system-wide
+unique thread id. In such a situation, the wait() call has no meaning and therefore, you need
+other solutions to make the parent wait for the children to finish up. Also, you need to prevent
+the children from terminating until the parent is done. Two possible solutions are shown in
+clone_shm_thread_1 and clone_shm_thread_2.
+
+In the server_signal example, launch the server_signal process first. Launch the client (client.c) on a different
+terminal so that you can see the progress of both. This is the same client program used earlier.
+
+Run the signal example (signal.c) and remember to explicitly kill the odd-numbered child processes by invoking
+the "kill -9 pid" command (without quotes and pid replaced by the pid of the process to be killed)
+from the shell command prompt. Otherwise these processes will keep running for ever.
+
+Run the sigchld example (sigchld.c) once with no command line argument and once with some command line argument.
+Without any command line argument, the parent process should terminate as soon as one child exits.
+With a command line argument, the parent process will wait for all children to exit.
+In either case, please kill the non-terminating children by invoking the "kill -9 pid" command (without quotes
+and pid replaced by the pid of the process to be killed) from the shell command prompt. Otherwise these 
+processes will keep running for ever.
+
+To examine the context after a setjmp() call, you could use the GNU debugger (gdb) to attach a
+breakpoint right after the setjmp() and print the variable of type jmp_buf that was passed as
+the argument of setjmp(). Use "print /x" without the quotes to print in hex. To see the disassembly 
+of the executable, use "objdump -D executablename" without the quotes from the shell prompt.
+This may be needed to see what the program counter (known as the instruction pointer or IP in x86)
+contains in the saved context.

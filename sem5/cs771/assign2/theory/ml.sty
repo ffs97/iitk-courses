@@ -1,0 +1,165 @@
+%% ml.sty v20170827
+%% (c) 2017 Purushottam Kar (Indian Institute of Technology Kanpur)
+%% 
+%% Draws upon style elements from 
+%% the style file for the course CS773 by Purushottam Kar
+%% the style file for the course CS289 by Alexander Sherstov
+%% the class file for the publication NOW FnT(R)-ML by Neal Parikh
+%% the style file for the proceedings of the NIPS 2015 conference
+
+\usepackage{fullpage}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{stmaryrd}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{titlesec}
+\usepackage{hyperref}
+\usepackage{xspace}
+\usepackage[round,authoryear]{natbib}
+\usepackage{framed}
+\usepackage{float}
+
+% Override how section, subsection and paragraph titles are formatted
+\def\sectionfont{\sffamily\Large\bfseries\boldmath}
+\def\subsectionfont{\sffamily\large\bfseries\boldmath}
+\def\paragraphfont{\sffamily\normalsize\bfseries\boldmath}
+
+\titleformat*{\section}{\sectionfont}
+\titleformat*{\subsection}{\subsectionfont}
+\titleformat*{\subsubsection}{\paragraphfont}
+\titleformat*{\paragraph}{\paragraphfont}
+\titleformat*{\subparagraph}{\paragraphfont}
+
+% The series number
+\newcounter{mlseries}
+\newcounter{mlalgorithm}
+
+% A new theorem style with sans serif fonts
+\newtheoremstyle{ml}{}{}{}{}{\sffamily\bfseries}{.}{.5em}{}
+
+% Theorem environments
+\theoremstyle{ml}
+\newtheorem{theorem}{Theorem}[mlseries]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}{Remark}[mlseries]
+\newtheorem{definition}{Definition}[mlseries]
+\newtheorem{example}{Example}[mlseries]
+\newtheorem{exercise}{Exercise}[mlseries]
+
+\def\LatinUpper{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+\def\LatinLower{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
+
+% Caligraphic fonts
+\newcommand{\genCal}[1]{\expandafter\newcommand\csname c#1\endcsname{{\mathcal #1}}}
+\@for\i:=\LatinUpper\do{%
+	\expandafter\genCal\i
+}
+
+% Blackboard fonts
+\newcommand{\genBb}[1]{\expandafter\newcommand\csname b#1\endcsname{{\mathbb #1}}}
+\@for\i:=\LatinUpper\do{%
+	\expandafter\genBb\i
+}
+
+% Fraktur fonts
+\newcommand{\genFk}[1]{\expandafter\newcommand\csname k#1\endcsname{{\mathfrak #1}}}
+\@for\i:=\LatinUpper\do{%
+	\expandafter\genFk\i
+}
+
+\newcommand{\genFkl}[1]{\expandafter\newcommand\csname k#1\endcsname{{\mathfrak #1}}}
+\@for\i:=\LatinLower\do{%
+	\expandafter\genFkl\i
+}
+
+% Vectors
+\renewcommand{\vec}[1]{{\mathbf{#1}}}
+\newcommand{\genLatinVec}[1]{\expandafter\newcommand\csname v#1\endcsname{{\vec #1}}}
+\@for\i:=\LatinLower\do{%
+	\expandafter\genLatinVec\i
+}
+
+\newcommand{\genLatinVecU}[1]{\expandafter\newcommand\csname v#1\endcsname{{\vec #1}}}
+\@for\i:=\LatinUpper\do{%
+	\expandafter\genLatinVecU\i
+}
+
+% Greek symbol vectors
+\def\mydefgreek#1{\expandafter\def\csname v#1\endcsname{\text{\boldmath$\mathbf{\csname #1\endcsname}$}}}
+\def\mydefallgreek#1{\ifx\mydefallgreek#1\else\mydefgreek{#1}%
+   \lowercase{\mydefgreek{#1}}\expandafter\mydefallgreek\fi}
+\mydefallgreek {alpha}{beta}{gamma}{delta}{epsilon}{zeta}{eta}{theta}{iota}{kappa}{lambda}{mu}{nu}{xi}{omicron}{pi}{rho}{sigma}{tau}{upsilon}{phi}{chi}{psi}{omega}\mydefallgreek
+
+% Vector numerals
+\newcommand{\vzero}{\vec{0}}
+\newcommand{\vone}{\vec{1}}
+
+% Parentheses
+\newcommand{\bc}[1]{\left\{{#1}\right\}}
+\newcommand{\br}[1]{\left({#1}\right)}
+\newcommand{\bs}[1]{\left[{#1}\right]}
+\newcommand{\abs}[1]{\left| {#1} \right|}
+\newcommand{\norm}[1]{\left\| {#1} \right\|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\bsd}[1]{\left\llbracket{#1}\right\rrbracket}
+\newcommand{\ip}[2]{\left\langle{#1},{#2}\right\rangle}
+
+% Asymptotic notation
+\newcommand{\bigO}[1]{{\cal O}\br{{#1}}}
+\newcommand{\softO}[1]{\widetilde{\cal O}\br{{#1}}}
+\newcommand{\Om}[1]{\Omega\br{{#1}}}
+\newcommand{\softOm}[1]{\tilde\Omega\br{{#1}}}
+
+% Statistics notation
+% Probabilities
+\renewcommand{\P}[1]{\bP\bs{{#1}}}
+\newcommand{\Pp}[2]{\underset{#1}\bP\bs{{#2}}}
+% Expectations
+\newcommand{\E}[1]{\bE\bs{{#1}}}
+\newcommand{\Ee}[2]{\underset{#1}\bE\bs{{#2}}}
+% Variance
+\newcommand{\Var}[1]{\text{Var}\bs{{#1}}}
+\newcommand{\Varr}[2]{\underset{#1}{\text{Var}}\bs{{#2}}}
+
+% Miscellaneous
+\newcommand{\argmin}{\mathop{\arg\min}}
+\newcommand{\argmax}{\mathop{\arg\max}}
+\newcommand{\ind}[1]{\bI\bc{{#1}}}
+\newcommand{\etal}{\emph{et al}\xspace}
+\newcommand{\nth}{\text{$^{\text{th}}$}\xspace}
+\newcommand{\supp}{\text{supp}}
+\newcommand{\rank}{\text{rank}}
+\newcommand{\trace}{\text{trace}}
+\newcommand{\diag}{\text{diag}}
+\newcommand{\cond}{\,|\,}
+
+% Algorithms
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\renewcommand{\algorithmicensure}{\textbf{Output:}}
+\renewcommand{\algorithmiccomment}[1]{{\hfill//\texttt{#1}}}
+
+\floatstyle{plain}
+\newfloat{mlalgo}{tbhp}{ml}
+
+\newenvironment{mlalgorithm}[3][0.5\textwidth]
+{
+	\refstepcounter{mlalgorithm}
+	\begin{mlalgo}[#2]
+	\begin{center}
+	\begin{minipage}{#1}
+	\begin{framed}
+	\begin{center}
+		Algorithm \themlalgorithm: #3
+	\end{center}
+}
+{
+	\end{framed}
+	\end{minipage}
+	\end{center}
+	\vskip-4ex
+	\end{mlalgo}
+}
