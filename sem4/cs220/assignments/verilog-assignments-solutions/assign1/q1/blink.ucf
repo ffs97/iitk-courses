@@ -1,0 +1,4 @@
+NET "clk" LOC = C9 | IOSTANDARD = LVCMOS33;
+NET "clk" PERIOD = 20.0ns HIGH 50%;
+
+NET "ledpin" LOC = F12 | IOSTANDARD = LVTTL | SLEW = SLOW | DRIVE = 8;

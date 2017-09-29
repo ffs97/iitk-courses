@@ -1,0 +1,47 @@
+1. (40 marks)
+
+Create a database in SQLite on managing the IIT Kanpur campus community.  The
+members of the community include faculty members, staff, students (core
+members) as well as their family members.
+
+Each student will have a unique roll number while each faculty member and
+staff will have a unique personal identification number.  The family members do
+not have any unique number allocated by IIT Kanpur.  However, you can do that.
+Each family member must always be tagged with at least a core member through a
+foreign key constraint.  The relationship must also be specified.  They may be
+connected to more than one core members.
+
+The records maintained for community member includes address (a must) and a
+phone number (optional, i.e., it may be null).  Core members must be tagged to
+departments.  The departments include units such as IWD, CC, health center,
+etc.
+
+For each department, a faculty member or staff is assigned as the head.  Each
+student should be marked as either a UG or a PG student.  Each PG student must
+have at least one and at most two advisors.  A UG student may or may not have
+advisor(s).  At least one advisor should be from the same department.
+
+The students stay in hostels (separate for boys and girls), while married
+students stay in special married hostels.
+
+Design the different tables accordingly.
+
+Specify the primary key and foreign key constraints while creating the tables.
+
+2. (15 marks)
+
+Create csv files with data.  There should be at least 50 members of each type,
+at least 20 departments, and at least 10 hostels.  Import data directly from
+these csv files.
+
+3. (35 marks)
+
+Using the above database, write SQL statements for the following queries:
+
+(a) Find the number of students who are married.
+(b) Find the number of students living in married hostels. Does it match with (a) above?
+(c) Count the number of faculty members, staff, students and family members separately as well as the total.
+(d) Count the average number of family members per faculty member.
+(e) Find if any faculty member or staff is head of more than one departments.
+(f) Find the percentage of UG students having an advisor.
+(g) Find the number of faculty members advising students from other departments.

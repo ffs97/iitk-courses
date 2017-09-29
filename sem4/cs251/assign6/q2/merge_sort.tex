@@ -1,0 +1,70 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\title{Merge Sort Algorithm}
+\author{Gurpreet Singh (150259)}
+\date{}
+
+\usepackage[top=0.75in, bottom=0.75in, left=0.55in, right=0.55in]{geometry}
+
+\begin{document}
+
+% \maketitle
+
+    % In the merge sort algorithm, we use the divide and conquer approach to first divide the array into two half arrays, sort them individually and then merge them. This is done recursively.\\ The complexity of the merge sort algorithm is $O(nlog(n))$
+    
+    \begin{algorithm}
+      	\caption{Merge Sort}
+        \begin{algorithmic}[1]
+            \Procedure{MergeSort}{$A,l,r$}\Comment{Where A - array, l - left index, r - right index}
+            
+                \If{$p < r$}
+                
+                    \State $mid = (l + r) / 2$
+                    \\
+                    \State \Call{MergeSort}{$A, l, mid$} \Comment{Sort first half of array}
+                    \State \Call{MergeSort}{$A, mid+1, r$} \Comment{Sort second half of array}
+                    \State \Call{Merge}{$A, l, r$} \Comment{Merge first and second sorted halves}
+                
+                \EndIf
+            
+            \EndProcedure
+        \end{algorithmic}
+    \end{algorithm}
+	        
+	\begin{algorithm}
+      	\caption{Merge}
+      	\begin{algorithmic}[2]
+      		\Function{Merge}{$A,l,r$}\Comment{Where A - array, l - left index, r - right index}
+      		
+	      		\State $mid = (l + r)/2$
+	      		\State ${n_1} = mid - l + 1$
+	      		\State ${n_2} = r - mid$
+	      		\\
+	      		\State Let $L[1 \ldots {n_1}]$ and $R[1 \ldots {n_2}1]$ be new arrays\Comment{Make two new arrays for left half and right half each}
+	      		\For{$i = 1$ to ${n_1}$} \Comment{Copy first half into array L}
+    	      		\State $L[i] = A[l + i - 1]$
+	      		\EndFor
+	      		\For{$j = 1$ to ${n_2}$} \Comment{Copy first half into array R}
+    	      		\State $R[j] = A[mid + j]$
+	      		\EndFor
+	      		\\
+	      		\State $i = 1$
+	      		\State $j = 1$
+	      		\For{$k = l$ to $r$} \Comment{Loop through all elements total in L and R}
+    	      		\If {$L[i] < R[j]$} \Comment{Use element of L if smaller}
+    	      		    \State $A[k] = L[i]$
+    	      		    \State $i = i + 1$
+    	      		\Else \Comment{Use element of R if smaller}
+    	      		    \State $A[k] = R[j]$
+    	      		    \State $j = j + 1$
+    	      		\EndIf
+	      		\EndFor
+      		\EndFunction
+      		
+      	\end{algorithmic}
+      \end{algorithm}
+\end{document}

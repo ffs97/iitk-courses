@@ -1,0 +1,73 @@
+1. (30 marks)
+Write a script using only the bash tools that reads a file of numbers and
+normalizes them to the range (0,1) and outputs them in a 4 decimal digit
+format.
+
+Sample input:
+96
+77
+53
+87
+59
+14
+47
+86
+46
+42
+
+Sample output:
+1.0000
+0.7683
+0.4756
+0.8902
+0.5488
+0.0000
+0.4024
+0.8780
+0.3902
+0.3415
+
+2. (50 marks)
+Write a script that assigns the marks of projects to each group member.
+
+The input will consist of three comma-separated files.
+
+The first file will have a list of students; the fields are roll number, name
+The second file will have a mapping of projects; the fields are project number, roll number
+The third file will have a list of project marks; the fields are project number, theory marks, practical marks
+
+The task is to output a file having the *total* marks obtained by each student.
+
+The output will have the fields roll number, name, total project marks
+
+Sample input:
+
+File 1:
+3534,Abc Def
+3567,Gh Ijk
+3627,L M Nopq
+3699,R St
+3700,Uvw X
+3737,Y Z
+
+File 2:
+1,3534
+1,3567
+2,3700
+2,3737
+2,3627
+3,3699
+
+File 3:
+1,23,45
+2,35,46
+3,15,50
+
+Sample output:
+3534,Abc Def,68
+3567,Gh Ijk,68
+3700,Uvw X,81
+3737,Y Z,81
+3627,L M Nopq,81
+3699,R St,65
+

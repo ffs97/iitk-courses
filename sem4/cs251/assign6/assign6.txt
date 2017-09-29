@@ -1,0 +1,12 @@
+1. (20 marks)
+Prepare your CV as a Latex document.  Include a tabular structure for
+education.  Ensure that the title, etc. is meaningful.
+
+2. (20 marks)
+Write a Latex document that uses one of the algorithm* packages (algorithm2e,
+algorithmic, algorithmicx, algpseudocode) to describe mergesort.  This will
+make you learn how to install packages and to use them by yourself.
+
+Note: For installation, the texlive manager can be used. Be sure to point to
+the correct pdflatex executable. Upload only the relevant .tex files.
+

@@ -1,0 +1,38 @@
+.header {
+  background-color: rgba(0, 0, 0, 0.8);
+  height: 80px;
+  color: whitesmoke;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: calc(100% - 60px);
+  padding: 0 30px;
+  z-index: 1000;
+  box-shadow: 0 0 3px #191919;
+  font-family: "Century Gothic", sans-serif; }
+  .header .header-left {
+    float: left; }
+  .header .header-right {
+    float: right;
+    font-family: "Convergence", sans-serif; }
+  .header .header-right h2 {
+    color: #cad6d0;
+    font-size: 30px; }
+  .header a {
+    color: gainsboro; }
+  .header .header-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    height: 80px; }
+    .header .header-nav li {
+      float: left;
+      height: 100%;
+      line-height: 60px;
+      padding: 10px;
+      position: relative;
+      text-transform: uppercase; }
+      .header .header-nav li a:hover {
+        color: burlywood; }
+
+/*# sourceMappingURL=header.css.map */

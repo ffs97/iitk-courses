@@ -1,0 +1,12 @@
+Inverse Power Method
+
+Eigen Value
+	8.1461
+
+Eigen Vector
+	0.9356
+	-0.3085
+	0.1718
+
+Iterations
+	6.0000

@@ -1,0 +1,17 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+
+
+\begin{document}
+
+\section*{Comparision of Quicksort and Mergesort}
+    
+    Quicksort has $O(n^2)$ worst-case runtime and O(nlogn) average case runtime. However, it’s superior to merge sort in many scenarios because many factors influence an algorithm’s runtime, and, when taking them all together, quicksort wins out.\\
+    
+    In particular, the often-quoted runtime of sorting algorithms refers to the number of comparisons or the number of swaps necessary to perform to sort the data. This is indeed a good measure of performance, especially since it’s independent of the underlying hardware design. However, other things – such as locality of reference (i.e. do we read lots of elements which are probably in cache?) – also play an important role on current hardware. Quicksort in particular requires little additional space and exhibits good cache locality, and this makes it faster than merge sort in many cases.\\
+    
+    In addition, it’s very easy to avoid quicksort’s worst-case run time of O(n2) almost entirely by using an appropriate choice of the pivot – such as picking it at random (this is an excellent strategy).\\
+    
+    In practice, many modern implementations of quicksort (in particular libstdc++’s std::sort) are actually introsort, whose theoretical worst-case is O(nlogn), same as merge sort. It achieves this by limiting the recursion depth, and switching to a different algorithm (heapsort) once it exceeds logn.
+    
+\end{document}

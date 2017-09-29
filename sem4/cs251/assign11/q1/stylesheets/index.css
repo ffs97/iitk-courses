@@ -1,0 +1,134 @@
+.container-heading {
+  padding: calc(50vh - 122px) calc(50vw - 170px);
+  position: fixed;
+  width: 340px;
+  height: 244px;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  text-align: center; }
+  .container-heading:before, .container-heading:after {
+    height: 100%;
+    width: 100%;
+    display: block;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0; }
+  .container-heading:before {
+    background-image: url("../images/back.png");
+    background-size: cover;
+    z-index: -5; }
+  .container-heading:after {
+    background-color: rgba(0, 0, 0, 0.55);
+    z-index: -3; }
+  .container-heading .container-heading-content {
+    font-size: 23px;
+    letter-spacing: -1px;
+    color: #e9e9e9;
+    width: 340px;
+    text-align: center; }
+    .container-heading .container-heading-content h1 {
+      font-family: "Amatic SC", sans-serif;
+      font-size: 70px;
+      letter-spacing: 2px;
+      color: burlywood;
+      text-shadow: 0 0 10px black; }
+  .container-heading .container-heading-avatar {
+    position: absolute;
+    left: calc(50vw - 320px); }
+    .container-heading .container-heading-avatar img {
+      width: 150px; }
+  .container-heading .github-button {
+    height: 25px;
+    width: calc(100% - 32px);
+    display: block;
+    border-color: #46b8da;
+    background-color: #5bc0de;
+    padding: 10px 16px;
+    font-size: 18px;
+    font-weight: 400;
+    margin: 20px 0 0 0;
+    border-radius: 6px;
+    color: white !important; }
+    .container-heading .github-button:hover {
+      background-color: #31b0d5;
+      border-color: #269abc; }
+
+#contact {
+  display: flex;
+  flex-flow: row;
+  justify-content: space-between;
+  position: relative;
+  padding: 0 150px; }
+  #contact .contact-social-block {
+    padding: 75px 0;
+    z-index: 100; }
+    #contact .contact-social-block img {
+      height: 60px;
+      border-radius: 50%; }
+  #contact .contact-profile-block {
+    z-index: 100; }
+    #contact .contact-profile-block img {
+      height: 200px;
+      border-radius: 50%;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2); }
+  #contact:before {
+    height: 1px;
+    width: calc(100% - 380px);
+    left: 190px;
+    display: block;
+    position: absolute;
+    top: 50%;
+    background-color: gray;
+    content: "";
+    z-index: 0; }
+
+#skills .skill-group {
+  width: 50%;
+  float: left;
+  padding-bottom: 30px; }
+  #skills .skill-group .skill-title {
+    font-family: "Passion One", sans-serif;
+    font-size: 30px;
+    color: #edc490;
+    letter-spacing: 2px;
+    margin-bottom: 15px; }
+  #skills .skill-group .skill {
+    padding: 0 70px 10px 20px;
+    font-family: "Inconsolata", sans-serif;
+    font-size: 20px;
+    color: #887474;
+    position: relative; }
+    #skills .skill-group .skill .skill-rate {
+      height: 4px;
+      width: 100%;
+      border: 1px solid #87e3ff;
+      margin-top: 7px;
+      border-radius: 2px;
+      overflow: hidden; }
+      #skills .skill-group .skill .skill-rate div {
+        height: 100%;
+        background-color: #76c5de; }
+    #skills .skill-group .skill .skill-rate-1 div {
+      width: 20%; }
+    #skills .skill-group .skill .skill-rate-2 div {
+      width: 40%; }
+    #skills .skill-group .skill .skill-rate-3 div {
+      width: 60%; }
+    #skills .skill-group .skill .skill-rate-4 div {
+      width: 80%; }
+    #skills .skill-group .skill .skill-rate-5 div {
+      width: 100%; }
+
+#resume {
+  font-size: 20px;
+  padding-bottom: 80px; }
+  #resume a {
+    color: burlywood; }
+  #resume h2 {
+    position: relative;
+    top: 30px;
+    margin-bottom: 60px; }
+
+/*# sourceMappingURL=index.css.map */

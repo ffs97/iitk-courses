@@ -1,0 +1,42 @@
+1. (30 marks)
+
+Write a make file that builds a latex project.
+
+Imagine that the top-level latex file main.tex uses two more auxiliary files
+body.tex and results.tex.  The results.tex file in turn includes a tables.tex
+file and some gnuplot figures.  The gnuplot figures are named graph1.pdf and
+graph2.pdf.  They are built using graph1.gnu and graph2.gnu scripts which use
+graph1.csv and graph2.csv respectively.  The main.tex uses a bibliography file
+citations.bib.
+
+Please write minimal staff in all these files (you may re-use from old
+assignments) such that the files and the project are meaningful.
+
+The makefile should do a minimal re-compilation.  However, it should not miss
+re-building the final latex output main.pdf if any file is changed.
+
+It must have the top-level target main.pdf.  It should also include a phony
+target clean.
+
+2. (20 marks)
+
+Write a Python script that does the following.
+
+Given a string input, it doubles every consonant and puts an 'o' between them.
+The vowels are simply left as is.
+
+Thus, if the input is:
+I am a very good student.
+the output is:
+I amom a voveroryoy gogoodod sostotudodenontot.
+
+(Bonus marks: 5 for pronouncing the strings thus produced correctly. :-) )
+
+3. (20 marks)
+
+Augment the above program to read 3 inputs (the 4th one is the string on which
+it operates): the first two integers indicate the number of times a consonant
+and a vowel is repeated (> 0) while the third is a vowel (check for that) that
+is placed between every repetition of a consonant.
+
+Thus, the above program is a special case with the 3 inputs being 2, 1 and 'o'.

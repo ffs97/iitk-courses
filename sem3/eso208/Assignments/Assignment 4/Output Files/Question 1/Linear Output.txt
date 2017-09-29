@@ -1,0 +1,6 @@
+Coefficients: 
+	-1.8898
+	15.3639
+
+R-Square
+	0.7572

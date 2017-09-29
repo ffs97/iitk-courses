@@ -1,0 +1,39 @@
+1. (10 marks)
+
+Generate 10 distributions of size 100 each for each of the following
+distributions using R:
+n = rnorm(100,0.5,0.15)
+u = runif(100,0.0,1.0)
+
+Store them as files.
+
+2. (30 marks)
+
+Use the above generated files to draw a histogram using gnuplot as shown in the
+first figure in gnuplot-exercise.pdfPreview the documentView in a new window.  Remember that to do this, you need to
+divide the data into 4 blocks as shown in the figure. If data is beyond the
+range, snap it to the nearest end.
+
+The errorbars should be clearly shown.
+
+Clearly mark the axes, title, etc.
+
+3. (30 marks)
+
+Divide the 10 sets of 2 distributions into 5 sets each.  For each such set (or
+group), draw the histogram in gnuplot as shown in the second figure in
+gnuplot-exercise.pdfPreview the documentView in a new window.
+
+The three clusters correspond to
+Cluster A: [0.0, 0.34]
+Cluster B: (0.34 - 0.66)
+Cluster C: [0.66 - 1.0]
+
+The errorbars should be clearly shown.
+
+Clearly mark the axes, title, etc.
+
+4. (20 marks)
+
+Draw a schematic diagram of Turing machine in either xfig/ipe/inkscape.  If you
+think of using some other tool, please get it approved first.

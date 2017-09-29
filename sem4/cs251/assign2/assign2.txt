@@ -1,0 +1,99 @@
+1. (30 marks)
+
+Write a script using any of the bash tools including grep and sed, that given a
+file with the lines inside it having a comma-separated format, writes the
+fields of the line by reversing each pair of fields.  Note that the fields
+themselves remain the same.
+
+Sample input:
+23,A,49,B,2,C
+25,B,27,D,8,
+34,B,,F
+
+Sample output:
+A,23,B,49,C,2
+B,25,D,27,,8
+B,34,F,
+
+Note carefully the last two lines.
+
+You may not assume a known number of fields in a file.
+
+2. (50 marks)
+
+You need to write a script using any bash tool including grep and sed to
+automate the matching of TAs to students in different days.
+
+A little bit more detail:
+
+Suppose there are n students, m tas and d lab days (all numbered from 1 to ...).
+
+There will be a list that dictates which student can take which lab day.
+Create this list as a one-time measure using randomisation.
+
+Create this using weights on the lab days, e.g., 10% on lab day 1, 30% on lab
+day 2, etc.  The weights may be read from a file f.
+
+Each ta grades roughly w = n/m students.
+
+Next, divide the tas between the d lab days (assume m > d) such that per day,
+roughly w students are graded by each ta.  In a day, the difference between the
+number of students graded by a ta cannot be more than 1.
+
+Randomise the allocation of tas to the days.  In each day, randomise the
+students assigned to the tas.
+
+Additionally, give the students slots starting from time t with a gap of g
+minutes each.
+
+Running this script every week will solve the problem.
+
+You can use *only* bash tools including grep, sed and awk.
+
+Sample input:
+
+n = 11
+m = 4
+d = 2
+File f:
+70
+30
+t = 2:00pm
+g = 10 min
+
+Sample output:
+
+Students to lab days:
+
+Day 1 students:
+11
+9
+1
+2
+6
+4
+10
+8
+
+Day 2 students:
+7
+3
+5
+
+Day 1 mapping:
+3 11 2:00
+3 9 2:10
+3 1 2:20
+4 2 2:00
+4 6 2:10
+4 4 2:20
+1 10 2:00
+1 8 2:10
+
+Day 2 mapping:
+2 7 2:00
+2 3 2:10
+2 5 2:20
+
+Hint: Look at sort options.
+

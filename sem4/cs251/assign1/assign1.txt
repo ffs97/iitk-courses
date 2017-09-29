@@ -1,0 +1,31 @@
+1. (15 marks) Write a bash script that inputs two numbers and prints ">", "=",
+or "<" as the comparison of the first number with the second is, in addition to
+the two numbers.  Use the special variables $1, etc.
+
+Sample input:
+script.sh 3 56
+
+Output:
+3 < 56
+
+Check for error conditions.
+
+2. (15 marks) Write a bash script that given a file and two strings to search,
+outputs only those lines that contain both the strings.  Use grep.
+
+Sample input:
+
+script.sh file.txt AB 78
+
+If the contents of file.txt is
+
+002,AB,eco,87
+001,AB,cse,78
+003,XY,mth,90
+004,AC,bio,78
+
+then the output is
+
+001,AB,cse,78
+
+Check for error conditions.

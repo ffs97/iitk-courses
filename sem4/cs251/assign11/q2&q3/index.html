@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Question 2&3</title>
+
+    <script type="text/javascript" src="q2a.js"> </script>
+    <script type="text/javascript" src="q2b.js"> </script>
+    <script type="text/javascript" src="q3.js"> </script>
+</head>
+<body>
+
+    <div style="text-align: center; width: 500px; margin: auto;">
+        <h2>Question 2a</h2><br>
+        <form name="counterForm">
+            <input type="text" name="counter" value="0" style="text-align: center;"> <br><br>
+            <input type="button" value="Add Count" onclick="incrementCount()"> <br><br><br>
+        </form>
+
+        <h2>Question 2b</h2><br>
+        <form name="userForm" onsubmit="event.preventDefault(); showData()" style="text-align: right; margin-right: 120px;">
+            <label>
+                <b>Student Name: </b>&nbsp;
+                <input type="text" name="studentName">
+            </label> <br><br>
+
+            <label>
+                <b>Faculty Name: </b>&nbsp;
+                <input type="text" name="facultyName">
+            </label> <br><br>
+
+            <label>
+                <b>Area: </b>&nbsp;
+                <input type="text" name="area">
+            </label> <br><br>
+
+            <input type="button" onclick="addUser()" value="Add Entry">
+            <input type="submit" value="Show Data">
+        </form>
+
+        <br><br>
+
+        <h2>XML Document</h2>
+        <p id="xml-data" style="white-space: pre; text-align: left; margin-top: 70px;"></p>
+        <h2>XML Schema</h2>
+        <p id="xml-schema" style="white-space: pre; text-align: left; margin-top: 70px;"></p>
+    </div>
+
+</body>
+</html>

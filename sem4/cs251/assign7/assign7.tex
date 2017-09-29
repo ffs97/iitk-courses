@@ -1,0 +1,173 @@
+\documentclass{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools, amsthm, amssymb}
+\usepackage{algorithm, algpseudocode}
+\usepackage{pdfpages}
+\usepackage{cite, hyperref}
+\usepackage[margin=1in]{geometry}
+
+\hypersetup{
+    colorlinks,linkcolor=red
+}
+
+\newenvironment{indentation}
+  {\adjustwidth{3em}{0pt}}
+  {\endadjustwidth}
+  
+
+\DeclareGraphicsExtensions{.pdf}
+
+\title{Faster Multiplication}
+\author{Gurpreet Singh (150259)}
+\date{6th March, 2017}
+
+\begin{document}
+
+\maketitle
+
+\section*{Introduction}
+
+    When we are multiplying two 2-digit numbers, we can reduce a few cases into a simple formula, rather than actually calculating the multiplication.
+    
+\section*{Case Analysis for 2-digit Multiplication}
+
+    For 2-digit multiplication of two numbers, we have two cases for which our reduction method will work. \cite{atul}\\
+    
+    \textbf{Case 1.1: } When first digits are same and second digits add up to 10 \\
+    
+    \textbf{Case 1.2: } When second digits are same and first digits add up to 10
+
+    \newpage
+
+    \subsection*{Case 1.1}
+    
+        \textbf{Claim:} \emph{Let the numbers be a = x:y and b = x:z, then multiplication result (c) will be x*(x+1):y*z}
+        \begin{proof}
+            \begin{align*}
+                a &= x:y = 10x + y \quad \textrm{and} \quad b = x:z = 10x + z\\
+                c &= a*b \\
+                &= (10x + y) * (10x + z) \\
+                &= 100x^{2} + 10x * (y+z) + yz\\
+                &= 100x^{2} + 10x * 10 + yz &(&\because y+z = 10)\\
+                &= 100x*(x+1) + yz \\
+                &= x*(x+1):yz
+            \end{align*}            
+            Note \footnote[1]{if $yz < 10$ , then $c = x*(x+1):0:yz$}
+        \end{proof}
+        
+        \textbf{Example 1.2.1: } Let the two numbers be 66 and 64 (See Figure 1)
+            \begin{align*}
+                6*(6+1) = 42 \\
+                6 * 4 = 24 \\
+                66 * 64 = 42:24 = 4224
+            \end{align*}
+        \begin{figure}[h]
+            \includegraphics[trim=67 700 0 60]{example1}
+            \caption{Long multiplication method for example 1}
+            \label{fig:example1}
+        \end{figure}
+        
+        \textbf{Pseudocode: }
+        
+        \begin{algorithm}
+      	\caption{Vedic Multiplication: Case 1.1}
+        \label{algo1}
+        \begin{algorithmic}[1]
+            \Procedure{Multiply}{$a,b$}\Comment{Where a - first number, b - second number}
+            
+                \Statex $x = a/10$\Comment{Where / is integer division}
+                \Statex $y = a\%10$
+                \Statex $z = b\%10$
+                
+                \Statex $\alpha = x*(x+1)$
+                \Statex $\beta = yz$
+                
+                \Return $100*\alpha + \beta$
+                
+            \EndProcedure
+        \end{algorithmic}
+    \end{algorithm}
+
+    \newpage
+    
+    \subsection*{Case 1.2}
+    
+        \textbf{Claim:} \emph{Let the numbers be a = x:y and b = x:z, then multiplication result (c) will be x*y+z:z*z}
+        \begin{proof}
+            \begin{align*}
+                a &= x:z = 10x + z \quad \textrm{and} \quad b = y:z = 10y + z\\
+                c &= a*b \\
+                &= (10x + z) * (10y + z) \\
+                &= 100xy + 10z * (x+z) + z^{2}\\
+                &= 100xy + 10z * 10 + z^{2} &(&\because x+y = 10)\\
+                &= 100(xy + z) + yz \\
+                &= xy+z:z^{2}
+            \end{align*}
+            Note \footnote[1]{if $z^{2} < 10$ , then $c = xy+z:0:z^{2}$}
+        \end{proof}
+        
+        \textbf{Example 1.2.1: } Let the two numbers be 34 and 74 (See Figure 2)
+            \begin{align*}
+                3*7+4 = 25 \\
+                4 * 4 = 16 \\
+                34 * 74 = 25:16 = 2516
+            \end{align*}
+        \begin{figure}[h]
+            \includegraphics[trim=67 700 0 60]{example2}
+            \caption{Long multiplication method for example}
+            \label{fig:example1}
+        \end{figure}
+        
+        \textbf{Pseudocode: }
+        \begin{algorithm}
+      	\caption{Vedic Multiplication: Case 1.2}
+        \label{algo2}
+        \begin{algorithmic}[1]
+            \Procedure{Multiply}{$a,b$}\Comment{Where a - first number, b - second number}
+            
+                \Statex $x = a/10$\Comment{Where / is integer division}
+                \Statex $y = b/10$
+                \Statex $z = a\%10$
+                
+                \Statex $\alpha = xy+z$
+                \Statex $\beta = z^{2}$
+                
+                \Return $100*\alpha + \beta$
+                
+            \EndProcedure
+        \end{algorithmic}
+    \end{algorithm}
+    
+    
+    \newpage
+    
+    \subsection*{Do It Mentally}
+        
+        \begin{enumerate}
+            \item Differentiate the case
+            \item Compute the two different subparts of the answer, i.e. $\alpha$, $\beta$
+            \item Generate the answer by appending $\alpha$ and $\beta$ (add $0$ before $\beta$ if $\beta < 10$)
+        \end{enumerate}
+    
+\section*{Generalization}
+    For general case, assume the numbers are $(x_{1}x_{2}...x_{n})$ and $(y_{1}y_{2}...y_{n})$. We can divide this into a simpler case (with n-1 digits) using the following two cases: \cite{maharaja}
+
+    \begin{center}
+        \begin{tabular}{ | c | c | c | }
+            \hline
+            Condition & Case & Answer\\
+            \hline
+            $x_{1} = y_{1}$ & Case \ref{algo1} & $x_{1}*(x_{1}+1)$ : $(x_{2}x_{3}...x_{n})*(y_{2}y_{3}...y_{n})$\\
+                                 \hline
+            $x_{n} = y_{n}$ & Case \ref{algo2} & $(x_{1}x_{2}...x_{n-1})*(y_{1}y_{2}...y_{n-1}) + x_{n}$ : $x_{n}^{2}$\\
+            \hline
+        \end{tabular}
+    \end{center}
+
+\bibliographystyle{unsrt}
+\bibliography{references}
+For more details, visit \href{https://en.wikibooks.org/wiki/Vedic_Mathematics/Techniques/Multiplication}{this link}
+        
+\end{document}
+

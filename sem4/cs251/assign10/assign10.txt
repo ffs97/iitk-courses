@@ -1,0 +1,25 @@
+1. (30 marks)
+
+Create an empty directory.  Initialise git in it.  Add a .tex file.  compile
+it.  Add only the .tex file to git control.  Perform the first commit.  Add a
+.bib file to tracking.  Modify the two files and commit multiple number of
+times.  Go back to the second last commit.  Check it out and work on it.
+
+Print the output of the git log command that shows the different commit points,
+their messages, etc.
+
+2. (10 marks)
+
+The teams have been created as per the list git-groups.txtView in a new window.  The first member
+of the team must open an account in github/bitbucket.  Everyone must have an
+account in the same portal.  The first member should add them with admin
+permission to a project called cs251-git.
+
+3. (30 marks)
+
+Use the above setup to write reviews about any two cinemas from the list given in
+http://www.imdb.com/list/ls051468845/?start=1&view=detail&sort=user_rating:desc&defaults=1
+in a .tex file.  Ensure that all the team members are writing simultaneously to
+the file.  Show evidences of merging, conflicting, etc.  Create private
+branches and merge later.  Show evidences for the same.
+

@@ -1,0 +1,33 @@
+1. (35 marks)
+
+Create your personal website.  It should consist of at least the following
+webpages: home, academics, and personal interests.
+
+Use html with an external css stylesheet.  Use a detailed styling for tables
+such as the courses you have taken so far, etc.
+
+Use different html tags and headers.  Have links to interesting external pages.
+
+2. (45 marks)
+
+In your website, add another page that uses javascript.  Have two forms in it.
+
+The first form has a single button, that when clicked, increments a variable.
+The current value of the variable is displayed below the button.  This is
+similar to the visitor count that you find in many webpages.
+
+The second form inputs data in the form of three fields.  The first fields is
+the name of a student.  The second area is the area, while the third is the
+name of a faculty member.  Collect the data in the form of an xml.
+
+The top level hierarchy is called interests, below which there are areas and
+then faculty members and finally students.
+
+While collecting data, if the name of an area or a faculty member is absent, it
+will create the correct hierarchy.  Otherwise, it will insert appropriately.
+
+3. (10 marks)
+
+Show the xml file built as a result of collecting the above data.  Show the xml
+schema used for the xml as well.
+

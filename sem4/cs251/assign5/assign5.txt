@@ -1,0 +1,26 @@
+1. (30 marks)
+
+Load the variables data1, data2 and data3 from data.txtView in a new window.
+
+Find their means, medians, quantiles and standard deviations of each of the
+three distributions.  What can you guess about their underlying distributions?
+Explain how you have guessed it.
+
+The input file can be found in the course folder.
+
+2. (40 marks)
+
+Read the csv file leaves.csvView in a new window.
+
+For each species, list the mean of the sepal and petal lengths and widths, as
+well as the contingency table for good, bad and medium.
+
+List the mean values of the attributes for each goodness category.
+
+Build the detailed contingency table for each attribute showing the breakup for
+each species and each goodness value.
+
+Show and save a barplot with three bars where each bar is a species.
+In each bar, the frequencies of good, bad and medium should be shown.
+
+The input file can be found in the course folder.

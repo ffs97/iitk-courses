@@ -1,0 +1,28 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[margin = 1in]{geometry}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+    
+        \begin{table}
+    		\begin{tabular}{ |p{4cm}||p{2cm}|p{2cm}|p{2cm}|p{2cm}|p{2cm}|  }
+    		
+    			\hline
+                & $n=10^2$ & $n=10^3$ & $n=10^4$ & $n=10^5$ & $n=10^6$ \\
+    			\hline
+    			Average running time of QuickSort & 5.76$\mu$s & 82.432$\mu$s & 1.086431ms & 13.79606ms & 163.201154ms \\
+    			\hline
+    			Average running time of MergeSort & 12.3$\mu$s & 178.59$\mu$s  & 1.99737ms  & 24.15282ms & 293.733225ms \\
+    			\hline
+    			Average number of comparisons in QuickSort & 644.946 & 11002.594 & 155504.578 & 2017616.713 & 2523452.18 \\
+    			\hline
+    			Average number of comparisons in MergeSort & 542.25 & 8708.132 & 120452.184 & 1536355.955 & 2114345.23 \\
+    			\hline
+    			No of times MergeSort had lesser no of comparisons than QuickSort & 992 & 1000 & 1000 & 1000 & 1000 \\
+    			\hline
+    			
+    		\end{tabular}
+            \caption{MergeSort and QuickSort Analysis}
+        \end{table}
+        
+\end{document}

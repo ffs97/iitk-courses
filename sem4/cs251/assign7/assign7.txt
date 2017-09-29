@@ -1,0 +1,43 @@
+1. (80 marks)
+
+Write a Latex document that describes the following procedure of multiplication
+of two-digit numbers.
+
+Case 1: The first digits are same, and the last ones add up to 10.
+
+Example:
+ 66
+x64
+---
+6x(6+1):6x4 = 42:24 = 4224
+
+Case 2: The first digits add up to 10, and the last ones are same.
+
+Example:
+ 34
+x74
+---
+3x7+4:4x4 = 25:16 = 2516
+
+Explain the procedure for mentally doing it.
+Explain why this is so much easier and faster.
+
+Also, explain algebraically why this works.
+
+Can you generalize either or both the cases to numbers larger than two digits?
+
+In your document, you must use the following Latex concepts:
+
+ 1. equations (using align)
+ 2. in-line math-mode text
+ 3. tables
+ 4. figures (draw impressive figures of examples and working using any tool you want, and import them as pdf)
+ 5. footnote
+ 6. citation (cite Atharvaveda, commentaries on Atharvaveda, with your own imagaination of other details)
+ 7. algorithmic* (for the pseudocode of the above procedures)
+ 8. bibtex (create a bib file)
+ 9. proper title, author and date (as due date)
+10. proper sections, subsections, etc.
+11. labels and their proper references
+12. url (to in-line cite some website)
+

@@ -1,0 +1,12 @@
+Direct Power Method
+
+Eigen Value
+	10.7787
+
+Eigen Vector
+	-0.2509
+	-0.2397
+	0.9379
+
+Iterations
+	30.0000

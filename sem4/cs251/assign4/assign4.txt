@@ -1,0 +1,17 @@
+1. (20 marks)
+Find the value of square root of n using the geometric construction method in
+Sulvasutras in octave.  Show the working of the method.  For convenience, you
+may assume the mid-point of the base line to be (0,0).  Generate k random
+numbers to get the estimate.  Write a function with n and k as input.
+
+2. (40 marks)
+Find the m-th root of n up to d decimal digits using the random guessing method
+in octave.  Write a function that takes n, m and d as input.  The default
+values of m and d are 2 and 4 respectively.  Thus, the function should work
+with only n, or with n and m as well.
+
+3. (20 marks)
+Generate samples of sizes 10^1, 10^2, 10^3, 10^4, 10^5, 10^6 from the
+exponential distribution Exp(2), i.e., \lambda = 1.  Find the mean and standard
+deviation of each of these vectors.  Find the difference with the actual mean.
+

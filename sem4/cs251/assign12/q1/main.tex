@@ -1,0 +1,29 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{pdfpages}
+\usepackage{titling}
+
+\title{QuickSort vs MergeSort}
+\author{Gurpreet Singh}
+\date{14 April, 2017}
+
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
+
+\begin{document}
+
+\begin{titlingpage}
+\maketitle
+\end{titlingpage}
+
+\includepdf[pagecommand=\section*{}]{body}
+
+\includepdf[pages=1, pagecommand=\section*{Results}, offset = 0 -2cm]{results}
+\includepdf[pages=2-]{results}
+
+Help taken in building the latex file from \cite{1} and \cite{2}
+
+\bibliographystyle{unsrt}
+\bibliography{ref}
+
+\end{document}
