@@ -1,0 +1,25 @@
+PROGS = \
+delaunay_sweep$(e) \
+geowin$(e) \
+geowin_circattr$(e) \
+geowin_circles$(e) \
+geowin_circles2$(e) \
+geowin_crust$(e) \
+geowin_d3hull$(e) \
+geowin_dtadv$(e) \
+geowin_dtadv_tut$(e) \
+geowin_dthandler$(e) \
+geowin_genpoly$(e) \
+geowin_hpinter$(e) \
+geowin_hpinter2$(e) \
+geowin_hpinter3$(e) \
+geowin_hpinter4$(e) \
+geowin_logo$(e) \
+geowin_menu$(e) \
+geowin_pointset$(e) \
+geowin_poly$(e) \
+geowin_poly2$(e) \
+geowin_poly_buttons$(e) \
+geowin_triang$(e) \
+geowin_voro$(e) \
+geowin_voro2$(e)

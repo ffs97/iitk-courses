@@ -1,0 +1,22 @@
+
+PROGS  =\
+ab_dic$(e) \
+array_test$(e) \
+d_array_test$(e) \
+d_int_set_test$(e) \
+dic$(e) \
+dic_test$(e) \
+map$(e) \
+map_test$(e) \
+pp_dict_test$(e) \
+prio$(e) \
+prio_test$(e) \
+seq$(e) \
+seq_test$(e) \
+set$(e) \
+set_test$(e) \
+sortseq_merge$(e) \
+sortseq_sort$(e) \
+sortseq_speed$(e) \
+sortseq_test$(e)
+

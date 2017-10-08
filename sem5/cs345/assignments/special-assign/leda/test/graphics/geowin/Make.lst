@@ -1,0 +1,13 @@
+PROGS = \
+edit_run$(e) \
+geowin_circattr$(e) \
+geowin_d3$(e) \
+geowin_esri$(e) \
+geowin_help$(e) \
+geowin_input_object$(e) \
+geowin_minkowski2$(e) \
+geowin_minkowski_new$(e) \
+my_point$(e) \
+my_point_traits$(e) \
+my_point_vector$(e)
+

@@ -1,0 +1,17 @@
+\bf\blue Strongly Connected Components\rm\black
+
+We illustrate the strongly connected components algorithm.
+The demo consists of two phases.
+
+In\bf Phase 1\rm you are asked to
+enter a directed graph G. At any time the strongly connected
+components of G are shown in color and number code, i.e.,
+nodes belonging to the same connected component are given the same
+number and the same color. The first phase is terminated by pressing
+the done button.\\
+If you do not know how to edit a graph have a look at the\it Help\rm
+menue.
+
+In\bf Phase 2\rm you will see an animated run of the algorithm on the
+graph constructed in phase one.
+

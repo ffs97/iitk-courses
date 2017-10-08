@@ -1,0 +1,15 @@
+\bf\blue The Generic Preflow-Push Algorithm\rm\black
+
+This demo illustrates the generic preflow push algorithm for
+computing the maximum flow in a network.
+
+First you should construct a maxflow problem by
+drawing a graph between the source \bf s\rm and sink \bf t\rm 
+and assigning capacities to the edges either by clicking 
+the \bf random caps \rm button or by selecting an 
+edge (with the middle button) and adjusting its capacity 
+using the \bf capacity slider\rm .
+
+Then push the \bf start \rm button and follow the
+instructions given at the top of the graph window.
+

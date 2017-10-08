@@ -1,0 +1,15 @@
+This demo program shows you the output of the triangulation algorithm
+for generalized polygons. The output of the triangulation of a
+generalized polygon is a planar embedded graph.
+\\
+The edges of the graph are partitioned into the following parts:
+\\
+- Outer triangulation (painted in grey color)
+\\
+- Inner triangulation (painted in blue color)
+\\
+- Boundaries (painted in red color)
+\\
+- Holes (painted in pink color)
+\\
+We show with arrows the direction of the boundary and hole edges.

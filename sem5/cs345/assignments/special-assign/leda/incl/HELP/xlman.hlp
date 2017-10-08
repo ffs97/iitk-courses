@@ -1,0 +1,17 @@
+Welcome to \bf XLMAN\rm , the interactive access to the LEDA system.
+
+The menu buttons of xlman allow you to
+
+-- to access the LEDA manual pages. The manual page is selected in the
+text menus and the page is displayed after pressing the ``spectacle 
+button''. The page is printed by pressing the ``printer button''.
+
+-- access the LEDA demos. The ``run-button'' allows you to run LEDA-demos
+and the ``.c-button'' gives acces to the source code.
+
+-- obtain information about changes and bug fixes in recent releases.
+Press the ``books button''.
+
+-- find information about a class or a function. Press the ``question mark button''.
+
+-- customize xlman. Use the ``pencil-button''.

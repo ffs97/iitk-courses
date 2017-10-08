@@ -1,0 +1,97 @@
+The Voronoi demo allows the user to construct a scene of points and to
+visualize several fundamental geometric data structures for it: the nearest and
+furthest site Delaunay diagram, the nearest and furthest site Voronoi diagram,
+the convex hull and the width, the minimum spanning tree, the minimum 
+enclosing and the 
+maximum empty circle, the minimum width and the minimum area annuli, and the
+crust of the point set. 
+
+The point set is constructed either by mouse input or by calling one of the
+generators (sub-menu points). For mouse input there is the choice between
+single points, points on a line segment, and points on a circle. 
+The current set of points is maintained as a list p_list of rat_points. 
+The list is initially empty and is cleared by the clear-button. Any newly
+constructed point is added to it. It is important to remember 
+that adding a line
+segment or adding a circle adds points that lie exactly on a line or a
+circle. 
+
+The geometric structures to be displayed can be computed with the use of three
+different geometry kernels: the rational kernel with the built-in floating
+point filter (this is the default), the rational kernel without the built-in
+floating point filter, and the floating point kernel. This allows to compare
+the relative speeds of the kernels and also the visual check whether the
+floating point kernel worked correctly. When the floating 
+point kernel is used, the program may abort or produce incorrect results.
+
+The geometric structures are not computed directly for the 
+points in p_list but
+for a derived set of points. The derived set of points is called rp_list for
+use with the rational kernel and is called fp_list for use with the floating
+point kernel. The following procedure adds a point to 
+rp_list and fp_list. 
+
+
+void move_point(const rat_point& p)
+{ point fp = p.to_point();
+  if ( !round_to_grid )
+  { fp_list.append(fp); rp_list.append(p); return; }
+
+  double x = truncate(fp.xcoord(),truncation_prec);
+  double y = truncate(fp.ycoord(),truncation_prec);
+  point tp(x,y);
+  fp_list.append(tp);
+  rp_list.append(rat_point(tp));
+} 
+
+The addition of a point is controlled by variables round_to_grid and
+truncation_prec. Let p be a rat_point. If round_to_grid is false, 
+p is added to rp_list and fp = p.to_point() is 
+added to fp_list; the
+Cartesian coordinates of fp are the optimal approximations of the
+rational coordinates of p by doubles. Observe, that when round_to_grid
+is false, the points p and fp are in general distinct. In particular, if 
+p_list contains points on a circle or segment, the corresponding points in
+fp_list will lie close to the circle or segment but not exactly on it. 
+Such inputs will frequently overburden the floating point kernel, e.g., try to
+construct the crust of co-circular points.
+
+
+When round_to_grid is true, the mantissas of the Cartesian coordinates of
+fp are truncated to truncation_prec binary places, i.e., all 
+but the first truncation_prec bits are
+set to zero. This moves the points on a grid with 2^{truncation_prec} 
+grid lines. The point with the truncated 
+coordinates is then added to
+fp_list and rp_list. Truncation with small values of 
+truncation_prec will
+visibly move the points. When round_to_grid is true, rp_list and fp_list
+contain the same set of points. 
+
+The demo also gives a feeling for the running time of the various algorithms.
+Whenever the user requests to change the display (either by requesting for an
+additional geometric structure, or by dropping a request, or by switching to
+another kernel, or ..) all requested structures are recomputed. 
+
+The demo can make mistakes when run with the floating point kernel. When using
+the floating point kernel, set round_to_grid to true and play with
+truncation_prec to get a feeling for the limits of the floating point
+kernel. You can always switch to the rational kernel for a visual comparison of
+the result. We want to
+point out one frequently occurring  mistake.  
+When the crust of points on a circle is 
+constructed and a high value of truncation_prec is used, 
+the output is frequently completely wrong. This comes from the fact that crust
+constructs the Delaunay diagram of fp_list united with  VD(fp_list), where
+VD(fp_list) denotes the set of vertices of the Voronoi diagram of
+fp_list. The latter set contains many points crowding near the center of
+the circle and this confuses the computation of the Delaunay diagram.
+
+When the scene contains many points on 
+circles or segments, the running time with the 
+rational kernel may go up sharply.
+The reason is that these inputs are very difficult, because our generators
+guarantee that the points lie exactly on a circle or line, respectively. 
+
+
+

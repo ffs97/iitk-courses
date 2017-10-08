@@ -1,0 +1,6 @@
+PROGS = \
+simple_demo$(e) \
+gl_sticks$(e) \
+gl_hull$(e) \
+gl_solids$(e)
+

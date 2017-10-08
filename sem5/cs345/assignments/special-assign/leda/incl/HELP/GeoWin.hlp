@@ -1,0 +1,62 @@
+
+GeoWin is the LEDA class for visualizing geometric algorithms.
+
+It is best to run a GeoWin demo while reading this text. We recommend
+geowin_voro. Also make this window as wide as possible as it shows
+a lot of text. 
+
+
+A GeoWin maintains one or more inputs scene and one or more output scenes. 
+The output scenes depend on the input scenes and are recomputed whenever 
+the input scenes change. Most GeoWin applications have only one input
+scene.
+
+The input scene is manipulated with the mouse. The details depend on
+the demo; in the case of geowin_voro the input scene is simply a set of 
+points. A click on the left mouse button adds a point, a drag with the left
+mouse button moves a point, and a click with the right mouse button 
+on a point opens a menu which allows you to (among other things) delete
+the point.
+
+As you edit the input scene the active output scene is recomputed.
+In geowin_voro the default output scene is the Voronoi diagram of the input
+points. 
+Add points, move points around, delete points, and you will see how the 
+Voronoi diagram changes. The faster your computer, the more fun it is to 
+move points around. 
+
+We next explain the most important buttons of the GeoWin menu.
+
+The most important menu is the SCENES-menu:
+
+Visibility allows you to select the output scenes which are to be displayed.
+
+Options allows you to modify the display of a scene, e.g., you may 
+want to choose a different line style or line width. 
+
+Contents shows the ASCII-representation of a scene. This is helpful 
+for understanding the internal representation of data structures.
+
+The FILE-MENU allows you to save a  scene to a file or to load
+a scene from a file, to write a scene to a ps-file, or to produce a screen-shot.
+
+The EDIT-MENU is also cool. You may select a subset of the input scene 
+and then apply a geometric operation to this subset. Try ``Selection:Select'' 
+to select a subset of the points, and then use ``Edit Selection:Rotate'' 
+to rotate this set of points. It is beautiful to see how the Voronoi diagram
+changes. Selection is alternatively possible with the middle mouse button.
+The generate-submenu allows to generate input scenes by running 
+generators. 
+
+
+We leave it to you to explore the other menus.
+
+
+
+
+
+
+
+
+
+

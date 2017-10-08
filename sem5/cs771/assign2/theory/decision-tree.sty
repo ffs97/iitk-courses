@@ -1,0 +1,26 @@
+\usepackage[a4paper,margin=1cm]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{positioning,shadows,arrows,shapes,decorations.markings}
+
+\tikzstyle{level 1}=[level distance=1.5cm, sibling distance=6cm]
+\tikzstyle{level 2}=[level distance=1.5cm, sibling distance=4cm]
+\tikzstyle{level 3}=[level distance=1.5cm, sibling distance=3cm]
+\tikzstyle{level 4}=[level distance=1.5cm, sibling distance=2cm]
+
+\newenvironment{tree}[]
+    {%
+        \begin{center}
+        \begin{tikzpicture}[
+            fact/.style={rectangle, draw,
+                text centered, anchor=north, text=blue, inner sep = 10pt},
+            attr/.style={draw, rectangle, aspect=1.6, 
+                text centered, anchor=north, color=blue, text=blue, inner sep=7pt},
+            leaf/.style={circle, draw,
+                text centered, anchor=north, color=red, text=red, inner sep=5pt},
+            level distance=0.5cm, growth parent anchor=south
+        ]
+    }
+    {%
+        \end{tikzpicture}
+        \end{center}
+    }

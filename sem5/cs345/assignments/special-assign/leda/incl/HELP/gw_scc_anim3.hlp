@@ -1,0 +1,30 @@
+\bf Basics\rm
+
+The SCC algorithm is an extension of depth first search (dfs).
+It constructs strongly connected components (sccs) incrementally.
+We introduce some notation (see the LEDA book for more details):
+
+A node $v$ is called\blue unreached\black if $dfs(v,...)$ has not been
+called yet, it is called\blue completed\black if $dfs(v,...)$ has already
+terminated, and it is called \blue active \black otherwise. In our figures
+unreached nodes are shown as white empty circles, and all other nodes are
+shown as colored circles or rectangles.
+
+Explored edges are shown solid and unexplored edges are shown dashed. The
+\blue current graph\black $G_c$ consists of all active and completed
+nodes and of all explored edges. The algorithm maintains the sccs of the
+current graph. In our figures all nodes belonging to the same scc are given
+the same color.
+
+All active nodes lie on a single path $P$ in $G_c$. The edges on this path are
+shown as heavy blue lines; P corresponds to the recursion stack of dfs. We
+call the last node of P the current node; it is highlighted. The algorithm
+always explores edges out of the current node. The currently explored edge
+is shown red.
+
+A scc $C$ of $G_c$ is called permanent if all nodes in $C$ are completed and
+it is called tentative if some of its nodes are still active. In our
+figures permanent components are shown in the left half of the window and
+tentative components are shown in the right half. Permanent components are
+permanent in the sense that they are also sccs of $G$.
+

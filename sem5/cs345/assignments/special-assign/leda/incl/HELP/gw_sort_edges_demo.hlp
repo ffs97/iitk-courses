@@ -1,0 +1,15 @@
+
+The following problem arises frequently. A graph is constructed by drawing it 
+in a GraphWin
+and the combinatorial structure of the graph is supposed to reflect the
+drawing, i.e., for every node v the cyclic order of A(v) is supposed
+to agree with the counter-clockwise order of the edges out of v in the
+drawing. 
+
+The LEDA function sort_edges solves this task. This demo illustrates it.
+As you construct a graph, the adjacency lists are shown in the window in which
+the demo was started. 
+
+
+
+

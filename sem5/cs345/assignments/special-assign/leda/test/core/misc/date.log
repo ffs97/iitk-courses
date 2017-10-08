@@ -1,0 +1,165 @@
+Name: date test
+Task: test
+Seed for random source : 1289935104
+
+today:day ok
+today:month ok
+today:year ok
+today:dow ok
+today:diy ok
+operator new ok
+constructor: (d m y) ok
+cmp:D1&today ok
+constructor: (d m y) error
+constructor: (d m y) error
+constructor: (d m y) error
+constructor:string_swallow ok
+cmp:D2 ok
+constructor:string error
+constructor:string error
+constructor:string error
+D2:week ok
+constructor:string_inp_fmt ok
+cmp:D2&D3 ok
+no pending err. ok
+set_language error
+local ok
+english ok
+english ok
+german ok
+german ok
+french ok
+french ok
+user_def_lang ok
+user_def_lang ok
+no pending err. ok
+input ok
+input ok
+input1a ok
+input1b ok
+input2a ok
+input2b ok
+input3a ok
+input3b ok
+input4a ok
+input4b ok
+input5 error
+input6ai ok
+input6aii ok
+input6b ok
+input6c ok
+input7a ok
+input7b ok
+input7c ok
+input8a ok
+input8b ok
+input8c ok
+input9a ok
+input9b ok
+input9c ok
+output ok
+output ok
+output1 ok
+output2 ok
+output3 ok
+output4 ok
+output5 error
+output6a ok
+output6b ok
+output7ai ok
+output7aii ok
+output7b ok
+output8a ok
+output8b ok
+output9a ok
+output9b ok
+OutputInput-test ok
+OutputInput-test ok
+OutputInput-test ok
+OutputInput-test ok
+no pending err. ok
+set_to_current_date ok
+set_date1 ok
+set_date ok
+set_date2 ok
+set_date3 ok
+set_date3 ok
+set_date4 ok
+set_date4 ok
+set_day1 ok
+set_day2 ok
+set_day3 ok
+set_day4 ok
+get_month_name1 ok
+set_month1 ok
+get_month_name2 ok
+set_month2 ok
+set_month3 ok
+set_month4 ok
+set_year1 ok
+set_year2 ok
+set_year3 ok
+set_year4 ok
+add_to_day1a ok
+add_to_day1b ok
+add_to_day2a ok
+add_to_day2b ok
+add_to_month1a ok
+add_to_month1b ok
+add_to_month2a ok
+add_to_month2b ok
+get_dow ok
+get_dow_name ok
+get_week1 ok
+get_day_in_year ok
+get_week2 ok
+get_week3 ok
+no pending err. ok
+copy-cons op= op+ op-(both) op+= op-= days_until ok
+op++(both) op--(both) ok
+arith1 ok
+arith2 ok
+arith3 ok
+arith4 ok
+arith5 ok
+lower range end 1 ok
+lower range end 2 error
+upper range end 1 ok
+upper range end 2 error
+months_until years_until ok
+months_until1 ok
+months_until2 ok
+months_until3 ok
+months_until4 ok
+months_until5 ok
+years_until1 ok
+years_until2 ok
+years_until3 ok
+years_until4 ok
+years_until5 ok
+no pending err. ok
+is_valid1 ok
+is_valid2 ok
+is_valid3 ok
+is_valid4 ok
+is_valid5 ok
+is_valid6 ok
+is_valid7 ok
+is_valid8 ok
+is_valid9 ok
+is_valid10 ok
+is_valid_str1 ok
+is_valid_str2 ok
+is_valid_str3 ok
+leap_year1 ok
+leap_year2 ok
+leap_year3 ok
+leap_year4 ok
+last_day_in_mth (arithm.) ok
+last_day_in_mth ok
+no pending err. ok
+compatibility with list ok
+compatibility with dictionary ok
+compatibility with h_array ok
+no pending err. ok
+date-test finished with errors!

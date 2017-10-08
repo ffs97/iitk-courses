@@ -1,0 +1,18 @@
+\\bf\\blue Left Mouse Button:\\
+
+Input an object or scroll the scene by holding the button 
+and moving the mouse.
+
+\\bf\\blue Middle Mouse Button:\\
+Select an object by clicking on it or a group of objects 
+by holding the button and moving the mouse.
+
+\\bf\\blue Right Mouse Button: \\
+Open a menu by clicking on an object. The menu contains 
+the options setup (for the object), select ((de)select 
+the object), delete and object (change the object).
+By clicking on the background you can access the setup 
+menu of the whole scene. 
+By clicking on the background and pressing CTRL you can 
+access the setup menu of the current input object, 
+if one is used in the active scene.

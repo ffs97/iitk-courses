@@ -1,0 +1,9 @@
+The Relative neighborhood graph (RNG) is a subgraph
+of the Delaunay triangulation consisting of the edges with
+empty lune. 
+The lunes are also called forbidden regions and must not have input
+points inside. A lune of the embedded edge e=(a,b) is defined by the
+intersection of the circle c1 with center point(a) and radius e and 
+circle c2 with center point(b) and radius e.
+
+The RNG can be used in shape reconstruction algorithms.

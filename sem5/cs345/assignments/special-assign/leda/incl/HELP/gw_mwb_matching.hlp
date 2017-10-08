@@ -1,0 +1,31 @@
+
+We illustrate weighted matchings in bipartite graphs. You may choose
+between four kinds of matchings.
+
+Maximum Weight Matchings
+
+Maximum Weight Maximum Cardinality Matching
+
+Maximum Weight Assignment
+
+Minimum Weight Assignment
+
+
+Matching edges are shown in bold.
+The edge weights are shown near the edges and can be modified by sliders. 
+If the GEO-version is chosen, the 
+Euclidean distances of the nodes are taken as the edge weights and the 
+maximum weight matching is displayed. 
+
+Node potentials are shown inside the nodes. The node potentials prove the
+optimality of the matching. For example, for the case of maximum weight matchings,
+the potential of any node is non-negative,
+the weight of every edge is bounded by the sum of the potentials of its endpoints,
+the weight of matching edges is equal to the sum of the potentials 
+of its endpoints, and free nodes have potential zero. Observe that the latter two
+conditions ensure that the weight of the matching is equal to the sum of the node
+potentials and that the first two conditions ensure that the weight of any matching
+is bounded by the sum of the node potentials.
+
+We refer to the LEDA book for the role of node potentials for the other matchings.
+

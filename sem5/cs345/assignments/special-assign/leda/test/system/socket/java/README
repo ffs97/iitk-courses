@@ -1,0 +1,8 @@
+Java client program for convex hull demo; needs JDK 2/Swing
+- compile with javac ChullClientApplet.java 
+(note that . must be in the CLASSPATH)
+- start: appletviewer ChullClient.html
+  new : delete all points
+  send: send points to the server and receive result (convex hull)
+
+- chull server must run on localhost using port 9999

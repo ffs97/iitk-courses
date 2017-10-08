@@ -1,0 +1,24 @@
+GeoWin Delaunay flipping demo\\
+The demo program shows the construction of a Delaunay triangulation
+using a flipping algorithm. We flip edges to restore the local
+Delaunay property for two triangles sharing an edge. \\
+The local Delaunay property for two triangles sharing an edge means,
+that the circumcircle of one of the triangles may not have the corner
+not belonging to the shared edge of the other triangle inside. \\
+In case of violation of the local Delaunay property
+we paint the shared edge blue and the other edges of the two triangles
+red. To restore the local Delaunay property we apply a local transformation
+called "flip". The flip operation transforms two triangles (a,b,c) and
+(b,c,d) sharing edge (b,c) into triangles (a,b,d) and (a,c,d).
+\\
+In the case that the quadrilateral formed by the two triangles
+is not convex it is not possible to flip the edge. Then we paint the
+other edges of the triangles in green color.
+\\
+In the case that no flip is needed (local delaunay property is already
+present) we paint the other edges of the triangles in yellow color.
+\\
+The circumcircles of the two triangles are painted in orange color.
+\\
+If you choose option "Mouse input in animation" you have to press a mouse
+button after every animation step.

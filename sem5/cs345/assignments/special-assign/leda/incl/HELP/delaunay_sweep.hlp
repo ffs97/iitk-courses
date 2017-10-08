@@ -1,0 +1,13 @@
+This demo program visualizes the construction of the
+Delaunay triangulation of a set of points S by Fortunes line sweep
+algorithm. 
+\\
+You can input points with the mouse, load them from a file or generate
+them by using one of the generators provided by GeoWin (see Edit->Generate).
+\\
+After the generation of the input S press the Done button to start the 
+sweep. A vertical green line will appear (the sweep line).
+\\
+Drag this line over the scene to construct the Delaunay triangulation and
+press Done to finish the construction.
+

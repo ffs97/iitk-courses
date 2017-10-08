@@ -1,0 +1,3959 @@
+
++==============================================================================+
+|                               LEDA 6.3                                       |
++==============================================================================+
+
+#define __LEDA__ 630
+
+geometry
+    new functions for point location in triangulations
+         LOCATE_POINT_IN_TRIANGULATION
+    new data type for fast point location 
+         POINT_LOCATOR
+    see corresponding manual pages for details
+
+
++==============================================================================+
+|                               LEDA 6.2.2                                     |
++==============================================================================+
+
+#define __LEDA__ 622
+
+window
+   mouse wheel support
+   better choice of default fonts  (linux)
+
+graphwin
+   zoom up and down using mouse wheel
+
+geometry (float-kernel)
+   new more robust implementation of segment::intersection 
+   buffer function with one vertex per corner added
+   minimal area bounding box for rat_points added
+
+
+
++==============================================================================+
+|                               LEDA 6.2.1                                     |
++==============================================================================+
+
+#define __LEDA__ 621
+
+Bugfix release (see FIXES).
+
+
++==============================================================================+
+|                               LEDA 6.2                                       |
++==============================================================================+
+
+#define __LEDA__ 620
+
+new compilers: g++-4.3.x
+
+
+graph_algorithms:
+   new max_flow implementation 
+   (run LEDA/demo/new/max_flow_speed for a comparison with old implementation)
+   
+   new min_cut algorithm
+   (run LEDA/demo/new/min_cut_speed for a comparison with old implementation)
+
+array2:
+    added missing assignment operator
+    new operation A.init(x): assigns x to each element of A
+
+multi-thread:  
+    atomic_counters for reference counting
+    replaced mutex by spinlock 
+    performance dramatically improved on windows platform
+
+
+<LEDA/internal/config.h>
+    configuration  settings (multi-thread, memory-manager, ...)
+
+
+file.h
+    string tmp_dir_name()   returns name of system tmp-directory
+    bool   open_file(string fname)   opens fname with associated application
+
+
+graph:  forall_out_edges, forall_in_edges, forall_inout_edges
+        now throw an exception when used for undirected graphs
+
+
++==============================================================================+
+|                               LEDA 6.1                                       |
++==============================================================================+
+
+#define __LEDA__ 610
+
+new compilers: MSVC++ 9.0 (= .NET 2008)
+
+
++==============================================================================+
+|                               LEDA 6.0                                       |
++==============================================================================+
+
+#define __LEDA__ 600
+
+library names:
+	  only one library (libleda) on Unix/Linux systems
+
+general:
+      support for g++-4.2
+      support for Linux FC8 32 and 64 bit
+      support for Windows Vista 32 and 64 bit
+      error_handler/exception messages now include file and line information
+
+geometry: 
+      buffer operation for r_circle(_gen)_polygon  (P.buffer(d)) 
+
+graph:
+      improved (faster) implementation of STRONG_COMPONENTS
+
+
++==============================================================================+
+|                               LEDA 5.2                                       |
++==============================================================================+
+
+#define __LEDA__ 520
+
+global:
+   - added support for g++-4.1
+     (s.n.)
+
+
+core:
+   - array data type re-designed: 
+       now array is a pure class template and does no longer use
+       the LEDA mechanism for parameterized data types (GenPtr/void* slots).
+       This improves the efficiency of many operations and makes the
+       code much simpler (s.n.)
+
+   - queue<T> and b_queue<T>
+      + now both suport iteration: forall(x,Q) 
+      + new operation: 
+        Q.push(x)  insert x at the front end of Q
+                   (so Q can be used like a "double ended queue")
+     (s.n)
+     
+
+
+
++==============================================================================+
+|                               LEDA 5.1                                       |
++==============================================================================+
+
+#define __LEDA__ 510
+
+global:
+  - added support for g++-4.0.x and Visual Studio 2005 (x86)
+  - added workaround for g++ -O2 optimization problems (g++ 3.x and higher)
+
+
+graph:
+    - added graph and subgraph isomorphism algorithms
+      see the Manual pages and  demo/graph_iso/gw_isomorphism.cpp for
+      a demo program 
+    
+    - improved implementation of static graphs 
+    - improved time efficiency of flow algorithms
+
+
+geo:
+    r_circle_gen_poylgon:
+      - improved time efficiency of circular arc computations (up to a speedup of 10)
+      - added approximated computation (= input and output data contain curved segments, 
+        only the computation uses straight line approximations) of boolean operations 
+        as fast as in the case of straight line segments.
+    
+    (rat_)gen_polygon:
+        - added parallel unite operation
+        - added (experimental) operation to compute a buffer (see manual pages)
+        - added (experimental) operation regional_decomposition for computing the
+          "connected components" of a generalized polygon
+        - added reader/writer for WKB (well known binary) format (experimental)
+        - improved make_weakly_simple (see manual for new options)
+        - added contour operation
+        
+    Nesting_Tree: new algorithm that computes the nesting relation of polygons in
+        a boundary representation of a generalized polygon and represents this 
+        relation as a tree (see float_geo_alg.h)
+      
+
+graphics:
+    graphwin: - export ps/latex : the .tex file now can be used by pdflatex
+                if the  graphics and color packages are included. The .ps file has 
+                to be converted to pdf before (using ps2pdf).
+              - added function to disable/enable blue label box for node/edge labels                  
+
+
+numbers:
+    integer: new global function double_quotient(const integer& a, const integer& b)
+             returns the best possible floating_point approximation of a/b
+    
+    real: improved error bounds
+    
+    
+    
++==============================================================================+
+|                               LEDA 5.0.1                                     |
++==============================================================================+
+
+#define __LEDA__ 501
+
+core:
+    globally:
+      leda::after has been replaced by leda::behind.
+      (The old expression still works, but it is deprecated.)
+
+    d_int_set: added iteration forall_elements
+    
+    list: added operation extract
+
+geo:
+    (rat_)polygon: added operation split_into_weakly_simple_parts
+    
+    (rat_)gen_polygon: added operation make_weakly_simple
+    
+    r_circle_gen_polygon: added operation unite that unites a list of polygons
+    
+    segment_set:
+      added operation intersection_sorted and rotation by multiples of 90 degrees
+    
+    rat_segment_set: new class (with same functionality as segment_set)
+
+numbers:
+    bigfloat: 
+      added operation power (x^n)
+      improved conversion to double (computes error-bound and exactness)
+      
+    real: uses improved bigfloat rounding
+      
+system:
+    file: added append_directory_delimiter and remove_trailing_delimiter
+    
++==============================================================================+
+|                               LEDA 5.0                                       |
++==============================================================================+
+
+#define __LEDA__ 50
+
+LEDA modules introduced(include structure has changed): 
+	LEDA now consists of several modules. As a result, the include
+	structure has changed (see also manual section "Modules"). Old
+        include structure is available under incl_old/
+
+new compilers: g++-3.4.x
+new supported platforms: x86_64 (amd64) on Linux
+
+numbers:
+    real:
+      better separation which often yield considerable speed-up
+      diamond-operator to compute the i-th real root of a polynomial with 
+      real coefficients
+
+    integer:
+      speed of all basic arithmetic operations improved by using new assembler
+      code for sparc and x86 platforms. In particular, sse2 instructions
+      are now used for pentium processors if available.
+      
+system:
+	socket_streambuf:
+	facilitates the handling of internet connections based on leda_socket
+			(see also secure_socket_streambuf below)
+			
+graphs:
+	MAX_FLOW now supports lower capacity bounds, too
+	MAX_FLOW can compute a minimum s-t cut
+
+	BICONNECTED_COMPONENTS simplified and improved code
+
+	MIN_COST_FLOW
+   	 cost scaling:
+ 	   New much faster implementation of cost scaling (by using
+	   a number of new heuristics) for static graphs.
+	   The corresponding version for LEDA graphs is also much faster now
+	   by working internally on a static graph copy.
+
+	 capacity scaling:
+ 	   improved code now can deal with negative edge costs
+
+	DIJKSTRA
+	   improvement of speed by using a new (lazy) heap data structure			
+	   
+geometry:
+	some operations of r_circle_segment are much faster, in particular the
+	sweepline algorithm for computing intersections
+	new classes r_circle_polygon and r_circle_gen_polygon
+
+compression:
+	all coders support encoding/decoding of memory chunks in a direct and
+	user-friendly way
+		
+	encoding_ofstream/decoding_ifstream:
+	support seeks now (for encoding_ofstream only forward)
+
+	A0Coder:
+		new Order0 model implementation which yields speed-up
+		(output remains the same -> backward compatibility)
+
+	AdaptiveHuffmanCoder: new
+		
+	BlockCoder<Coder>:
+		provides blockwise encoding/decoding which speeds up seeks
+
+	BWTCoder:
+		replaced implementation by the code by Ferragina & Manzini
+		-> encoding: twice as fast and uses 40% less space
+			
+	checksummers:
+		allow O(1) time seek operations in decode mode	
+
+	DeflateCoder:
+		considerable speed-up for both encoding and decoding
+		supports now all compressing options provided by zlib
+
+	PPMIICoder:
+		new coder with high compression at moderate speeds (reported to
+		outperform bzip2 in both compression ratio & speed)
+
+	MTF2Coder:
+		sometimes yields better compression than MTFCoder
+			
+	RLE0Coder:
+		can be used as preprocessor after MTF(2) and often improves 
+		compression
+			
+cryptography:
+	CipherKey:
+		provides key generation from passphrase (and optionally salt)
+			
+	CBCoder, CBCCoder, CFBCoder, OFBCoder:
+		coders for symmetric key encryption/decryption 
+		(block cipher modes as stream ciphers)
+		
+	Blowfish, Twofish, Rijndael:
+		block ciphers to plug into the four coders above
+		
+	OMACCoder:
+		symmetric key authentication (based on a block cipher)
+		
+	CryptAutoDecoder:
+		like AutoDecoder, but allows the user to specify keys
+		
+	SHACoder:
+		checksummer which implements the SHA-1 hash	algorithm
+
+	secure_socket_streambuf:
+	supports easy and secure internet connections based on leda_socket
+
+graphics:
+     GraphWin:
+       some minor improvements (fonts, animation speed, etc.)
+			
+
++==============================================================================+
+|                               LEDA 4.5                                       |
++==============================================================================+
+
+#define __LEDA__ 45
+
+compression:
+        added a new module compression that offers several compression methods, 
+        checksums and a compressable and decompressable stream type that can be
+        used in all LEDA methods that require a stream object (cf. Chapter
+        Compression in the LEDA Manual).
+        
+real geometry:
+		added a real kernel that allows to compute with objects having real
+		coordinates (data type real). 
+		There is also a sweep on circular arc segments available.
+		This package is in experimental state!
+		
+static graphs:
+		manual pages explaining the concept and the available 
+		operations of the data type static_graph have been added
+		(static graphs are not available when using MSVC++ 6.0, 
+		Borland 5.5.1/5.6, or SGI).
+		
+graph algorithms:
+		new algorithm for stable matchings added.		
+		new and more efficient implementations of several algorithms have
+		been added such as min cost flow using capacity scaling, min cost
+		flow using cost scaling, a variant of maximum weighted matching
+
+timer:
+		new class for facilitating time measurements
+
+list:
+        list<E>::search, list<E>::rank, list<E>::remove, list<E>::unique
+        do no longer require that a compare function for type E is defined.
+        They now use the equality operator (operator==) of type E.
+
+dictionary:
+        added operation undefine()
+        
+graph:
+        sort_nodes(node_array<T>), sort_edges(edge_array<T>), type T can now
+        also be double, leda::integer, leda::rational or leda::real
+
+h_array: 
+        added operation set_default_value()
+        
+b_priority_queue:
+        changed interface
+
+string:
+        type string is now a hashed type		new operation "contains"
+
+window/panels:
+        several changes to make string output work properly with the X11 
+        (openwin) version of Solaris 9  (vendor release 6610).
+        new operation "read_mouse_arc"
+
+
++==============================================================================+
+|                               LEDA 4.4.1                                     |
++==============================================================================+
+#define __LEDA__ 441 
+
+New compiler supported:
+              
+              .NET 2003 resp. MSVC++ 7.1, efficiency improved
+
+xlman:        
+              improved search function
+
+number types: 
+              integer,bigfloat,real
+              added a mutex mechanism to make these (reference counted)
+              types thread safe
+              improved integer::operator++/--
+
+graph_alg:
+          improved MIN_COST_FLOW (MCF_CAPACITY_SCALING) implementation
+
+graphwin:
+          added support for polygon clusters
+            
+
+many bugs fixed; see Fixes
+
++==============================================================================+
+|                               LEDA 4.4                                       |
++==============================================================================+
+
+#define __LEDA__ 440 
+
+
+IMPORTANT CHANGE:  namespace leda
+
+      constants: leda::before                    (former LEDA::before)
+                 leda::after                     (LEDA::after)
+
+      functions: leda::min(const T&, const T&)   (leda_min)
+                 leda::max(const T&, const T&)   (leda_max)
+                 leda::swap(T&, T&)              (leda_swap)
+   
+
+static graphs:  
+       <LEDA/st_graph.h>
+       this version contains a first and (still experimentell) implementation
+       of a static graph data  type as described in the paper
+       S. N\"aher, O. Zlotowski: 
+       ``Design and Implementation of Efficient Data Types for Static 
+       Graphs'', LNCS 2461, Proceedings of the 10th Annual European
+       Symposium on Algorithms, Rome, 748-759, 2002
+       Test and example programs for flow algorithms can be found in
+       LEDAROOT/test/flow
+
+     
+tuples:
+       local types: first_type, second_type, etc.
+
+list/array:
+       local types: size_type, diffence_type, value_type, pointer, reference
+
+sockets:
+       new methods   
+       void sock.send_int(int x)
+       bool sock.receive_int(int& x)
+
+geometry:
+       handle types now are using less space 
+       (25 % improvement for points)
+
+       new MINKOWSKI functions (taking two call-back function arguments
+       used in the partitioning and union steps, respectively).
+
+       compare_by_angle(POINT a, POINT b, POINT c, POINT d)
+
+
++==============================================================================+
+|                               LEDA 4.3.1                                     |
++==============================================================================+
+
+#define __LEDA__ 431 
+
+
+d3_(rat_)plane
+
+        pl.cmp_distances(const POINT&, const POINT&)
+        new predicate
+	      
+	pl.side_of(p) 
+        now gives the same result as
+	orientation(pl.point1(),pl.point2(),pl.point3(),p)
+	      
+	pl.A(),pl.B(),pl.C(),pl.D() 
+        return the parameters of the plane equation A*x + B*y + C*z + D = 0 
+
+window
+        W.menu_bar_height()
+        returns the height of the menu bar in pixels
+
+
+
++==============================================================================+
+|                                LEDA 4.3                                      |
++==============================================================================+
+
+#define __LEDA__ 430 
+
+New compilers supported:
+
+      SunPro C++ 5.2 (Forte 6.1)
+      g++-3.0
+      Metrowerks C++ (win32)
+      aCC  (hpux)
+
+
+Implementation Parameters
+      dictionary, p_queue, sortseq, set, d_array
+      now have an additional optional implementation template
+      parameter this makes _dictionary<K,I,impl>, _p_queue<P,I,impl>, etc. 
+      obsolete (see test/dict/dic_test.c for an example program).
+
+
+error handling
+      by c++ exceptions:
+      after calling 
+           set_error_handler(exception_error_handler)
+      errors will be handled by throwing exceptions
+
+
+number package:
+      improved number types: integer, rational, bigfloat, real
+      new number types: interval (interval arithmetic)
+                        residual (modular arithmetic)
+
+improved integer sorting:
+      see LEDA/demo_cout/stl/stl_vs_leda_sort.c and stl_vs_leda_sort_int.c
+      for a comparison with STL.
+
+
+dictionaries
+      new hashing data structure: 
+      cuckoo hashing (see <LEDA/impl/cuckoo_hashing.h
+      and test/dict/dic_test.c)
+
+
+graphs
+
+     New (experimental) semi-dynamic graph representation. It can 
+     be used by adding -DGRAPH_REP=2 to the compiler command line
+     and linking with libG2.a (libG2.so). This representation needs
+     only about half of the space of the fully-dynamic standard graph
+     data structure and can significantly reduce the running time
+     of graph algorithms as shown for the maxflow example on 
+     http://www.informatik.uni-trier.de/~naeher/maxflow.html. 
+     (see also the examples in LEDAROOT/test/flow).
+
+
+static graphs
+
+     New (experimental) static graph data type <LEDA/s_graph.h>.
+     This is work in progress. First implementations and test programs 
+     using this very efficient graph data type can be found in 
+     $LEDAROOT/test/flow/mfs.c and <LEDA/templates/max_flow_s.t>.
+    
+     
+     
+
+graph algorithms
+
+      new algorithms for transitive closure and reduction
+      (see <LEDA/basic_graph_alg.h)
+      graph TRANSITIVE_CLOSURE(const graph&)
+      graph TRANSITIVE_REDUCTION(const graph&)
+      void  MAKE_TRANSITIVELY_CLOSED(graph&)
+      void  MAKE_TRANSITIVELY_REDUCED(graph&)
+
+      new algorithms for Euler tours (see <LEDA/euler_tour.h>)
+
+
+      new functions for reading and writing DIMACS graph problems
+      (see <LEDA/dimacs.h> for details)
+
+      Read_Dimacs_SP   : (single-source) shortest paths
+      Write_Dimacs_SP
+
+      Read_Dimacs_MF   : max flow
+      Write_Dimacs_MF
+
+      Read_Dimacs_MCF  : min cost flow
+      Write_Dimacs_MCF
+
+      Read_Dimacs_MAT  : matching
+      Write_Dimacs_MAT
+
+
+
+geometry
+
+      all rotate90 methods now have an additional optional parameter i:
+      x.rotate90(point q, int i=1)
+            returns |x| rotated about $q$ by an angle of $i\times 90$
+            degrees. If $i > 0$ the rotation is counter-clockwise otherwise
+            it is clockwise. 
+
+
+      new faster (rat_)polygon::area() method
+
+
+      new static member variable POLYGON::input_check_type for all
+      polygon types whose value (NO_CHECK, WEAKLY_SIMPLE, SIMPLE, etc.)
+      determines what kind of check should be performed when reading
+      polygons from a stream (in operator>>).
+      
+
+window
+       show_orientation (new global flag)
+       if show_orientation = true all geometric objects are drawn 
+       with arrows indicating their orientation or direction
+
+
+GraphWin
+
+       directed edges:
+
+       direction attributes (directed_edge, redirected_edge, ...)
+       now can be combined using the or (|) operator
+       e.g. gw.set_direction(e,directed_edge|mid_directed_edge);
+
+
+       edge borders:
+
+       new global edge attribute: edge_border 
+       bool gw.set_edge_border(bool)
+       bool gw.get_edge_border()
+       If set to true edges are drawn with a border line.
+       Can be set intereactively in the  Options->Global-Options panel.
+
+
+       new output formats:
+
+       exporting SVG (scalable vector graphics) format
+       gw.save_svg(string fname)
+
+       and windows metafont files
+       gw.save_wmf(string fname)
+
+
+
+
+
+
+
++==============================================================================+
+|                                LEDA 4.2.1                                    |
++==============================================================================+
+
+#define __LEDA__ 421 
+
+new compilers supported:
+
+Sun C++ 5.1
+g++-2.96
+
+
+REDEFINE_NAMES:
+     prefixing for implementation classes added
+
+
+graphs:
+     improved algorithm for maximum weight matching on bipartite graphs
+
+
+geometry:
+     new halfplane intersection algorithms (see Lman <LEDA/float_geo_alg.h>)
+
+
+window:
+     W.screenshot(string fname)
+     writes a screenshot of window W to file fname.ps in postscript format
+     (on unix systems) or fname.wmf in metafile format (on windows systems).
+
+
+
+leda_socket:
+       a new data type for establishing socket connections
+       (see <LEDA/socket.h> and the sample programs in test/socket)
+
+
+GeoWin:
+       a data type for the visulization and animation of geometric
+       algorithms and data structures (see <LEDA/geowin.h> and
+       the demo programs in demo/geowin)
+     
+
+
++==============================================================================+
+|                                LEDA 4.2                                      |
++==============================================================================+
+
+#define __LEDA__ 420 
+
+
+critical change:
+
+     "newline" macro removed (to reduce name space pollution)
+     please use  "cout << endl;" instead
+
+
+new compilers supported:
+
+     KAI C++ 3.4
+     Borland C++ 5.5
+
+
+
+new data types:
+
+    pp_dictionary: partially persistent dictionaries 
+
+
+win32:
+
+     we now use the nasm assembler for all compilers
+
+integer:
+     faster multiplication on i386 (improved assembler-code)
+     (try test/numbers/leda_vs_gmp for a comparison with GMP)
+
+graph:
+
+     New (experimental) semi-dynamic graph representation. It can 
+     be used by adding -DGRAPH_REP=2 to the compiler command line
+     and linking with libG2.a (libG2.so). This representation needs
+     only about half of the space of the fully-dynamic standard graph
+     data structure and can significantly reduce the running time
+     of graph algorithms as shown for the maxflow example on 
+     http://www.informatik.uni-trier.de/~naeher/maxflow.html. 
+     (see also the examples in LEDAROOT/test/flow).
+
+
+graph algorithms:
+
+     new algorithms for computing weighted matchings in general graphs
+     (see <LEDA/mw_matching.h and <LEDA/templates/mw_matching.t>)
+     
+     improved MAX_FLOW code (see LEDAROOT/test/flow)
+
+     minimum spanning tree taking a compare object:
+     list<edge> MIN_SPANNING_TREE(const graph&, const leda_cmp_base<edge>& cmp)
+
+
+d2_geo:
+
+     CONVEX_COMPONENTS : partition a polygon into convex parts
+     MINKOWSKI_SUM     : computes the Minkowski Sum of two polygons
+     MINKOWSKI_DIFF    : computes the Minkowski Difference of two polygons
+     TRIANGULATE_GEN_POLYGON : Triangulation of generalized polygons
+
+    
+
+window:
+
+     new read_mouse variants: read_mouse_line and read_mouse_ray
+
+
+GraphWin 1.7
+
+     the "load gw-graph" dialog now allows joining to an existing graph
+     support of dimacs (maxflow) file format
+     new AGD client-server connection
+     modified graph generator and file menu
+     graph name operations
+         string gw.set_graphname(string name) 
+         string gw.get_graphname() 
+     replace former file name functions 
+         (set/get_gw/gml/ps_filename)
+
+     new gw-format (version 1.4): colors represented by rgb-values
+
+     minor changes and fixes
+
+
++==============================================================================+
+|                                LEDA 4.1                                      |
++==============================================================================+
+
+Borland C++ 5.4  (C++ Builder 4) now supported !
+
+#define __LEDA__ 410 
+
+sortseq:
+     static member function  sortseq<K,I>::my_sortseq(seq_item it)
+     returns a pointer to the sortseq of it
+
+
+
+geometry:
+
+     new types:  (rat_)triangle, d3_(rat_)triangle
+
+
+     (rat_)line:    (rat_)point   l.dual()
+
+     (rat_)polygon: (rat_)polygon P.intersect_halplane((rat_)line l)
+
+
+     upper and lower convex hulls:
+     list<POINT> UPPER_CONVEX_HULL(const list<POINT>& L)
+     list<POINT> LOWER_CONVEX_HULL(const list<POINT>& L)
+
+
+     improved implementation of Euclidean minimum spanning tree:
+     MIN_SPANNING_TREE(const list<POINT>&, GRAPH<POINT,int>&)
+     (see test/d2_geo/mst_test for a comparison with the old implementation)
+    
+
+     constraint delaunay triangulations:
+     DELAUNAY_TRIANG(GRAPH<POINT,SEGMENT>&)
+     DELAUNAY_TRIANG(const list<SEGMENT>&, GRAPH<POINT,SEGMENT>&)
+
+
++==============================================================================+
+|                                LEDA 4.0                                      |
++==============================================================================+
+
+
+New Platforms 
+
+   sunpro 5.0
+   mipspro 7.3
+   egcs 2.95
+
+Note that for Visual C++ "advapi32.lib" must be added to the list of libraries.
+
+
+--------------------------------------------------------------------------------
+
+
+#define __LEDA__ 400 
+
+
+new: numerical analysis  
+    <LEDA/numerical_analysis.h>
+
+
+graph:
+
+   graph_misc.h:
+   bool Is_Simple(const graph& G, list<edge>& el);
+   bool Is_Series_Parallel(const graph G&);
+
+   graph_gen.h:
+   random_sp_graph
+
+
+node/edge/face array:
+   use_node/edge/face_data  now returns a boolean value indicating
+   whether a free data slot was available or not.
+
+
+graph drawing:
+
+   SP_EMBEDDING (series-parallel drawing)
+
+   D3_SP_EMBEDDING (3d-series-parallel drawing)
+
+   ORTHO_DRAW 
+    orthogonal drawings of arbitrary (non-simple, high-degree, ...)
+    planar graphs.
+
+
+d2_geo:
+
+  Constrained Triangulations  (<LEDA/[float|rat]_geo_alg.h> 
+
+  edge TRIANGULATE_GRAPH(GRAPH<point,segment>& G);
+  edge TRIANGULATE_GRAPH(GRAPH<rat_point,rat_segment>& G);
+  edge TRIANGULATE_SEGMENTS(list<segment> L, GRAPH<point,segment>& G);
+  edge TRIANGULATE_SEGMENTS(list<rat_segment> L, ...);
+  edge TRIANGULATE_POLYGON(list<point> L, GRAPH<point,segment>& G);
+  edge TRIANGULATE_POLYGON(list<rat_point> L,  ...);
+ 
+
+
+
+d3_geo:
+    new types:       d3_(rat)_segment
+                     d3_(rat)_ray
+                     d3_(rat)_line
+                     d3_(rat)_simplex
+
+    d3_(rat_)plane:  intersection with d3_lines and d3_planes
+
+
+window:
+
+    new parameter: precision
+    defines the precision (number of bits) used for input coordinates
+
+    new operations for zooming, scrolling, reading double clicks, ...
+    (see <LEDAROOT>/demo/window/draw.c)
+
+    xpm-pixmaps now can have transparent pixels  (color "None");
+
+    new parameters: 
+     - point_style 
+       possible values: pixel_point, cross_point(default), plus_point
+                       circle_point, disc_point, rect_point, box_point
+     - fill_color
+       used by "W << x" to draw the interior of x
+       (use "invisible" to prevent filling)
+
+    new pre-defined panel items:
+    W.lstyle_item(string,line_style&, ... )
+    W.lwidth_item(string,int&,        ... )
+    W.pstyle_item(string,point_style&,... )
+
+   
+
+
+GraphWin:
+    support for series-parallel graphs (Graph-Menu) 
+    generation, test, drawing
+
+    arbitrary fonts for node and edge labels:
+         gw.set_node_label_font(string font_name)
+         gw.set_edge_label_font(string font_name)
+
+    gw.finish_menu_bar()
+         should be called before any additional buttons are
+         added directly (by gw.get_window().button(...)) to
+         the panel section of the underlying window.
+         (see demo/animation/preflow_push_anim.c for an example)
+
+
+
++==============================================================================+
+|                                LEDA 3.8                                      |
++==============================================================================+
+
+#define __LEDA__ 380 
+
+
+--> 
+--> global constants:
+--> "before" (leda_before) and "after" (leda_after) no longer exist,
+--> use LEDA::before and LEDA::after instead
+--> 
+--> 
+--> min/max templates:
+--> "min" and "max" no longer exist, use leda_min/leda_max instead.
+--> 
+
+
+
+compare objects:
+   every parameterized data type based on a linearly ordered type, e.g., key 
+   (dictionary) or priority (p_queue), now has a constructor taking
+   a "compare object" argument (see the user manual for details).
+
+
+
+local types:
+   many data types define local types. Examples are
+   for all item-based data types:  dtype<...>::item  
+   for all dictionary types:       dictionary<K,I>::key_type (= K)
+                                   dictionary<K,I>::inf_type (= I)
+   for lists                       list<E>::value_type       (= E)
+   ...
+   see the user manual for more information.
+
+
+integer:
+   new implementation by C.Burnikel and J.Ziegler
+   better performance on many platforms (linux/i386, solaris/sparc, irix/mips)
+   see test programs:
+   test/numbers/integer_test.c  (LEDA integers vs. old LEDA integers)
+   test/numbers/leda_vs_cln.c   (LEDA integers vs. CLN integers)
+   test/numbers/leda_vs_gmp.c   (LEDA integers vs. GMP integers)
+   
+
+
+graph:
+   node/edge/face_maps are now derived from node/edge/face_array
+   and can be passed (by reference) to graph algorithms taking 
+   node/edge/face_array arguments.
+
+   
+random_source:
+   unsigned long  ran.get()
+   now returns a random long integer of maximal precision
+   (32 bit on 32-bit platforms and 64 bit on 64-bit platforms) 
+
+
+array:
+   resize operations  A.resize(int l, int r)
+                      A.resize(int n)
+
+
+std header files:
+   setting the flag LEDA_STD_HEADERS will cause LEDA to use
+   the new std header files (without ".h"). This can be done
+   by using -DLEDA_STD_HEADERS on the compiler command line
+   or by uncommenting the corresponding definition at the end
+   of <LEDA/system.h>. Note that all libraries have to be
+   compiled with this flag enabled and that old and new header
+   files cannot be used simultaneously.
+
+
+partition:
+   new operation: int P.number_of_blocks()
+   forall_items iteration
+
+
+2D-Geometry
+
+     New Types:
+     (rat_)rectangle   : iso-oriented rectangles
+     (rat_)gen_polygon : generalized polygons (with holes)
+     (rat_)point_set   : former delaunay_triang
+
+     New Algorithms:
+     WIDTH(const list<POINT>&, LINE&, LINE&)
+     CRUST(const list<POINT>&, GRAPH<POINT,int>&)
+
+
+3D-Geometry:
+
+     New Types: 
+     d3_(rat_)sphere
+
+     d3_rat_sphere/
+     d3_rat_point:   floating point filter for side_of_sphere
+                     (using the expression compiler of Stefan Funke)
+
+     d3_(rat)_plane:
+                     int P.intersection(p1,p2,q)
+                     computes intersection of line through p1 and p2 with P
+
+
+
+window:
+
+   new "set_layout" variant that allows to set node sizes and edge anchors:
+
+   void gw.set_layout(const node_array<point>& pos,
+                      const node_array<double>& rad1,
+                      const node_array<double>& rad2,
+                      const edge_array<list<point> >& bends,
+                      const edge_array<point>& s_anchor,
+                      const edge_array<point>& t_anchor);
+
+
+   void      W.set_bg_redraw(void (*f)(window*,double,double,double,double)
+
+   GraphWin* W.get_graphwin()
+
+   shortcut characters (for triggering buttons with ALT+...) 
+   can be defined by inserting a '&' into the button label before 
+   the corresponding character (example: the button created by
+   W.button("E&xit") can be triggered with ALT+x)
+
+   W.set_window_delete_handler(void (*F)(window*) 
+      F is called when the window manager requests to close the window 
+      (e.g. after clicking the X-button). The default handler terminates
+      the application program.
+
+   void* W.set_client_data(void*)
+   void* W.get_client_data()
+
+   // drawing
+   void W.draw_roundrect(...) 
+   void W.draw_roundbox(...)
+
+   new menu/panel style
+
+
+GraphWin
+
+   support for embedded graphs (Graph->Embed Menu)
+
+   undo/redo stack
+
+   Extending node/edge context menus:
+   edit action functions (see gw.set_action()) now can be added 
+   to the context menus for nodes and edges:
+
+          gw.add_node_menu(string label, gw_action func)
+          gw.add_edge_menu(string label, gw_action func)
+
+
+   pixmaps in postscript output
+
+   export LaTeX/Postscript: size of picture can be adjusted
+   zoom_objects default:    true
+   new node shapes:         roundrect_node and ovalrect_node
+   default node shape:      circle_node
+
+
+   GraphWin now can handle undirected graphs
+
+   New Export Formats:
+            windows meta files
+            windows clipboard (meta file / bitmap)
+            screenshot (Postscript)
+
+   newline's can be inserted using the RETURN key
+   during label editing (node/edge context menu)
+   a sequence of '-' inserts a horizontal line
+   
+   when resizing a node by clicking and dragging on its 
+   border line the SHIFT key must be pressed simultaneously
+
+
+ps_file
+   draw_ray operations
+
+
++==============================================================================+
+|                                LEDA 3.7.1                                    |
++==============================================================================+
+
+#define __LEDA__ 371 
+
+list/array
+  improved (template-based) sorting methods (not supported for some compilers)
+
+d_array/h_array
+   clear() operation added
+
+graph
+  hiding nodes: void G.hide_node(node v)
+                void G.hide_node(node v, list<edge>& h_edges)
+                bool G.is_hidden(node v)
+                void G.restore_node(node v)
+                void G.restore_all_nodes()
+
+node_list/node_slists
+   declared operator= private
+   clear operation added
+
+
+graph_misc
+   new variants of "CopyGraph" for constructing copies of subgraphs
+
+
+graph_alg
+  maximum weight matching for general graphs (back again)
+
+
+graphwin
+   gw.set_bg_redraw(void (*func)(window*,double,double,double,double)
+   (see LEDAROOT/test/graphwin/gw_redraw.c)
+   exporting Latex figures
+   improved grid mode
+   new node shape (rhombus)
+
+    
+date class
+   a type for representing and manipulating dates 
+   see Lman date ( or <LEDA/date.h>)
+
+
+param_handler & param_panel
+   types for reading command line arguments
+
+
+stl-style iterators for list, array, dictionary, sortseq, p_queue, set 
+   use -DLEDA_STL_ITERATORS compile flag
+   see the example programs in $LEDAROOT/demo/stl 
+   
+
+linear order objects
+   leda_cmp_base<T>
+
+
++==============================================================================+
+|                                LEDA 3.7                                      |
++==============================================================================+
+
+#define __LEDA__ 370 
+
+graph
+    graph::graph(int n_slots, int e_slots) constructor specifies
+    the number of additional free data slots in nodes and edges
+    that can be used by node and edge arrays (see also the
+    description of the used_node_data() and used_edge_data()
+    operations of node and edge arrays).
+
+graph_misc.h
+   CopyGraph(H,G,V,E)   constructs copy H of subgraph (V,E) of G
+
+graph_alg
+    new faster implementation of many graph and network algorithms
+    and corresponding checkers (see the user manual for details)
+
+graph iterators and data accessors (M. Nissen and C. Weihe)
+    now fully integrated 
+   (see the corresponding section in the user manual)
+    
+
+multi-threading
+    map and h_array are thread safe now
+
+window
+   - new color "invisible", objects drawn in this color are invisible
+
+
+GraphWin (new version: 1.3)
+   - new edge attribute "direction" (individual direction)
+   - printing postscript files directly from the "File Menu"
+   - circle and bezier edges in postscript output
+   - ...
+
+
++==============================================================================+
+|                               LEDA 3.6.1                                     |
++==============================================================================+
+
+node/edge/face_array/map:
+   new method:  
+   const graph& A.get_graph()   returns reference to graph of A
+
+list:
+   made constructor list<E>(const E& x) "explicit"
+
+map:
+   new operation:  map::clear()  makes map empty.
+
+Platforms:
+   Shared libraries for HP-UX and Irix
+
+Prexifing:
+   New leda-prefixed type names:
+      node,edge,face
+      colors and other enumerations used by the window class
+
+Graphwin:
+   GML graph format
+   context menues
+   edge sliders
+   gw.set_zoom_objects(bool)
+   gw.set_layout(node_array<point> pos, edge_array<list<point> > bends);
+
+
+Error Handling:
+
+   On some platforms (e.g. solaris/g++) the default error handler now
+   prints the contents of the function call stack. For window programs
+   this option can be selected by clicking the "where" button in
+   the default error panel.
+   System Errors (bus errors, segmentation faults, etc) are handled by
+   LEDA's error handler if the environmant variable LEDA_CATCH_SYSTEM_ERRORS
+   is defined. Together with the new stack trace option mentioned above this 
+   might be useful for finding the location of crashes without using a debugger.
+
+
+Environment Variables:
+
+ - LEDA_INIT 
+
+   a colon separated list of commands (strings).
+   Currently, only two commands are recognized
+
+     show_memory_leaks:      print a summary of memory still in use that 
+                             was allocated by LEDA's memory manager (i.e. by 
+                             the LEDA_MEMORY macro) after program termination.
+
+     show_memory_statistics: print a table of the total memory consumption 
+                             of the program after termination.
+
+
+ - LEDA_CATCH_SYSTEM_ERRORS (see above)
+
+
+
++==============================================================================+
+|                                LEDA 3.6                                      |
++==============================================================================+
+
+Tuple Types:  (<LEDA/tuple.h>)
+   two_tuple<T1,T2>
+   three_tuple<T1,T2,T3>
+   four_tuple<T1,T2,T3,T4>  (replaces former quadruple)
+
+
+Global Name Space Cleaning:
+
+  + Global enums have been moved into class "LEDA" (<LEDA/global.h>),
+    now you have to use  LEDA::after/LEDA::before instead of after/before
+    (e.g. used by list::insert, list::split, graph::new_edge, ...)
+  
+  + Global function "wait" renamed to "leda_wait"
+
+  + Min/Max templates renamed to "leda_min" and "leda_max"
+
+
+
+"leda_" prefix:
+   All object code libraries (libL, libG, libP, ...) use the prefixed class
+   type names by default now. The REDEFINE_NAMES.h and UNDEFINE_NAMES.h
+   header files don't have to be edited before installation any more.
+   Application programs can decide to use the "leda_" prefix
+   by defining the "LEDA_PREFIX" preprocessor macro , e.g. by using
+   a -DLEDA_PREFIX compiler switch.
+
+
+
+LEDA_STL_ITERATORS
+   before using stl-style iterators the macro LEDA_STL_ITERATORS has
+   to be defined  (g++/CC ... -DLEDA_STL_ITERATORS ... )
+   (see LEDAROOT/demo/stl)
+   
+
+
+partition/node_partition:
+   New operation: void P.split(list<partition_item> L)
+                                  turns all items in L to singleton blocks.
+                                  Precondition: L is a union of blocks.
+
+Linear Orders: 
+
+   comparison based data types (dictionary, p_queues, sort_seq, ...):
+   constructor taking a compare function that defines a linear
+   order on the key (prio) type. Example:  
+   dictionary<string,int> D(cmp_strings);
+
+
+
+d_int_set:
+   unbounded version of int_set 
+
+Graphs:
+   list<edge> G.hidden_edges()   returns the list of all hidden edges
+
+   bool Is_Biconnected(G,v)      // computes cut vertex v1 if result is false
+   bool Is_Triconnected(G,v1,v2) // computes split pair (v1,v2) if false
+
+
+Graph Iterators: (experimental, does not work with all compilers)
+   see  Manual/contrib/graph_iterator.ps
+
+
+File and Directory Functions:
+   see <LEDA/file.h>
+
+string
+   new operation    s.read_file(istream&)
+
+
+array
+   new operations:    A.binary_locate(E x)
+                      A.binary_locate(cmp, E x)
+
+
+Geometry
+
+polygon/rat_polygon 
+    new operations:   P.diff(Q)
+                      P.sym_diff(Q)
+                      P.complement()
+
+SWEEP_SEGMENTS
+   void SWEEP_SEGMENTS(list<SEG> L, GRAPH<POINT,SEG>& G, bool embed=false);
+   SEG in { segment, rat_segment }, POINT in { point, rat_point }
+   computes planar map if optional flag embed = true
+
+MULMULEY_SEGMENTS
+   void MULMULEY_SEGMENTS(list<SEG> L, GRAPH<POINT,SEG>& G, bool embed=false);
+   SEG in { segment, rat_segment }, POINT in { point, rat_point }
+   computes planar map if optional flag embed = true
+
+
+
+window/panel
+
+    New Operations:
+    P.string_item(const char* label, string& s, list<string> menu, int sz)
+                                    string item with scroll box menu
+
+    W.text_box(x0,x1,y,text);       formated ouput of text into a box
+    W.text_box(text);                                      into window
+
+    // xpm pixmaps
+
+    W.create_pixrect(char** xpm_data);
+    W.create_pixrect(char* xpm_file_name);
+
+    // background pixrects (pixmaps)
+    W.set_bg_pixrect(char* pixrect);
+
+
+
+GraphWin
+
+ + Setting default attributes using 
+          gw.set_node/edge_param(param_type x, bool apply=true)
+    now also changes the corresponding parameter for all existing nodes/edges 
+    (if default parameter apply is not explicitely set to false)
+
+ + Double clicks and dragging events are much better distinguished and handled.
+
+ + Changing the set of default menues (now works)
+
+     gw.set_default_menu(menu_mask)
+        here menu_mask is the bitwise or of a subset of
+        { M_FILE, M_EDIT, M_GRAPH, M_LAYOUT, M_WINDOW, M_OPTIONS, M_HELP }
+
+     gw.del_menu(menu_mask)
+
+     have to be called before the first gw.display() !
+
+     Example Program: demo/graph/gw_menu.c
+
+
+ +  Pixmaps for nodes and background of window
+
+   // setting background pixmaps
+
+   gw.set_bg_pixmap(char* pixrect)
+   gw.set_bg_xpm(char** xpm_data)
+
+
+   // setting pixmaps of nodes
+
+   gw.set_pixmap(node v,       char* pixrect)
+   gw.set_pixmap(list<node> L, char* pixrect)
+   gw.get_pixmap(node v)
+
+   gw.set_node_pixmap(char* pixrect)
+   gw.get_node_pixmap(char* pixrect)
+
+
+ + Saving and Restoring Attributes
+
+   gw.save_node_attributes();
+   gw.save_edge_attributes();
+   gw.restore_node_attributes();
+   gw.restore_edge_attributes();
+
+
+Windows
+
+ + Buffering
+
+   W.start_buffering()
+   W.flush_buffer()
+   W.flush_buffer(x0,y0,x1,y1)
+   W.stop_buffering()
+
+
+ + Pixmaps for buttons
+   Example Programs:  demo/win/pm_buttons, demo/geo/poly_demo.c
+   Collection of pixmaps: <LEDA/pixmaps/button32.h>
+
+   W.button(char* pr1, char* pr2, string s, int n);
+   W.button(char* pr1, char* pr2, string s, int n, void (*F)(int));
+   W.button(char* pr1, char* pr2, string s, int n, window& M);
+
+   adds a button with number n, name s (function F, menu M). 
+   Pixrect pr1 is used for unpressed and pr2 for pressed button. 
+
+
+  
+ + Status Window (Line)
+
+   W.open_status_window();
+   W.set_status_string(string);
+   W.close_status_window();
+
+
+ + File Panels <LEDA/file_panel.h> (experimental)
+   see demo/win/file_panel.c for an example.
+
+  
+
+   
+
+
++==============================================================================+
+|                               LEDA 3.5.2                                     |
++==============================================================================+
+
+General
+   Changed the return types of all read-only access operations to "const T&"
+
+
+Windows
+
+   New drawing operations for curves:
+
+      W.draw_bezier(const list<point>& L, int m, color c)
+      W.draw_spline(const list<point>& L, int m, color c)
+      W.draw_bezier_arrow(const list<point>& L, int m, color c)
+      W.draw_spline_arrow(const list<point>& L, int m, color c)
+
+   Interface for drawing circle arcs has changed !
+
+      W.draw_arc(point a, point b, point c, ...) 
+      W.draw_arc_arrrow(point a, point b, point c, ...) 
+
+   draws arc starting in a passing through b ending in c.
+
+
+GraphWin
+   - edge_shapes: poly_edge, circle_edge, bezier_edge, spline_edge
+   - moving of edge bends is much faster now
+
+
++==============================================================================+
+|                               LEDA 3.5.1                                     |
++==============================================================================+
+
+
+- IMPORTANT CHANGE  (FORALL-ITERATIONS)
+
+Now the CURRENT ITEM  may be deleted in iteration loops as in
+
+   // delete all items with contents x from a list
+   forall_items(it,L) {
+       if (L[it] == x) L.del_item(it) 
+   }
+
+   // delete selfloops
+   forall_edges(e,G) {
+      if (source(e) == target(e) G.del_edge(e) 
+   }
+
+   ...
+
+            HOWEVER, NO OTHER ITEM MAY BE DELETED.
+
+Previous LEDA versions did not allow to change the set of
+items at all during iterations. However, deleting items different 
+from the current item (e.g. the successor item) worked, as in
+
+     // delete all items except for the first
+     forall_items(it,D)
+     { list_item next = D.succ(it);
+       if (next) D.del_item(next);
+      }
+
+This kind of code will not work and crash with LEDA-3.5.1 !!!
+
+--------------------------------------------------------------------------------
+
+
+- Version Macro  __LEDA__   (defined to 351 in the current version)
+
+
+- Lists
+
+  list::reverse() and list::reverse(list_item it1, list_item it2)
+
+    now have a semantics different than list::reverse_items() and
+    list::reverse_items(it1,it2):
+    They only reverse the sequence of ENTRIES (values) of the 
+    corresponding sublist of items, but leave the sequence of items
+    (or iterators) unchanged.
+
+
+- Iterations
+
+    Now, the "current" item or object may be deleted from the data type
+
+    Examples:  forall_items(it,D)
+                     D.del_item(it);
+
+               forall_adj_edges(e,v)
+                     if (target(e) == u)  G.del_edge(e);
+
+               forall_adj_nodes(u,v)
+                     if (G.outdeg(u) < 4) G.del_node(u);
+
+
+
+- Graphs
+
+   - Faster Planarity Test 
+
+   - Extension of the graph file format by reversal edges
+
+
+
+- Geometry
+
+    SEGMENT_INTERSECTION(const list<SEGMENT>& L,
+                         void (*report)(const segment& const segment&));
+
+    point/rat_point
+       new geometric primitve:  cmp_signed_dist(a,b,c,d)
+
+
+
+- GraphWin
+
+    - Edge Anchors
+
+        gw.set_souce_anchor(edge e, point p)
+        gw.set_target_anchor(edge e, point p)
+
+    - Setting Parameters (flush,node_width, node_height, ...)
+      before displaying the window (gw.display)
+    
+
+
+
++==============================================================================+
+|                               LEDA 3.5                                       |
++==============================================================================+
+
+- Version Macro  __LEDA__   (defined to 350 in the current version)
+
+
+- new data types
+
+    map2<I1,I2,E> : two-dimensional maps (sparce matrices)
+    node_map2<E>  : two-dimensional node maps (sparse node matrices)
+    ps_file       : data type for producing Postsript graphics with the same
+                    interface as window (see <LEDA>/Manual/contrib for details)
+                    
+
+- memory management
+    now can handle blocks of arbitrary size 
+
+
+- leda_type_id() function (special treatement of built_in types)
+
+
+- numbers
+  new implementation of bigfloats and reals
+  (much more efficient)
+
+
+- list<T>
+    - L.pop() now checks precondition (non-empty list)
+
+    - L.reverse(it1,it2)  reverses sub-list
+
+    - L.bucket_sort(int (*f)(const T&))
+             same as L.bucket_sort(i,j,f) where i and j are the
+             minimal and maximal value of f(e) as e ranges over 
+             all elements of L.
+
+    renamed:
+    - list_item L.item(int i)          --->   list_item L.get_item(int i)
+    - void  L.move_to_rear(list_item)  --->   void  L.move_to_back(list_item)
+
+
+    - STL iterators (list<T>::[const_]iterator or list<T>::[const_]item)
+
+    - STL operations
+         splice reverse merge swap remove front back push_front push_back
+         pop_front pop_back erase erase begin end
+
+
+- array<T>
+    - STL iterators (array<T>::[const_]iterator or array<T>::[const_]item)
+
+
+- Graphs
+
+    20% Space Reduction
+
+    G.choose_node/edge/face()   now returns a random node/edge face of G
+
+    New Member Functions:
+      boid G.make_bidirected(list<edge>& R)
+      bool G.is_bidirected()
+      bool G.is_map()
+
+      void G.make_map(list<edge>& R)
+
+      void G.join(graph& G1)
+      node G.merge_nodes(node v1, node v2)
+
+      void G.del_nodes(const list<node>& V)
+      void G.del_edges(const list<edge>& E)
+      void G.restore_all_edges();
+  
+      void G.bucket_sort_nodes(int l, int h, int (*ord)(const node&));
+      void G.bucket_sort_nodes(int (*ord)(const node&));
+      void G.bucket_sort_nodes(const node_array<int>& ord);
+      
+      void G.bucket_sort_edges(int l, int h, int (*ord)(const edge&));
+      void G.bucket_sort_edges(int (*ord)(const edge&));
+      void G.bucket_sort_edges(const edge_array<int>& ord);
+
+
+   Animation and Callback-Functions
+
+      bool pre_new_node_handler();
+      void post_new_node_handler(node);
+      bool pre_del_node_handler(node);
+      void post_del_node_handler();
+  
+      bool pre_new_edge_handler();
+      void post_new_edge_handler(edge);
+      bool pre_del_edge_handler(edge);
+      void post_del_edge_handler();
+  
+  
+   New File Format (delimiters for node and edge data)
+
+
+
+- 2D Geometry
+
+ - for all float basic objects (point,segment,ray,line,circle,polygon)
+   a) x.translate(double phi, double d) renamed to x.translate_by_angle(phi,d)
+   b) x.translate(double dx, double dy) translation by vector (dx,dy)
+
+
+   Algorithms for POINT  in { point,  rat_point }
+                  CIRCLE in { circle, rat_circle }
+
+ - faster algorithms for Delaunay triangulation and Voronoi diagrams 
+   DELAUNAY_TRIANG(const list<POINT>& L, GRAPH<POINT,int>& DT)
+   VORONOI(const list<POINT>& L, GRAPH<CIRCLE,POINT>& DT)
+
+ - furthest point Delaunay triangulation
+     void F_DELAUNAY_TRIANG(const list<POINT>& L, GRAPH<POINT,int>& DT)
+
+ - furthest point Voronoi diagram
+     void F_VORONOI(const list<POINT>& L, GRAPH<CIRCLE,POINT>& DT)
+
+ - Euclidean Minimum Spanning Tree Algorithm
+     void MIN_SPANNING_TREE(list<POINT>&, GRAPH<POINT,int>& T)
+
+ - Largest Empty Circle
+     CIRCLE LARGEST_EMPTY_CIRCLE(const list<POINT>&)
+
+ - Smallest Enclosing Circle
+     CIRCLE SMALLEST_ENCLOSING_CIRCLE(const list<POINT>&)
+
+ - Minimum Width Annulus
+     void  MIN_WIDTH_ANNULUS(const list<POINT>&, POINT& c, POINT& i, POINT& o)
+
+ - Minimum Area Annulus
+     void  MIN_AREA_ANNULUS(const list<POINT>&, POINT& c, POINT& i, POINT& o)
+
+
+
+- 3D Geometry
+
+   3D Points
+      - d3_point
+      - d3_rat_point
+
+   3D Planes
+      - d3_plane
+      - d3_rat_plane
+
+   3D Convex Hull (for POINT in { d3_point, d3_rat_point }
+      - CONVEX_HULL(const list<POINT>& L, GRAPH<POINT,int>& polyeder)
+      - CONVEX_HULL(const list<POINT>& L, GRAPH<POINT,int>& polyeder)
+
+
+
+- Windows/Panels
+
+    bitmaps in choice items and buttons
+    multiple choice items
+    improved pull-down menues
+    Timer: W.start_timer(int msec, void (*action)(window*))
+           W.stop_timer();
+
+    Redrawing: drawing mode is set to "src_mode" before calling any
+               user-defined redraw (and timer) function. If a different 
+               drawing mode is to be used it has to be set in the 
+               corresponding redraw function explicitely.
+
+
+
+- GraphWin
+    see src/graphwin/CHANGES
+
+
+
+
++==============================================================================+
+|                               LEDA-R 3.4.1                                   |
++==============================================================================+
+
+- graph:
+   new planar map operations ("planar_map" data type obsolete)
+   GML - Format (new I/O operations) 
+     G.write_gml(file_name)
+     G.read_gml(file_name)
+
+- windows and panels:
+   string_items can be edited using mouse and cursor keys
+
+- GraphWin: (still experimental)
+   many changes (see graphwin/CHANGES)
+
+- new dynamic trees implementation "dynamic_trees"
+
+
+Many problems fixed (see FIXES).
+
+
++==============================================================================+
+|                               LEDA-R 3.4                                     |
++==============================================================================+
+
+
+-------------------------------------------------------------------------------
+GENERAL
+-------------------------------------------------------------------------------
+
+IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT IMPORTANT
+
+Name of window library has changed  
+
+      OLD name:  libWx  (-lWx)
+      NEW name:  libW   (-lW)
+
+AND it now has to  appear in front of all other libraries 
+
+     ... -lW -lP -lG -lL -lX11  ....
+
+
+
+-------------------------------------------------------------------------------
+Print and Read
+-------------------------------------------------------------------------------
+
+Functions "Print" and "Read"  are no longer used to implement
+user defined I/O routines. Now, the usual output and input stream 
+operators (operator<< and opertor>>) are used. For backward
+compatibility Print and Read functions will still work but 
+should be avoided. Missing I/O operators will be reported at
+compile time.
+
+
+
+-------------------------------------------------------------------------------
+Linear Orders (compare)
+-------------------------------------------------------------------------------
+
+There is no default implementation of "int compare(const T&, const T&)
+giving an error message at run time. Now <LEDA/param_types.h>
+only contains a template {\bf declaration} for compare. The effect is
+that missing compare functions will be reported by the linker. Now 
+the use of a compare functions (e.g. in a parameterized data type as
+in dictionary<key,inf>) and its definition can be located in different 
+source files (which was not possible in the previous version
+with many compilers).
+
+Example:
+
+#include <LEDA/list.h>
+
+class pair {
+
+ double  x;
+ double  y;
+
+public:
+
+pair(double a=0, double b=0) : x(a), y(b) {}
+pair(const pair& p) x(p.x), y(p.y) {}
+
+friend istream& operator>>(istream& is, pair& p)
+{ return is >> p.x >> p.y; }
+
+friend ostream& operator<<(ostream& os, const pair& p)
+{ return os << p.x << " " << p.y; }
+
+friend int compare(const pair& p, const pair& q);
+};
+
+main()
+{ list<pair> L;
+  L.read("list of pairs: ");
+  L.sort();
+  L.print("sorted:\n",'\n');
+  return 0;
+}
+
+int compare(const pair& p, const pair& q)
+{  if (p.x < q.x) return -1; 
+   if (p.x > q.x) return  1; 
+   if (p.y < q.y) return -1; 
+   if (p.y > q.y) return  1; 
+   return 0;  
+}
+
+
+
+
+-------------------------------------------------------------------------------
+New Compilers/Platforms   (lconfig)
+-------------------------------------------------------------------------------
+
+  Win32 (NT, Win95) 
+
+    - Borland C++
+    - Microsoft Viusal C++ 
+    - Watcom C++
+
+  (please contact LEDA GmbH for DLL's)
+
+
+  LINUX: shared Libraries
+   
+
+-------------------------------------------------------------------------------
+Documentation and manual tools
+-------------------------------------------------------------------------------
+
+   please see section 1.12 of the LEDA manual
+
+-------------------------------------------------------------------------------
+Memory Management
+-------------------------------------------------------------------------------
+
+   encapsulated into class memory_manager
+   - multiple managers
+   - table size parameter
+
+
+
+-------------------------------------------------------------------------------
+multi-threads
+-------------------------------------------------------------------------------
+
+  Multithread safety is available for posix, cps package and solaris package.
+  To use the right package, please edit the file incl/LEDA/thread.h  
+
+-------------------------------------------------------------------------------
+Graphs & Planar Maps
+-------------------------------------------------------------------------------
+
+  G.move_edge(edge e, node v,  node w)
+  G.move_edge(edge e, edge e1, edge e2)
+  G.move_edge(edge e, edge e1, node w)
+
+  Reversals and Faces
+
+  G.make_map()
+
+  G.reversal(e);
+  G.face_cycle_succ();
+  G.face_cycle_pred();
+
+  G.compute_faces();
+  ...
+
+  face_array, face_map
+
+
+See the section on graphs and related data types in the user manual 
+for more details. 
+
+
+-------------------------------------------------------------------------------
+Graph Algorithms
+-------------------------------------------------------------------------------
+
+   MIN_COST_FLOW(G,lcap,ucap, cost,supply,flow)
+   MIN_COST_FLOW(G,cap, cost,supply,flow)
+   MIN_COST_MAX_FLOW(G,s,t,cap,cost,flow)
+
+
+
+-------------------------------------------------------------------------------
+GEOMETRY
+-------------------------------------------------------------------------------
+
+   all objects now both with floating point and exact rational arithmetic
+
+ -  new types  
+     ray 
+     rat_ray
+     rat_circle
+     rat_line
+
+ - name changes
+     x.vertical()    --> x.is_vertical()
+     x.horizontal()  --> x.is_horizontal()
+
+     converting rational to floating point objects:
+
+     x.topoint()   --> x.to_point()
+     x.tosegment() --> x.to_segment()
+     x.toline()    --> x.to_line()
+     x.tocircle()  --> x.to_circle()
+
+
+ - new transformations
+   x.reflect(p,q)
+   x.reflect(p)
+
+
+ - delaunay_tree removed 
+   replaced by "delaunay_triang", an efficient and robust data structure 
+   base on LEDA graphs and exact arithmetic (see section on advanced
+   data types for geometry and the delaunay_demo program on <LEDA>demo/geo
+
+ - float_delaunay_triang (floating point version)
+ 
+
+
+ - new algorithms (plane_alg.h)
+
+   all algorithms for both float and rational objects 
+
+   Balaban
+   Mulmuley
+   DELAUNAY_FLIPPING
+   VORONOI
+
+
+
+
+-------------------------------------------------------------------------------
+windows and graphics
+-------------------------------------------------------------------------------
+
+   many bugs fixed
+   improved panels and menues
+   choice_items and buttons with bitmaps 
+   graphwin (experimental)
+
+
+-------------------------------------------------------------------------------
+New Demos
+-------------------------------------------------------------------------------
+
+   in <LEDA>/prog/demo  and <LEDA>/demo/...
+
+    segint_demo:   segment intersection
+    delaunay_demo: delaunay and voronoi diagrams
+    graphwin:      graphwin demo
+
+
+
++==============================================================================+
+|									       |
+|                              LEDA-R 3.3.1                                    |
+|                                                                              |
+|                           RESEARCH VERSION                                   |
+|                                                                              |
++==============================================================================+
+
+- bug fix release
+  see file FIXES
+
+- lconfig.bat now works with Windows NT and Windows 95 with compilers Watcom
+  10.5 (lconfig wcnt) and MSVC++ 4.0  (lconfig msvc).
+  The graphics part is also running under Windows!
+  see INSTALL.W32
+
+- new tools (based on perl) for extracting and viewing the manual.  
+  see directory Manual
+  the old methods are still available (directory man)
+
++==============================================================================+
+|                              LEDA-R 3.3                                    |
++==============================================================================+
+- new installation & configuration procedures for UNIX, dos, windows
+  (see INSTALL and INSTALL.dos ).
+
+- new mechanism for avoiding name conflicts with other packages (STL), 
+  (experimental, see the INSTALL file ).
+
+- shared libraries for Solaris with SunPro C++ and g++ 
+  (see the INSTALL file ).
+
+
+- const-ref parameters 
+   All parameterized data types now use const reference parameters 
+   for argument passing. This avoids unnecessary copy operations
+   which is particularly important when using non-simple type parameters.  
+
+
+- strings
+   string length explicityly stored in string_rep  (efficiency)
+   bug in string::operator[](int) fixed
+
+- map/h_array
+   default initial table size has been changed to 1 
+   can be overridden in constructor
+
+- hashing (h_array, _d_array<I,E,ch_hash>)
+   bugs in ch_hash fixed 
+   missing iteration statements added
+
+
+- set<T>
+   new operations for intersection, union, and  difference of sets
+
+
+- graphs
+
+  The implementation of graphs has been rewritten. Now undirected graphs
+  again have ordered adjacency lists (as in previous versions of LEDA)
+  and you can specify where a new edge is to be inserted into the adjacency
+  lists of both the source and target node of the edge. 
+  Please read the new manual pages for graphs !
+
+- planarity test 
+   PLANAR: now works for multi-graphs
+   PLANAR1: new and faster test based on PQ-Trees
+
+
+- planar_map
+   int M.number_of_faces()  new
+   int M.size(face f)       new
+
+
+
+-Geometry
+
+   bug in circle::intersection(line/segment) fixed
+   bug in line::perpendicular(point) fixed
+   bugs in DELAUNAY_TRIANG fixed
+   use member initializationa in segment_rep(point,point)
+   new data type  "rat_polygon"
+
+   point/rat_point
+     side_of_circle(a,b,c,d)
+     incircle(a,b,c,d)
+     outcircle(a,b,c,d)
+     cocircular(a,b,c,d)
+
+
+
+- windows, panels, and colors
+
+  The window and panel types have been extended and (hopefully) improved.
+  Now panels and windows are essentially the same and you can include
+  panel items into your windows. A short description of the new features
+  can be found in "Changes.win" in this directory.
+
+  Two of the changes that probably will cause problems with old code are
+
+  + W.read_mouse(...) now returns the constants MOUSE_BUTTON(i) (i=1,2,3)
+    instead of 1,2,3 for the left/middle/right button
+
+  + windows have to be opened explicitely by W.open(...) 
+
+  Please read the new manual pages for windows !
+
+
+
+
+- Changes of global function and macro names
+
+  internally used functions:
+
+  Copy      --> leda_copy
+  Convert   --> leda_cast
+  Access    --> leda_access
+  Clear     --> leda_clear
+  Create    --> leda_create
+  Int_Type  --> leda_itype
+  Type_Name --> leda_tname
+
+  reverse iteration:
+
+  Forall(x,S)       --> forall_rev(x,S)
+  Forall_nodes(v,G) --> forall_rev_nodes(v,G)
+  Forall_edges(e,G) --> forall_rev_edges(e,G)
+  
+
+
+
+
+
++==============================================================================+
+|   LEDA-R 3.2.2                                                               |
++==============================================================================+
+
+Bugfix Release (see Fixes)
+
+
++==============================================================================+
+|   LEDA-R 3.2.1                                                               |
++==============================================================================+
+
+Bugfix Release (see Fixes)
+
+
++==============================================================================+
+|									       |
+|                              LEDA-R 3.2                                      |
+|                          RESEARCH VERSION                                    |
+|                                                                              |
++==============================================================================+
+
+The new release is mainly a bug-fix release, however it also contains some new 
+algorithms for graphs and computational geometry. 
+See the "Fixes" file for the list of fixed bugs.
+
+
+------------------------------------------------------------------------------
+1. GENERAL CHANGES
+------------------------------------------------------------------------------
+
+SYSTEM DEPENDENT FLAGS
+<LEDA/basic.h> has been split into a number of smaller files
+The most important is <LEDA/system.h>. Here several flags are
+defined indicating particular features or limitations of
+compilers. Examples are
+
+         __BUILTIN_BOOL__
+         __NEW_SCOPE_RULES__
+         __TEMPLATE_FUNCTIONS__
+         __EXPLICIT_DESTRUCTION__
+
+The current settings in <LEDA/system.h> have been tested with 
+g++-2.5.8, g++-2.6.3, g++-2.7.0, AT&T cfront 2.0.3, sunpro c++ 4.0.1, 
+lucid c++ 3.1 , watcom 10.0, zortech 3.1, borland 4.5
+
+IF YOU ARE USING A DIFFERENT COMPILER OR VERSION YOU MAY HAVE TO EDIT THIS FILE.
+
+
+
+MACROS
+Macros  "forever" and "loop"  are no longer defined
+
+
+ITERATION
+The "forall(x,S)" macro can now be used to iterate over the elements
+of arrays and d_arrays.
+
+
+
+PARAMETERIZED DATA TYPES
+The implementation of parameterized data types (<LEDA/param_types.h>) has 
+been rewritten to make it more readable and stable. It now should work with
+all c++ compilers supporting function templates. In particular the problems
+on 64 bit architectures and the one-word bug have been fixed.
+There is no special treatement of handle types anymore.
+
+
+
+------------------------------------------------------------------------------
+2. Data Types
+------------------------------------------------------------------------------
+
+string
+             the printf-like string(const char*,...) constructor has been
+             rewritten (should work now with all varargs - implementations)
+
+
+vector/matrix  
+             Read & Print with dimensions
+
+
+integer
+             speed of addition/subtraction improved on SPARC
+
+
+list
+             the split operation now has an additional parameter "dir"
+             indicating whether the splitting should happen before or after
+             the provided item
+
+
+priority queues
+
+             new data structure: r_heap (redistributive heap)
+
+
+d_array 
+             delete operation:  d_array<I,E>::undefine(I i)
+
+
+
+planar_map
+             new iteration macro:
+
+             forall_adj_faces(f,v) 
+             { "v is successively assigned all faces adjacent to node v" }
+
+
+random_planar_graph 
+
+             generates connected graphs now
+
+
+New Graph Algorithms
+
+             MAX_WEIGHT_MATCHING
+             MIN_CUT
+
+
+------------------------------------------------------------------------------
+3. GEOMETRY
+------------------------------------------------------------------------------
+
+New Operations on (rat_)points and (rat_)segments
+
+             point::rot90
+             segment::rot90
+             rat_point::rot90
+             rat_segment::rot90
+
+geometric primitives (evaluated exactly for rat_ ...):
+
+             orientation(point,point,point)
+             left_turn(point,point,point)
+             right_turn(point,point,point)
+             collinear(point,point,point)
+             incircle(point,point,point,point)
+             cmp_slopes(segment,segment)
+
+
+             
+Algorithms
+
+void TRIANGULATE_POINTS(list<point> L, GRAPH<point,edge>& G);
+
+
+void DELAUNAY_TRIANGULATION(const list<point>& L, GRAPH<point,edge>& T);
+
+void DELAUNAY_TRIANGULATION(const list<point>& L, graph& T, 
+                                                  node_array<point>& pos,
+                                                  edge_array<edge>&  rev);
+
+void DELAUNAY_TRIANGULATION(const list<point>& L, planar_map& T, 
+                                                  node_array<point>& pos);
+
+
+
+SWEEP_SEGMENTS
+
+The SWEEP_SEGMENTS function has been completely rewritten. It is 
+based on the new geometric primitives mentioned above which makes
+the code more readable, robust and efficient. This also fixes bugs
+in the SEGMENT_INTERSECTION function and the polygon::intersection
+method (see also <LEDA>/web/sweep).
+
+
+
+
+
++==============================================================================+
+|									       |
+|                             VERSION 3.1                                      |
+|                                                                              |
++==============================================================================+
+
+Many changes were made to make LEDA work with new compilers (g++-2.6.3,
+Lucid \CC, Watcom \CC Sunpro \CC, ...) and on more platforms (Silicon 
+Graphics, IBM, HP, Solaris-2.3, Linux, ...). All reported bugs of version
+3.0 we were able to find and understand have been fixed (see LEDA/Fixes
+for a list). Several new data types and algorithms (especially in the graph 
+and window section) have been included.
+
+------------------------------------------------------------------------------
+       Changes that might cause unexpected behavior or problems
+------------------------------------------------------------------------------
+The following list is not complete, please report all problems to 
+leda@mpi-sb.mpg.de
+
+
+1. compare, Print, Read, and Hash  
+
+   + there are no predefined versions for pointer types anymore
+     so you will receive a run time error "compare undefined"
+     when, for example, sorting a list of pointers without having
+     defined a compare function for the pointer type.
+
+   + in general, if you use one of these functions before declaring it
+     you will receive an error message. Uses can be hidden in instantiations
+     of parameterized types. Example:
+
+     list<T>  D;  // here the default error template compare is instantiated.
+                  // since list has an operation (sort) that uses compare
+  
+     int compare(const T&, const T&); // error : compare multiply defined
+     dictionary<T,int> D; 
+
+
+
+   + a possible bug in g++ :
+     if you declare a compare function static and define it later
+     in the file, g++ will not use it but will use the default
+     template version from <LEDA/param_types.h>.
+
+     Example:
+
+                 class pair {
+                 ...
+                 };
+
+                 // declaration
+                 static int compare(const pair&, const pair&);
+
+                 // use
+                 dictionary<pair,int> D;
+
+                 
+                 // definition
+                 int compare(const pair& p, const pair& q) {  ... }
+
+
+     Using inline compare functions seems to be a work-around for this problem
+     (maybe extern works also ?).
+
+
+2. ugraph
+
+   Some of the functionality of ugraphs available in previous versions, e.g., 
+   a linear ordering of all adjacent edges, is not supported in the
+   current version.
+
+
+3. PLANAR(graph&, bool embed=false)
+
+   PLANAR has a different behavior: an embedding is constructed only
+   if the optional boolean flag embed is set to true.
+
+
+4. random
+
+   There is no LEDA random function any more ( they caused a lot of problems 
+   with existing random functions on many systems). Now LEDA contains
+   a new data type "random source" for the generation of different
+   types of random numbers.
+
+
+
+5. The newly introduced numerical types bigfloat and real might cause problems 
+   on several systems. If so, please report ...  You can ignore all compiler 
+   error messages if you do not intend to use these types.
+
+
+
+------------------------------------------------------------------------------
+                 Fixed Bugs (see also LEDA/Fixes)
+------------------------------------------------------------------------------
+- array::operator=  fixed
+- graph::read and graph::write
+- node_set edge_set rewritten
+- int_set: hard coded word size replaced by sizeof-call
+- list<T>::sort(cmp_func), ... for types T with sizeof(T) > sizeof(void*)
+- array<T>::sort(cmp_func), ... for types T with sizeof(T) > sizeof(void*)
+- bug in vector::operator=(const vector&) fixed
+- bug in rs_tree (set<T>) copy constructor fixed
+- LEDA_MEMORY: operator new & delete now use the size argument 
+- array copy constructor fixed
+- memory leak in list::assign() fixed
+- polygon CONVEX_HULL(list<point>)  new algorithm (Graham's Scan)
+- bugs in segment::intersection() and line::intersection() fixed
+- bug in binary heaps (negative integer keys) fixed
+- UGRAPH::assign(node/edge,...) fixed
+- bug in list<node> graph::adj_nodes() (undirected graphs) fixed 
+- Iteration (forall_defined) for h_arrays 
+- some problems in _leda_panel.c fixed (slider items, buttons, ...)
+- multi-definition problem with read_mouse(window, ...) and g++ fixed
+- skiplist copy constructor
+- memory leaks in leda panels
+- nested forall-loops
+- string::read now can read strings of arbitrary length
+- made dlist::bucket_sort stable 
+- memory bug in dp_hash (dynamic perfect hashing) fixed
+- k_heap::del_item fixed
+- made rs_tree::change_inf (dictionary) clear old and copy new information
+- dlist::search (replaced != by call of virtual cmp function)
+- fixed bug in queue::append (replaced Convert by Copy)
+- bugs in MAX_WEIGHT_BIPARTITE_MATCHING fixed (by M. Paul)
+- prio.h: added missing ostream argument cout to Print calls
+- stack::push(x)    replaced Convert(x) by Copy(x)
+- segment::angle()  now returns zero for segments of length zero
+- memory leak in draw_(filled_)polygon fixed
+- bug in ab_tree::clear() fixed (forgot to set counter to zero)
+- made dlist update operations protected
+- missing operation ugraph::read(istream&) inserted
+ 
+
+
+--------------------------------------------------------------------------------
+NEW FEATURES
+--------------------------------------------------------------------------------
+
+Manual Pages
+
+  All manual pages have been incorporated into the corresponding
+  header files. There are tools (see LEDA/man/README) to extract and
+  typeset the new user manual from these files. A postscript and
+  LaTeX version of the manual is available on the ftp server.
+
+Parameterized Data Types
+
+  The  LEDA_TYPE_PARAMERER macro that had to be called for type
+  arguments in parameterized data types when using the \gg compiler
+  is not needed anymore for \gg versions $>=$ 2.6.3.
+
+
+Linear Orders, I/O, and Hashing
+
+  $compare$, $Hash$, $Read$ and $Print$ functions only have to be 
+  defined for type parameters of a parameterized data type if they are 
+  actually used by operations of the data type. If one of these function 
+  is called and has not been defined explicitely, a default version giving
+  an error message is instantiated from a function template.
+  Except for the built-in types and some basic LEDA types ($string$ and
+  $point$) there are no predefined versions of these functions any more.
+  In particular, they are not predefined for arbitrary pointer types. 
+  You will notice the effect of this change, for instance, when calling 
+  the sort operation on a list of pointers $list<T*>$ for
+  without a definition of a compare function for $T*$.  Previous LEDA 
+  releases sorted the list by increasing addresses of the pointers in 
+  this case. In version~3.1 the program will exit with the exception
+  ``no compare function defined for $T*$". Operations based on functions
+  $Hash$, $Read$, or $Print$ show a similar behavior.
+
+
+
+compare, ord, and hash function arguments 
+
+  used e.g. in list::sort, array::sort, list::bucket_sort, ...
+  have to use const reference parameters, i.e., have to be of type
+  int cmp(const T&, const T&) 
+  int ord(const T&)
+
+
+
+Nested Forall Loops
+
+   The limitation of previous versions that {\bf forall}-loops (e.g.
+   on lists) could not be nested is no longer valid.
+
+
+Graphs
+
+The distinction in directed and undirected graphs is not as strict as
+in previous versions. Data type $graph$ represents both directed and
+undirected graphs. Directed and undirected graphs only differ in the
+definition of adjacent edges or nodes. Now, two lists of edges are 
+associated with every node $v$: the list
+$out_edges(v) = \{\ e \in E\ | source(e) = v\ \}$ of edges starting in $v$,
+and the list $in_edges(v) = \{\ e \in E\ | target(e) = v\ \}$ of
+edges ending in $v$. 
+A graph is either {\em directed} or {\em undirected}.
+In a directed graph an edge is adjacent to its source and in an undirected
+graph it is adjacent to its source and target. In a directed graph a node $w$
+is adjacent to a node $v$ if there is an edge $(v,w) \in E$; in an undirected
+graph $w$ is adjacent to $v$ if there is an edge $(v,w)$ or $(w,v)$ in the
+graph.  There are iteration macros allowing to iterate over the list of
+starting, ending or adjacent edges (cf. \ref{Graphs} for details).
+
+
+
+New Data Types
+
+The old priority queue type $priority_queue<K,I>$ caused
+a lot of confusion because of the non-standard semantics of the type 
+parameters $K$ and $I$ (the meaning of {\em key} and {\em information} 
+was exchanged compared to most text book presentations of priority queues).
+To eliminate this confusion we introduced a new priority queue type
+$p_queue<P,I>$. Now $P$ is called the priority type of the queue.
+
+The basic library has been extended by several new numerical data types
+including an arbitrary length integer type ($integer$), a type of
+rational numbers ($rational$), and two filter types $ffloat$ and
+$real$ especially useful for floating point computations
+in geometric applications.
+
+Note that the temporarily (LEDA-3.1c) introduced data types $node_data$,
+$node_stack$, $node_queue$ are no longer available. Please use $node_map$, 
+$edge_map$, $stack<node>$ and $queue<node>$ instead.
+
+A list of the new data types:
+
+priority queues        p_queue<P,I>
+singly linked lists    slist<T>
+big integers           integer
+rational numbers       rational
+floating point filter  ffloat
+real numbers           real
+rational point         rat_point
+rational segments      rat_segment
+maps                   map<I,E>
+node and edge maps     node/edge_map<T>
+node lists             node_list
+bounded node p_queues  b_node_pq<n>
+
+
+
+Graph Generators and Algorithms
+
+LEDA now offers more generators for different types of graphs (see 
+\ref{Graph Generators} for a complete list).
+The planarity test $PLANAR$ has been re-implemented and
+now has a boolean flag parameter $embed$. An embedding of the graph
+is computed only if $embed = true$. A second variant of $PLANAR$
+computes a Kuratowsky-subgraph in the case of non-planarity.
+A new graph algorithm is $MIN_COST_MAX_FLOW$ computing
+a maximal flow with minimal cost. 
+
+
+
+Windows and Panels
+
+The window and panel data types  now are base on a plain X11 implementation.
+New features include
+-- opening more than one window or panel
+-- positioning, displaying, and closing of panels and windows
+-- changing the label of windows and panels
+-- 16 predefined colors
+-- accessing colors from the X11 data base by name
+-- drawing arcs, arc edges, and arc arrows
+-- changing the default fonts, 
+-- reading and handling X11 events
+-- a simple graph editor (cf. <LEDA/graph_edit.h>)
+
+
+
+
+
+
+
+
++==============================================================================+
+|									       |
+|                             VERSION 3.0                                      |
+|                                                                              |
++==============================================================================+
+
+LEDA-3.0    (template version)
+
+LEDA-N-3.0  (non-template version)
+
+
+------------------------------------------------------------------------------
+TEMPLATES & PARAMETERIZED DATA TYPES   (cf. manual, section 1.1)
+------------------------------------------------------------------------------
+  
+Starting with version 3.0 LEDA is using C++ templates for parameterized 
+data types (e.g. dictionary<string,int>). This makes declare macros 
+(e.g. declare2(dictionary,string,int)) and the "LEDA_TYPE_PARAMETER" macro 
+obsolete. Any built-in, pointer, item, or user-defined class type can be used 
+as actual type parameter for a parameterized data type. Class types however 
+have to provide the following operations:
+
+  a constructor taking no arguments   T::T()
+  a copy constructor                  T::T(const T&)
+  a Read function                     void Read(T&, istream&)
+  a Print function                    void Print(const T&, ostream&)
+
+A compare function  "int compare(const T&, const T&)" (cf. section 1.4 of the 
+user manual) has to be defined if required by the data type.
+
+Currently, the template version can be used with cfront 3.0.1 and g++-2.3.1.
+Note however that there are still many bugs in g++-2.3 (most of them should
+be fixed in the next version). In particular, there are problems with function
+templates that still make the use of the "LEDA_TYPE_PARAMETER" macro necessary 
+for non-pointer type parameters.
+
+For compilers not supporting templates there is a non-template variant "LEDA-N"
+available whose parameterized data types are based on declare-macros as in
+the previous LEDA versions.
+
+See "prog/basic/param.c" for an example.
+
+
+------------------------------------------------------------------------------
+ IMPLEMENTATION PARAMETERS         (cf. user manual, section 1.2)
+------------------------------------------------------------------------------
+   
+For many of the parameterized data types (dictionary,priority queue,d_array,
+sortseq) there are variants taking an additional data structure parameter 
+for choosing a particular implementation, e.g. 
+
+_dictionary<string,int,skiplist>  D 
+
+creates a dictionary D with key type string and information type int 
+implemented by the skiplist data structure.
+
+Any such type _XYZ<T1,...,Tk,impl> is derived from the corresponding
+"normal" parameterized type XYZ<T1,...,Tk>, i.e., an instance of type 
+_XYZ<T1,...,Tk,impl> can be passed as argument to functions with a 
+formal parameter of type XYZ<T1,...,Tk>&. This provides a mechanism for
+choosing implementations of data types in pre-compiled algorithms.
+
+See "prog/graph/dijkstra.c" for an example.
+
+
+
+Language Limitations: 
+--------------------
+Templates cannot be overloaded (why ?), so we have to use different names. 
+The names of data types with implementation parameters start with an 
+underscore:
+
+_dictionary<K,I,impl>
+_priority_queue<K,I,impl>
+_d_array<I,E,impl>
+_sortseq<K,I,impl>
+
+
+Compiler Limitations: 
+--------------------
+Cfront 3.0.1 does not allow template arguments to be used as base classes.
+Therefore, we still have to use the macros from <generic.h> here:
+
+declare3(_dictionary,K,I,impl)        ---->    _dictionary(K,I,impl)
+declare3(_priority_queue,K,I,impl)    ---->    _priority_queue(K,I,impl)
+declare3(_sortseq,K,I,impl)           ---->    _sortseq(K,I,impl)
+declare3(_d_array,I,E,impl)           ---->    _d_array(K,I,impl)
+
+
+
+Example Programs:
+-----------------
+_dictionary<K,I,impl>              prog/dict/dic_test.c
+_priority_queue<K,I,impl>          prog/graph/dijkstra.c
+_sortseq<K,I,impl>                 prog/plane/seg_int.c
+_d_array<K,I,impl>                 prog/dict/d_array_test.c
+
+
+A data structure "impl" for a data type has to provide a certain 
+set of operations and to use certain virtual functions for type 
+dependent operations (cf. manual, section 9). 
+
+Sample header files for implementations of dictionaries, priority_queues, 
+and sorted sequences can be found in <LEDA/impl/dic_impl.h>,
+<LEDA/impl/prio_impl.h>, <LEDA/impl/seq_impl.h>.
+
+
+
+------------------------------------------------------------------------------
+LINEAR ODERS
+------------------------------------------------------------------------------
+
+There is a new mechanism for deriving differently ordered type variants from
+a data type. 
+
+The macro call
+
+         DEFINE_LINEAR_ORDER(T,cmp,T1)  
+
+introduces a new type T1 equivalent to type T with the linear order
+defined by the compare function "cmp".
+
+
+Examples:   prog/basic/order.c
+            prog/plane/order.c
+  
+
+
+------------------------------------------------------------------------------
+ GENERAL
+------------------------------------------------------------------------------
+
+"forall_xyz_items" no longer supported, use "forall_items"  
+
+
+------------------------------------------------------------------------------
+Efficiency
+------------------------------------------------------------------------------
+The efficiency of many data types and algorithms has been improved.
+
+In particular:
+
+sorting  (array::sort, list::sort)
+
+dictionaries, sets, d_arrays, sorted sequences 
+(now implemented by randomized search trees)
+
+
+network algorithms:
+
+matching, minimum spanning tree  (performance improved by a start heuristic)
+
+
+Macro LEDA_CHECKING_OFF: 
+turns off range checking for arrays and  node/edge_arrays
+(has to be defined before including LEDA header files)
+
+
+------------------------------------------------------------------------------
+ Graphs
+------------------------------------------------------------------------------
+
+new operations:
+
+node G.first_node()         
+node G.last_node()
+node G.succ_node(node)
+node G.pred_node(node)
+
+edge G.first_edge()
+edge G.last_edge()
+edge G.succ_edge(edge)
+edge G.pred_edge(edge)
+
+
+void G.make_undirected()  inserts all edges (v,w) into the adjacency list of w
+                          i.e. both outgoing and incoming edges are traversed
+                          by forall_adj_edges
+
+void G.make_directed()    removes all incoming edges from the adjacency lists
+              
+
+
+void graph_edit(window& W, GRAPH<point,int>& G) 
+
+
+cmdline_graph(graph& G, int argc, char** argv)
+
+        builds a graph according to the command line arguments 
+     
+        command line:  <prog>        ---> test_graph()
+                       <prog> n      ---> complete graph with n nodes
+                       <prog> n m    ---> random graph with n nodes and m edges
+                       <prog> file   ---> read graph from "file"
+     
+
+--------------------------------------------------------------------------------
+planar_map (PLANAR_MAP)
+--------------------------------------------------------------------------------
+
+
+edge  P.split_edge(edge e)
+edge  P.split_edge(edge e, vtype x)
+
+      splits edge e and its reversal by introducing a new node u
+
+
+node  p.new_node(face f)
+node  p.new_node(face f, vtype x)
+
+      splits face f into triangles by introducing a new node u
+      and connecting it to all nodes of f
+
+
+
+node  p.new_node(list<edge> el)
+node  p.new_node(list<edge> el, vtype x)
+
+      splits face bounded by the edges in el by introducing a new node u
+      and connecting it to all source nodes of edges in el
+
+
+
+------------------------------------------------------------------------------
+ node_pq<I>
+------------------------------------------------------------------------------
+
+I    PQ.inf(node v)               returns information of node v
+
+bool PQ.member(node v)            true if v in PQ false otherwise
+
+
+------------------------------------------------------------------------------
+ STRING
+------------------------------------------------------------------------------
+
+additional constructor    
+
+string::string(char c)        creates the one-character string "c"
+
+
+
+------------------------------------------------------------------------------
+ MEMORY
+------------------------------------------------------------------------------
+
+LEDA_MEMORY_WITH_CHECK
+
+A debug version of the LEDA_MEMORY macro (cf. manual, section 7.3), gives
+an error message if the same pointer is deleted twice (slow!).
+
+
+------------------------------------------------------------------------------
+Directory Structure
+------------------------------------------------------------------------------
+
+a) All implementation header files have been moved to a new header subdirectory
+   <LEDA/impl>.
+
+b) There is a new directory "util" containing some utility programs. Currently 
+   it contains a ksh variant of the Lman shell script, a program for shortening 
+   all file names to 15 characters (required by SCO UNIX/XENIX) and some DOS 
+   installation batch files.
+
+
+
+
++==============================================================================+
+|									       |
+|                           VERSION 2.2.2 				       |
+|                                                                              |
++==============================================================================+
+
+minor changes for use with g++-2.2 and some bugs fixed 
+
+
++==============================================================================+
+|									       |
+|                           VERSION 2.2.1 				       |
+|                                                                              |
++==============================================================================+
+
+Some changes made for use with g++-2.1 and libg++-2.0
+
+Some bugs fixed : 
+
+string::operator+ 
+matrix::operator=
+matrix::triang 
+GRAPH::assign
+ ...
+
+
++==============================================================================+
+|									       |
+|                           VERSION 2.2.0 				       |
+|                                                                              |
++==============================================================================+
+
+
+--------------------------------------------------------------------------------
+Parameterized data types
+--------------------------------------------------------------------------------
+
+Now, arbitrary data types (not only pointer and simple types) can be used as 
+type parameters. This makes data type "real" obsolete (use "double" or "float" 
+instead), "real" is no longer included in the header file <LEDA/basic.h> but 
+is still available in <LEDA/real.h>.
+
+
+Rules for type parameters:
+--------------------------
+
+1. Build-in types (char,int,long,float,double), pointer types, and LEDA 
+   simple types can be used as type parameters.
+
+2. A class type T can be used as type parameter under the following conditions:
+
+
+   a) The following operations and functions must be defined for T
+
+      a constructor without arguments:  T::T()
+      an input operator:                istream& operator>>(istream&,T&)
+      an output operator:               ostream& operator<<(ostream&,const T&)
+      a compare function:               int compare(const T&, const T&)
+
+   b) The macro call 
+
+                      LEDA_TYPE_PARAMETER(T) 
+
+      must appear before the first use of T as actual type parameter.
+
+
+   c) If defined, destructor and copy constructor are used for copying and 
+      destroying objects.
+
+
+
+See "<LEDA>/prog/basic/param.c" for an example and for more informations and 
+implementaion details: "S. N\"aher: Parameterized data types in LEDA", in 
+preparation.
+
+
+
+--------------------------------------------------------------------------------
+simple data types 
+--------------------------------------------------------------------------------
+
+Data type "real" is no longer supported (it is still available in <LEDA/real.h>)
+All parameters of type real have been replaced by double parameters. When
+reading the user manual take "real" as a synonym for "double".
+
+
+
+--------------------------------------------------------------------------------
+graph
+--------------------------------------------------------------------------------
+
+read & write overloaded for streams
+
+int  G.read(istream I)     reads compressed representation of G from I
+                           returns  ... (see manual)
+
+int  G.read(string file)   reads compressed representation of G from file
+                           returns  ... (see manual)
+
+void G.write(ostream O)    writes compressed representation of G to O
+
+void G.write(string file)  writes compressed representation of G to file
+
+
+
+
+--------------------------------------------------------------------------------
+graph algorithms
+--------------------------------------------------------------------------------
+
+bool PLANAR(graph& G)   
+
+                 Planarity test: returns true iff $G$ is planar.
+                 If G is planar, it is transformed into a planar map by 
+                 rearranging the adjaceny lists
+                 precondition:  G is biconnected
+
+
+
+int BICONNECTED_COMPONENTS(ugraph& G, edge_array(int)& compnum)
+
+                 computes the biconnected components of the undirected graph G
+                 returns the number of biconnected components and in 
+                 edge_array(int) compnum for each edge an integer with
+                 compnum[x]=compnum[y] iff edge x and y belong to the same 
+                 biconnected component and 0 <= compnum[e]<=m-1 for all edges e
+
+
+
+--------------------------------------------------------------------------------
+window
+--------------------------------------------------------------------------------
+
+
+int  W.get_button()         non-blocking mouse read operation
+                            returns number of button (see read_mouse)
+                            if a button has been pressed and 0 otherwise
+
+void W.set_frame_label(string label)
+                            makes string "label" the window frame label
+
+
+
+--------------------------------------------------------------------------------
+Memory Management:
+--------------------------------------------------------------------------------
+
+Macro for making LEDA's memory managment available for user-defined data types
+
+LEDA_MEMORY(type)     defines new & delete operators for "type" allocating and 
+                      deallocating memory by LEDA's internal memory manager
+
+
+Example: class 3d_point 
+         { 
+           double x,y,z;
+         
+           public: ...
+         
+           LEDA_MEMORY(3d_point)
+          };
+
+
+
+
+Two functions for returning memory allocated by the LEDA memory manager to 
+the system.
+
+void memory_clear()       frees all currently not used memory blocks
+
+void memory_kill()        frees all memory blocks regardless
+                          if they are still in use or not
+
+
+
+
+--------------------------------------------------------------------------------
+New header files:
+--------------------------------------------------------------------------------
+
+The basic two-dimensional data types point, segment, line, circle, polygon,
+and the 2d algorithms can be used separately by including the corresponding 
+header files. The stream data types (file_istream, file_ostream, ...) are no 
+longer included in <LEDA/basic.h> but are still available in <LEDA/stream.h>
+
+
+
+--------------------------------------------------------------------------------
+Libraries:
+--------------------------------------------------------------------------------
+
+The window library libWx.a (-lWx) or libWs.a (-lWs) now must appear
+after the plane library libP.a (-lP) on the compiler/linker command line.
+
+For example:
+
+     CC prog.c -lP -lG -lL -lWx -lxview -lolgx -lX11 -lm
+
+or
+
+     CC prog.c -lP -lG -lL -lWs -lsuntools -lsunwindow -lpixrect -lm
+
+
+
+
+
+
+
++==============================================================================+
+|									       |
+|                           VERSION 2.1.1 				       |
+|                                                                              |
++==============================================================================+
+
+
+--------------------------------------------------------------------------------
+vector/matrix
+--------------------------------------------------------------------------------
+
+1. Assignment (=) and  comparison (==/!=) operators now can be applied to
+   vectors/matrices with different dimensions.
+
+2. The default initialization for arrays of vectors/matrices is the
+   vector/matrix of dimension 0.
+
+3. Problems with vector/matrix type parameters fixed.
+
+
+
+--------------------------------------------------------------------------------
+graphics
+--------------------------------------------------------------------------------
+
+
+graph_edit(window W, GRAPH(point,int) G, bool directed = true);
+
+        Graph editor, edges are represented by arrows if directed = true
+        and by segments if directed = false
+        (declaration in <LEDA/graph_edit.h>)
+
+        see example program "prog/graphics/matching.c" for details.
+
+
+--------------------------------------------------------------------------------
+string
+--------------------------------------------------------------------------------
+
+
+string(const char*, ...)               new printf/form - like constructor
+                                       e.g.  s = string("x = %5.2f",x);
+
+
+--------------------------------------------------------------------------------
+graph algorithms
+--------------------------------------------------------------------------------
+
+
+list(edge) MAX_CARD_MATCHING(graph G) 
+
+                              Maximum cardinality matching for general graphs,
+                              implemented by Edmond's Algorithm, returns list
+                              of matched edges.
+                              (source in  "src/graph_alg/_mc_matching.c")
+                
+                              (worst-case running time  O(n*m) )
+                
+
+
+
++==============================================================================+
+|									       |
+|                           VERSION 2.1.0 				       |
+|                                                                              |
++==============================================================================+
+
+
+--------------------------------------------------------------------------------
+        !!!!!!!!!!!!  CHANGES IN HEADER FILES  !!!!!!!!!!!!!!!!!!
+--------------------------------------------------------------------------------
+
+I. <LEDA/graph.h> 
+
+
+Header file <LEDA/graph.h> has been split into  
+
+
+<LEDA/graph.h>            : graph, GRAPH, node_array, edge_array
+
+<LEDA/ugraph.h>           : ugraph, UGRAPH
+
+<LEDA/planar_map.h>       : planar_map, PLANAR_MAP
+
+<LEDA/graph_alg.h>        : graph algorithms + predefined node/edge array types
+
+                            node_array(int)   edge_array(int)
+                            node_array(edge)  edge_array(edge)
+                            node_array(bool)  edge_array(bool);
+                            node_array(real)  edge_array(real)
+                            node_matrix(bool)
+                            node_matrix(int)
+                            node_matrix(real)
+
+<LEDA/node_set.h>         : node_set
+
+<LEDA/edge_set.h>         : edge_set
+
+<LEDA/node_partition.h>   : node_partition
+
+<LEDA/node_pq.h>          : node_pq
+
+--------------------------------------------------------------------------------
+
+
+II. <LEDA/plane.h> 
+
+
+Header file <LEDA/plane.h> has been split into  
+
+<LEDA/plane.h>      : basic geometric objects (point,segment, ...) and 
+                      predefined types list(point), list(segment), ...
+
+<LEDA/plane_alg.h>  : plane algorithms, predefined type GRAPH(point,point)
+
+
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+data type "string"
+--------------------------------------------------------------------------------
+ 
+int       s.pos (string s_1, int i ) 
+ 
+                      returns the first position of s_1 in s right of  
+                      position i (-1 if no such position exists)  
+ 
+
+string    s.insert (string s_1, int i ) 
+ 
+                      returns s(0,i-1) + s_1 + s(i+1,s.length())  
+                      Precondition:0 <= i <= s.length()-1  
+ 
+
+string    s.replace (string s_1, string s_2, int i=1 ) 
+ 
+                      returns the string created from s by replacing  
+                      the i-th occurence of s_1 in s by s_2  
+ 
+
+string    s.replace_all (string s_1, string s_2 ) 
+ 
+                      returns the string created from s by replacing  
+                      all occurences of s_1 in s by s_2  
+
+ 
+string    s.replace (int i, int j, string s_1 ) 
+ 
+                      returns the string created from s by replacing  
+                      s(i,j) by s_1  
+ 
+
+string    s.replace (int i, string s_1 ) 
+ 
+                      returns the string created from s by replacing  
+                      s[i] by s_1  
+ 
+
+string    s.del (string s_1, int i=1 ) 
+ 
+                      returns s.replace(s_1,"",i)  
+ 
+
+string    s.del_all (string s_1 ) 
+ 
+                      returns s.replace_all(s_1,"")  
+ 
+
+string    s.del (int i, int j ) 
+ 
+                      returns s.replace(i,j,"")  
+ 
+
+string    s.del (int i ) 
+ 
+                      returns s.replace(i,"")  
+ 
+
+void      s.read (istream I, char delim = ' ' ) 
+ 
+                      reads characters from input stream I into s  
+                      until the first occurence of character delim  
+ 
+
+void      s.read (char delim = ' ' ) 
+ 
+                      read(cin,delim)  
+ 
+
+void      s.readline (istream I ) 
+ 
+                      read(I,'\n')  
+ 
+
+void      s.readline () 
+ 
+                      readline(cin)  
+
+
+
+--------------------------------------------------------------------------------
+matrix
+--------------------------------------------------------------------------------
+
+Operations   matrix matrix::inv()                O(n^3)
+             vector matrix::solve(vector)        O(n^2)
+             double matrix::det()                O(n^2)
+
+are now implemented by Gaussian eliminiation.
+
+
+matrix M.solve(matrix A)    solves  M*x_i = b_i simultaneously for all 
+                            columns b_i of A, returns matrix (x_0,...,x_n-1)
+                            Preconditions: a) M is quadratic 
+                                           b) A.dim2() = M.dim1()
+
+
+--------------------------------------------------------------------------------
+list
+--------------------------------------------------------------------------------
+
+list_item  L[int i]        returns i-th item (nil if i<0 or i>L.length()-1)
+                           cost: O(i)
+
+
+
+--------------------------------------------------------------------------------
+sortseq
+--------------------------------------------------------------------------------
+
+void      S.split (seq_item it, sortseq& S_1, sortseq& S_2 ) 
+ 
+                      splits S at item it into sequences S_1 and S_2  
+                      and makes S empty. More precisely, if  
+                      S = x_1,...,x_k-1,it,x_k+1,...,x_n then  
+                      S1 = x_1,...,x_k-1,it and S2 = x_k+1,...,x_n  
+                      Precondition: it is an item in S.  
+ 
+sortseq&  S.conc (sortseq& S_1 ) 
+ 
+                      appends S_1 to S, makes S_1 empty, and returns S.
+                      Precondition: S.key(S.max()) <= S_1.key(S_1.min()).  
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+graph  G
+--------------------------------------------------------------------------------
+
+void      G.sort_nodes (node_array(T) A ) 
+ 
+                      the nodes of G are sorted according to the  
+                      entries of node_array A (cf. section 5.7)  
+                      Precondition: T must be linearly ordered  
+ 
+void      G.sort_edges (edge_array(T) A ) 
+ 
+                      the edges of G are sorted according to the  
+                      entries of edge_array A (cf. section 5.7)  
+                      Precondition: T must be linearly ordered  
+
+
+
+pretty printing:
+
+void      G.print(string s, ostream O)
+void      G.print(string s)
+void      G.print(ostream O)
+void      G.print()
+
+void      G.print_node(node v, ostream O = cout)
+void      G.print_edge(edge e, ostream O = cout)
+
+
+
+
+--------------------------------------------------------------------------------
+GRAPH(vtype,etype)  G
+--------------------------------------------------------------------------------
+
+void      G.sort_nodes () 
+ 
+                      the nodes of G are sorted according to their  
+                      informations. Precondition: vtype is linearly  
+                      ordered.  
+ 
+void      G.sort_edges () 
+ 
+                      the edges of G are sorted according to their  
+                      informations. Precondition: etype is linearly  
+                      ordered.  
+
+--------------------------------------------------------------------------------
+node/edge_array
+--------------------------------------------------------------------------------
+
+Creation of a node array (edge array)::
+
+a) ...
+b) ...
+c) ...
+
+d) node/edge_array(E)  A(graph G, int n, E x)    array for n nodes/edges of G
+                                                 Precondition: n >= |V| (|E|)
+
+
+
+
+
+
+
+
+
+
++==============================================================================+
+|									       |
+|                           VERSION 2.0.1				       |
+|                                                                              |
++==============================================================================+
+
+
+--------------------------------------------------------------------------------
+GENERAL
+--------------------------------------------------------------------------------
+
+forall_items(x,...)    can be used for all kinds of items
+
+
+Read and Write functions for user defined I/O (cf. User Manual, section 1.5)
+must have an additional stream argument: 
+
+                   Read(T&, istream&)
+
+                   defines an input function for reading objects of type T 
+                   from an input stream.
+
+                   Write(T&,ostream&)
+
+                   defines an output function for printing objects of type T 
+                   to an output stream.
+
+--------------------------------------------------------------------------------
+string (section 2.3)
+--------------------------------------------------------------------------------
+
+
+string  s.tail(int i)       returns the last  i characters of s
+
+string  s.head(int i)       returns the first i characters of s
+
+
+
+--------------------------------------------------------------------------------
+array (section 3.1)
+--------------------------------------------------------------------------------
+ 
+
+void     A.sort (int (*cmp)(E&, E&), int l, int h ) 
+ 
+                      applies the sorting operation to the sub-array  
+                      [l..h].  
+ 
+void     A.read (istream I ) 
+ 
+                      reads b-a+1 objects of type E from the input  
+                      stream I into the array A using the overloaded  
+                      Read function (section 1.5)  
+ 
+void     A.read () 
+ 
+                      Calls A.read(cin) to read A from  
+                      the standard input stream cin.  
+ 
+void     A.read (string s ) 
+ 
+                      As above, but uses string s as a prompt.  
+ 
+void     A.print (ostream O, char space = ' ' ) 
+ 
+                      Prints the contents of array A to the output  
+                      stream O using the overload Print function  
+                      (section 1.5) to print each element. The elements  
+                      are separated by the space character space.  
+ 
+void     A.print (char space = ' ' ) 
+ 
+                      Calls A.print(cout, space) to print A on  
+                      the standard output stream cout.  
+ 
+void     A.print (string s, char space = ' ' ) 
+ 
+                      As above, but uses string s as a header.  
+ 
+
+
+
+--------------------------------------------------------------------------------
+list  (section 3.7)
+--------------------------------------------------------------------------------
+
+ 
+void     L.read (istream I, char delim = '\n' ) 
+ 
+                      reads a sequence of objects of type E terminated  
+                      by the delimiter delim from the input stream I  
+                      using the overloaded Read function (section 1.5)  
+                      L is made a list of appropriate length and the  
+                      sequence is stored in L.  
+ 
+void     L.read (char delim = '\n' ) 
+ 
+                      Calls L.read(cin, delim) to read L from  
+                      the standard input stream cin.  
+ 
+void     L.read (string s, char delim = '\n' ) 
+ 
+                      As above, but uses string s as a prompt.  
+ 
+void     L.print (ostream O, char space = ' ' ) 
+ 
+                      Prints the contents of list L to the output  
+                      stream O using the overload Print function  
+                      (section 1.5) to print each element. The elements  
+                      are separated by the space character space.  
+ 
+void     L.print (char space = ' ' ) 
+ 
+                      Calls L.print(cout, space) to print L on  
+                      the standard output stream cout.  
+ 
+void     L.print (string s, char space = ' ' ) 
+ 
+                      As above, but uses string s as a header.  
+ 
+
+ 
+void     L.write (string fname ) 
+ 
+                      writes G to the file with name fname. The  
+                      overloaded functions Print(vtype,ostream)  
+                      and Print(etype,ostream) (cf. section 1.6)  
+                      are used to write the node and edge entries  
+                      of G respectively.  
+ 
+void     L.read (string fname ) 
+ 
+                      reads G from the file with name fname. The  
+                      overloaded functions Read(vtype,istream)  
+                      and Read(etype,istream) (cf. section 1.6)  
+                      are used to read the node and edge entries  
+                      of G respectively.  
+
+--------------------------------------------------------------------------------
+priority_queue  (section 4.1)
+--------------------------------------------------------------------------------
+
+Operation del_min has been overloaded
+
+K    del_min()
+
+void del_min(K& k, I& i)
+
+                      removes an item x with minimal information
+                      assigns key(x) to k and inf(x) to i.
+
+
+--------------------------------------------------------------------------------
+sortseq  (section 4.6)
+--------------------------------------------------------------------------------
+
+Operations "succ" and "pred" have been overloaded:
+
+seq_item  S.succ(seq_item x)
+seq_item  S.succ(K k)
+seq_item  S.pred(seq_item x)
+seq_item  S.pred(K k)
+ 
+ 
+
+NEW DATA TYPE:
+--------------------------------------------------------------------------------
+4.7 Persistent Dictionaries (p_dictionary)
+--------------------------------------------------------------------------------
+
+
+1. DEFINITION
+
+The difference between dictionaries (cf. section~4.3) and persistent 
+dictionaries lies in the fact that update operations performed 
+on a persistent dictionary D do not change D but create and return a 
+new dictionary D'. For example, D.del(k) returns the dictionary D' 
+containing all items it of D with key(it) != k. 
+
+An instance D of the data type p_dictionary is a set of items (type 
+p_dic_item). Every item in D contains a key from a linearly ordered 
+data type K, called the key type of D, and an information from a data 
+type I, called the information type  of D. The number of items in D 
+is called the size of D. A dictionary of size zero is called empty. 
+We use <k,i> to denote an item with key k and information 
+i (i is said to be the information associated with key k).  For each 
+k in K there is at most one item <k,i> in D.
+ 
+
+
+2. DECLARATION
+
+declare2(p_dictionary,K,I)
+
+introduces a new data type with name p_dictionary(K,I) consisting of all 
+persistent dictionaries with key type K and information type I.
+precond K is linearly ordered.
+ 
+
+
+3. CREATION
+
+p_dictionary(K,I) D ;
+
+creates an instance D of type p_dictionary(K,I) and initializes D to an 
+empty persistent dictionary. 
+ 
+
+
+4. OPERATIONS
+
+K         D.key (dic_item it ) 
+ 
+                      returns the key of item it.  
+                      Precondition: it in D.  
+ 
+I         D.inf (dic_item it ) 
+ 
+                      returns the information of item it.  
+                      Precondition: it in D.  
+ 
+dic_item  D.lookup (K k ) 
+ 
+                      returns the item with key k (nil if  
+                      no such item exists in D).  
+ 
+I         D.access (K k ) 
+ 
+                      returns the information associated with key k  
+                      Precondition: there is an item with  
+                      key k in D.  
+ 
+p_dictionary(K,I) D.del (K k ) 
+ 
+                      returns { x in D | key(x) != k }.  
+ 
+p_dictionary(K,I) D.del_item (dic_item it ) 
+ 
+                      returns { x in D | x != it }.  
+ 
+p_dictionary(K,I) D.insert (K k, I i ) 
+ 
+                      returns D.del(k) cup {<k,i>}.  
+ 
+p_dictionary(K,I) D.change_inf (dic_item it, I i ) 
+ 
+                      Let k = key(it), returns D.del_item(it) cup  
+                      {<k,i>}. Precondition: it in D.  
+ 
+p_dictionary(K,I) D.clear () 
+ 
+                      returns an empty persistent dictionary.  
+ 
+bool      D.empty () 
+ 
+                      returns true if D is empty, false otherwise.  
+ 
+int       D.size () 
+ 
+                      returns the size of D.  
+ 
+
+
+5. ITERATION
+
+forall_items(i,D) 
+{ ``the items of D are successively assigned to i '' }
+ 
+
+
+6. IMPLEMENTATION
+
+Persistent Dictionaries are implemented by leaf oriented 
+persistent red black trees (cf. [DSST89]).
+Operations insert, lookup, del_item, del take time O(log n), key, inf, 
+empty, size, change_inf and clear take time O(1). The space requirement 
+is O(n). Here n is the number of all created persistent dictionaries (= number 
+of all performed update operations). 
+ 
+
+--------------------------------------------------------------------------------
+GRAPH    (section 5.4)
+--------------------------------------------------------------------------------
+ 
+ 
+void      G.write (string fname ) 
+ 
+                      writes G to the file with name fname. The  
+                      overloaded functions Print(vtype,ostream)  
+                      and Print(etype,ostream) (cf. section 1.6)  
+                      are used to write the node and edge entries  
+                      of G respectively.  
+ 
+int       G.read (string fname ) 
+ 
+                      reads G from the file with name fname. The  
+                      overloaded functions Read(vtype,istream)  
+                      and Read(etype,istream) (cf. section 1.6)  
+                      are used to read the node and edge entries  
+                      of G respectively. Returns error code
+                      1  if file fname does not exist
+                      2  if graph is not of type GRAPH(vtype,etype)
+                      3  if file fname does not contain a graph
+                      0  otherwise.
+ 
+ 
+
+
+--------------------------------------------------------------------------------
+PLANE  (section 6.1.6)
+--------------------------------------------------------------------------------
+
+
+
+Function VORONOI  (cf. section 6.1.6) has a new interface:
+
+
+void VORONOI(list(point), double R, GRAPH(point,point) )
+
+        VORONOI takes as input a list of points  sites and a real number 
+        R. It computes a directed graph G representing the planar subdivision
+        defined by the Voronoi-diagram of sites where all ``infinite" edges have
+        length R. For each node v G.inf(v) is the corresponding Voronoi 
+        vertex (point) and for each edge e  G.inf(e) is the site (point) 
+        whose Voronoi region is bounded by e. 
+
+
+
+
+--------------------------------------------------------------------------------
+point_set  (section 6.3)
+--------------------------------------------------------------------------------
+ 
+list(ps_item) S.convex_hull () 
+ 
+                      returns the list of items containing  
+                      all points of the convex hull of  
+                      in clockwise order.  
+ 
+
+
+
+
+
+--------------------------------------------------------------------------------
+graphic windows  (section 6.7)
+--------------------------------------------------------------------------------
+
+Data type gwindow no longer exists, it is replaced by data type window
+
+The data type window provides an interface for the input and 
+output of basic two-dimensinal geometric objects (cf. section 5.1) 
+using the X11 (xview) or SunView window system.
+There are two object code libraries (libWs.a, libWx.a) containing 
+implementations for different environments. Application programs using data 
+type window have to be linked with one of these libraries (cf. section~1.6):
+
+
+a) For the SunView window system:
+
+   CC prog.c -lWs -lP -lG -lL -lm  -lsuntool -lsunwindow -lpixrect
+
+
+b) For the X11 (open windows) window system:
+
+   CC prog.c -lWx -lP -lG -lL -lm  -lxview -lolgx -lX11 
+
+
+
+--------------------------------------------------------------------------------
+Creation of a graphic window
+--------------------------------------------------------------------------------
+
+
+a) window W(int xpix, int ypix, int xpos, int ypos);
+
+b) window W(int xpix, int ypix);
+
+c) window W();
+
+Variant a) creates a window W of physical size xpix times ypix pixels 
+with its upper left corner at position (xpos,ypos) on the screen,
+variant b) places W into the upper right corner of the screen, and
+variant c) creates a 850 times 850 pixel window positioned into the
+upper right corner.
+
+All three variants initialize the coordinates of W to x0 = 0,
+x1 = 100 and y0 = 0. The init operation (see  below) can later 
+be used to change the window coordinates and scaling.
+
+
+
+--------------------------------------------------------------------------------
+Additional operations
+--------------------------------------------------------------------------------
+ 
+ 
+int       W.read_panel (string h, int n, string* S ) 
+ 
+                      displays a panel with header h and an array S[n]  
+                      of n string buttons, returns the index of the selected  
+                      button.  
+
+int       W.read_vpanel (string h, int n, string* S ) 
+ 
+                      read_panel with vertical button layout
+ 
+ 
+int       W.read_int (string p ) 
+ 
+                      displays a panel with prompt p for integer input,  
+                      returns the input  
+ 
+
+real      W.read_real (string p ) 
+ 
+                      displays a panel with prompt p for real input  
+                      returns the input  
+ 
+
+string    W.read_string (string p ) 
+ 
+                      displays a panel with prompt p for string input,  
+                      returns the input  
+ 
+
+        
+string    W.read_string (string p, list(string) menu)
+
+                      as above, adds an additional menu button which
+                      can be used to select a string from menu.
+     
+string    W.read_string (string p, string label, list(string) menu)
+                      as above, the menu button is labelled with label.
+
+
+
+
+--------------------------------------------------------------------------------
+PANELS
+--------------------------------------------------------------------------------
+
+
+Creation:
+--------
+
+panel P(string header);
+
+panel P;
+
+
+Operations:
+----------
+
+void P.text_item(string s)
+
+void P.bool_item(string label, bool& x)
+
+void P.real_item(string label, real& x)
+
+void P.color_item(string label, color& x)
+
+void P.int_item(string label, int& x)
+void P.int_item(string label, int& x, int min, int max)              // slider
+void P.int_item(string label, int& x, int low, int high, int step)   // choice
+
+void P.string_item(string label, string& x)
+void P.string_item(string label,string& x,list(string) L)  // menu
+
+void P.choice_item(string label, int& x, list(string) L)
+void P.choice_item(string label, int& x, int l, string* L)
+void P.choice_item(string label, int& x, string, ... )
+
+void P.button(string label)
+
+void P.new_button_line()
+void P.new_button_line(list(string) buttons)
+
+
+int  P.open()
+int  P.open(list(string)& buttons)
+
+
+--------------------------------------------------------------------------------
+7. Miscellaneous
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+Command input streams (cmd_istream)
+--------------------------------------------------------------------------------
+
+An instance I of the data type cmd_istream is an C++ istream
+connected to the output of a shell command cmd, i.e., all input operations 
+or operators applied to I read from the standard output of command cmd. 
+
+1. Creation of a command input stream 
+
+cmd_istream   in(string cmd);
+
+creates an instance in of type cmd_istream connected to the output of command cmd.
+
+2. Operations
+
+All operations and operators (>>) defined for C++ istreams can
+be applied to command input streams as well.
+
+
+
+
+--------------------------------------------------------------------------------
+Command output streams (cmd_ostream)
+--------------------------------------------------------------------------------
+
+An instance O of the data type cmd_ostream is an C++ ostream
+connected to the input of a shell command cmd, i.e., all output operations 
+or operators applied to O write into the standard input of command cmd. 
+
+1. Creation of a command output stream} 
+
+cmd_ostream   out(string cmd);
+
+creates an instance out of type cmd_ostream connected to the input of 
+command cmd. 
+
+2. Operations 
+
+All operations and operators (<<) defined for C++ ostreams can
+be applied to command output streams as well.
+
+

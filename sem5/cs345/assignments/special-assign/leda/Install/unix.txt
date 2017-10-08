@@ -1,0 +1,112 @@
+********************************************************************
+*                                                                  *
+*                                LEDA                              *
+*                                                                  *
+*                    UNIX OBJECT CODE INSTALLATION                 *
+*                                                                  *
+********************************************************************
+
+
+Remark: This file describes the situation in a LEDA package. 
+
+
+
+1. Files and Directories
+------------------------
+
+To compile and link your programs with LEDA, the LEDA main directory 
+should contain at least the following files and subdirectories: 
+
+Readme.txt                  Readme File 
+Install/unix.txt            this file 
+incl/                       the LEDA include directory 
+libleda.a (libleda.so)      basic library 
+
+The static library has extension .a. If a shared library is provided 
+it has extension .so. 
+
+
+2. Preparations
+---------------
+
+Unpacking the LEDA distribution file 
+LEDA-<ver>-<sys>-<cc>.tar.gz will create the LEDA root 
+directory "LEDA-<ver>-<sys>-<cc>". You might want to rename 
+it or move it to some different place. Let <LEDA> denote the final 
+complete path name of the LEDA root directory. 
+
+To install and use the Unix object code of LEDA you have to modify 
+your environment as follows: 
+
+a)  LEDAROOT:
+Set the environment variable LEDAROOT to the LEDA root directory: 
+
+csh/tcsh: setenv LEDAROOT <LEDA> 
+    
+sh/bash: LEDAROOT=<LEDA> 
+  export LEDAROOT 
+
+b)  Command Search Path:
+Include $LEDAROOT/Manual/cmd into your command search path 
+(environment variable path (csh) or PATH (sh)) and call rehash (if 
+required by your system). 
+
+c)  Shared Library: (for solaris, linux, irix, osf1) 
+If you planning to use shared libraries include $LEDAROOT into the 
+LD_LIBRARY_PATH search path. Then go to $LEDAROOT and type 
+make shared. This will construct the shared libraries from the static
+libraries. 
+Please note: Building the shared library is not supported on each
+platform.
+
+d)  xlman and demos: Go to $LEDAROOT and type make xlman to compile 
+and link LEDA's interactive manual reader xlman. Now you can start 
+xlman for reading and printing manual pages, starting demo programs 
+and browsing more release notes. 
+      
+
+3. Compiling and linking application programs
+---------------------------------------------
+
+a) Use the -I compiler flag to tell the compiler where to find the 
+LEDA header files.
+
+CC (g++) -I$LEDAROOT/incl -c file.c
+
+b) Use the -L compiler flag to tell the compiler where to find the 
+library (libleda.a/so)
+
+CC (g++)  -L$LEDAROOT file.o -lleda -lX11 -lm
+
+If using windows on solaris systems you might have to link 
+with the system socket library and the network services library as 
+well:
+CC (g++)  ... -lleda -lX11 -lsocket -lnsl -lm
+
+c) Compile and link simultaneously with
+
+CC (g++)  -I$LEDAROOT/incl -L$LEDAROOT file.c -lleda -lX11 -lm
+
+You may want to ask your system adminstrator to install the header 
+files and library in the system's default directories.
+Then you no longer have to specify header and library search paths on 
+the compiler command line.
+
+
+4. Example programs and demos
+-----------------------------
+
+The source code of all example and demo programs can be found in 
+$LEDAROOT/test and $LEDAROOT/demo. Goto $LEDAROOT/test or 
+$LEDAROOT/demo and type "make" to compile and link all test or  demo 
+programs, respectively. 
+
+
+5. User Manual
+--------------
+
+Postscript, PDF, and HTML versions of the manual are available at 
+
+             http://www.algorithmic-solutions.com
+                   
+       

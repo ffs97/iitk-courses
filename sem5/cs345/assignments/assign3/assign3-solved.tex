@@ -1,14 +1,18 @@
 \documentclass{article}
 
-\usepackage{assign3-style}
+\usepackage{assign-style}
 
-\title{Theoretical Assignment 3}
-\author{Gurpreet Singh | 150259 $\cdot$ Nikita Awasthi | 150453}
-\date{Hard Version}
+\usepackage{sectsty}
+
+\sectionfont{\fontsize{14}{15}\sffamily}
+
+\setcourse{CS345: Data Structures and Algorithms II}
+\setheadate{September 23, 2017}
+\setassign{3}
 
 \begin{document}
 
-\maketitle
+\makeheader%
 
 \begin{question}
     
@@ -48,11 +52,11 @@
 			
 			We consider induction on the number of vertices in the graph. For any vertex, we will remove that vertex and treat all the subtrees formed.\br\
 
-			\tb{Base Case:} The number of vertices is 2, i.e the source vertex $s$ and the sink vertex $t$. Since there is one and only one path in this case, the weight on the edge $(s, t)$ will be zero, and path count from and our claim is true.
+			\bt{Base Case:} The number of vertices is 2, i.e the source vertex $s$ and the sink vertex $t$. Since there is one and only one path in this case, the weight on the edge $(s, t)$ will be zero, and path count from and our claim is true.
 			
-			\tb{Induction Hypothesis:} Suppose our claim holds for all graphs which have less than $n$ vertices in the graph.
+			\bt{Induction Hypothesis:} Suppose our claim holds for all graphs which have less than $n$ vertices in the graph.
 
-			\tb{Induction:} \sbr\
+			\bt{Induction:} \sbr\
 
 			Consider all vertices $w_i$ such that $(v, w_i) \in E$. If we remove $v$ from the graph and assume $w_i$ to be the source vertex (one by one), our induction hypothesis holds. Hence the vertices $w_i$ will hold all the paths count from $w_i$ to $t$ and weights are assigned to edges such that each path from $w_i$ to $t$ has a unique pathid from 0 to $pathCount[w_i]-1$. \br\
 
@@ -166,11 +170,13 @@
 
 		Our code is handling the first two cases in the part where we are checking if the vertex $v$ is visited and finished as well. This is because any cross edge and forward edge to a vertex $v$ assures that $v$ has been visited and its DFS has finished. \br\
 
-		\note{From here on, we assume that the graph G has no forward or cross edge.} \br\
+		\qnote{From here on, we assume that the graph G has no forward or cross edge.} \br\
 
 		The additional cases are when we have two back edges from a subtree. We are defining a back edge from a subtree as follows \sbr\
 
-		\defn{Consider a subtree of the DFS tree rooted at vertex $u$. An edge $(v, w)$ is a back edge from this subtree if $v \in Tree(u)$ and $w \notin Tree(u)$, and $w$ is an ancestor of $u$ in the DFS tree.} \br\
+        \begin{qdefinition}
+            Consider a subtree of the DFS tree rooted at vertex $u$. An edge $(v, w)$ is a back edge from this subtree if $v \in Tree(u)$ and $w \notin Tree(u)$, and $w$ is an ancestor of $u$ in the DFS tree. \br\
+        \end{qdefinition}
 
 		\begin{qproof}{G is not a unique path graph if for any vertex $u \in V(G)$, there are at least two back edges from the subtree rooted at $u$ in the DFS tree of G}
 			
@@ -186,7 +192,7 @@
 
 		\end{qproof}
 
-		\note{We are representing the subtree rooted at $u$ as $Tree(u)$} \br\
+		\qnote{We are representing the subtree rooted at $u$ as $Tree(u)$} \br\
 
 		\begin{qproof}{G is a unique path graph if there is no vertex $u \in V(G)$ such that there are two back edges from the subtree rooted at $u$}
 

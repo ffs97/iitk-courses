@@ -1,0 +1,6 @@
+PROGS = \
+dot$(e) \
+quicksort$(e) \
+qs$(e) \
+sort_anim$(e)
+

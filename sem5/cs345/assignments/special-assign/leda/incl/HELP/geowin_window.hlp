@@ -1,0 +1,10 @@
+\\bf\\blue Redraw, Zoom Up, Zoom Down, Zoom area, Fill Window:\\
+Here you can redraw and zoom GeoWin.
+It is also possible to fill the window (adjust the visible area dependent on the objects
+in the active scene).
+
+\\bf\\blue Reset:\\
+Sets the visible area like it was when the GeoWin was opened.
+
+\\bf\\blue Show d3 Output:\\
+Shows the 3-dimensional output of the visible scenes.

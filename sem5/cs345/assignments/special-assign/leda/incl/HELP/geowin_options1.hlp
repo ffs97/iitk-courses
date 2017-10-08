@@ -1,0 +1,29 @@
+\\bf\\blue General - Grid Settings:
+here you can choose whether a grid should be shown and if so,
+what grid parameters have to be used for drawing the grid (dist and style).
+
+\\bf\\blue General - Window Options:\\
+here it is possible to change the background color and
+background texture of the window. The animation parameter is used for the zoom steps,
+and 'show position' lets you select, if you want the mouse position always displayed in
+the status line or not.
+
+\\bf\\blue General - Mouse Options:\\
+various mouse parameters can be adjusted, like the capture width. 
+The capture width indicates the size of the rectangle around the mouse pointer, that is used 
+for selecting objects. If you have trouble selecting objects you may change this parameter.
+
+\\bf\\blue Advanced - Rational  Kernel Options: \\
+This options make only sense if the LEDA rational
+kernel is used for calculations. You can set the rat_point::default_precision and the flag
+that causes the usage of the rat_point floating point filters.
+
+\\bf\\blue Advanced - Miscellaneous:\\
+measure time : if this flag is set, the spended time of update functions is measured.\\
+scribble mode: if this flag is set, you can scribble with the mouse button in a scene 
+(can be useful for presentations).\\
+buildin algorithms - create scenes: should the buildin algorithms (see Algorithms 
+menu) that work on selected objects of a scene create new scenes or just display
+results.\\
+You can also switch off the checking of the mouse position in the current scene (can
+be useful if this scene holds many objects).

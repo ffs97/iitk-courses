@@ -1,0 +1,15 @@
+\\bf\\blue 3d Output:\\
+here you can set the elimination and solid flags for the 3d output and 
+the 3d animation speed.
+
+\\bf\\blue Scaling:\\ 
+here you can set the minimum and maximum x-coordinates and the minimum
+y-coordinate of the visible area.
+
+\\bf\\blue Active scene:\\
+opens a dialog where it is possible to set the parameters of the
+currently active scene.
+
+\\bf\\blue Scene defaults:\\
+in this dialog the user can set default colors, point and line
+parameter that will be used when new scenes are created.

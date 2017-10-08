@@ -1,0 +1,16 @@
+
+We illustrate the maximum flow problem.
+
+Please edit a graph in the graphics window.
+The first two nodes entered are the source and the sink
+of the maximimum flow problem, respectively.
+
+The solution is updated after each edit operation.
+
+For each edge the flow and capacity are indicated as f/c.
+The thickness of an edge is proportional to the flow through the edge.
+
+A saturated cut is also indicated. The edges in the cut are shown in green.
+All nodes on the source side of
+the cut are red and all nodes on the sink side are black.
+

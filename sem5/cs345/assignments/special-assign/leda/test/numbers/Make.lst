@@ -1,0 +1,11 @@
+PROGS  =\
+integer_test$(e) \
+rational_test$(e)\
+fp_test$(e)\
+interval_test$(e)\
+residual_test$(e)\
+polynomial_test$(e) \
+approximating_test$(e) \
+isolating_test$(e) \
+real_test$(e) \
+additional_tests$(e)

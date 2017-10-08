@@ -1,0 +1,28 @@
+This demo illustrates how the intersection of half-spaces reduces to the 
+convex hull problem via point-line duality. \\
+ 
+Duality associates a point with every non-vertical line. 
+For a non-vertical line l: y = a*x - b, the dual point has coordinates (a,b).
+Conversely, the line dual to the point (a,b) has equation y = a*x - b. \\
+  
+Duality preserves aboveness, i.e., if a point p(x,y) is 
+above a line l(y = a*x - b), then the line dual to p is above the point
+dual to l.\\
+   
+  
+Let L be a collection of non-vertical lines. We want to construct the 
+intersection I of the half-space bounded from below by the lines in L. \\
+   
+Observe: a line l in L contributes to the boundary of I iff there is a
+point p such that\\
+(1) p lies on l and
+(2) p lies above every line l' in L different from l.
+\\  
+Let us go to the dual: dual(p) is a line and every line in L translates 
+to a point. We have\\
+(1) dual(l) lies on dual(p)
+(2) dual(p) lies above every point dual(l') for l' different from l
+In other words, dual(l) is a vertex of the upper convex hull of the 
+set of dual points. 
+\\  
+

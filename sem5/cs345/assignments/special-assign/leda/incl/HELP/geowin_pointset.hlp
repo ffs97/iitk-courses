@@ -1,0 +1,28 @@
+This demo program shows you various
+applications of the LEDA point set class:\\
+- k nearest neighbor search (k=5 in the demo)\\
+- locating a triangle\\
+- circular range search\\
+- delaunay triangulation\\
+The program has 4 input scenes:\\
+
+- Input points for the Delaunay triangulation: 
+
+this scene is used for construction of the point set\\
+
+- Points for locate and nearest neighbor operations: 
+
+this scene is used for showing the locate
+and the nearest neighbor operation of the point set\\
+
+- Circles for range searches on the input points:
+
+this scene is used for circular range search operations
+on the point set\\
+
+- Input points for k (5) nearest neighbor search: 
+
+this scene is used for the k-nearest
+neighbors algorithm of the point set
+
+Activate input scenes by using Scenes-activate.

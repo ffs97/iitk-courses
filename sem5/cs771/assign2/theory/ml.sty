@@ -22,13 +22,9 @@
 % Override how section, subsection and paragraph titles are formatted
 \def\sectionfont{\sffamily\Large\bfseries\boldmath}
 \def\subsectionfont{\sffamily\large\bfseries\boldmath}
-\def\paragraphfont{\sffamily\normalsize\bfseries\boldmath}
 
 \titleformat*{\section}{\sectionfont}
 \titleformat*{\subsection}{\subsectionfont}
-\titleformat*{\subsubsection}{\paragraphfont}
-\titleformat*{\paragraph}{\paragraphfont}
-\titleformat*{\subparagraph}{\paragraphfont}
 
 % The series number
 \newcounter{mlseries}
@@ -99,7 +95,6 @@
 
 % Parentheses
 \newcommand{\bc}[1]{\left\{{#1}\right\}}
-\newcommand{\br}[1]{\left({#1}\right)}
 \newcommand{\bs}[1]{\left[{#1}\right]}
 \newcommand{\abs}[1]{\left| {#1} \right|}
 \newcommand{\norm}[1]{\left\| {#1} \right\|}

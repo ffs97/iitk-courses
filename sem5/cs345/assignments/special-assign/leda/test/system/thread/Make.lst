@@ -1,0 +1,11 @@
+PROGS = \
+qsort$(e) \
+qsort1$(e) \
+qsort2$(e) \
+qhull$(e) \
+sw$(e) \
+sweep_segments$(e) \
+sweep_voro$(e) \
+sweep_gen$(e) \
+sweep$(e)
+

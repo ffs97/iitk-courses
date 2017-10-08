@@ -1,0 +1,13 @@
+GeoWin 3d convex hull demo\\
+Use the mouse to input 3d points; all points
+will get z-coordinate 0.
+To change that click with the right mouse button
+on an object, use object in the menu and change
+the z-coordinate. Of course you can also generate
+points with z-coordinate != 0 using Edit-Generate.
+
+To show the three-dimensional output use
+'Show d3 output' in the Window menu.
+You can change some options of the 3-d output in the
+Options- 3d output menu.
+

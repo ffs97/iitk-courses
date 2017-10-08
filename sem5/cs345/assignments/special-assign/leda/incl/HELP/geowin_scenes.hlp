@@ -1,0 +1,37 @@
+\\bf\\blue Open/Close:\\
+these menu points let you open a scene or close the 
+current scene.
+
+\\bf\\blue Clear:\\
+deletes all objects of the currently active scene, but does
+not close this scene.
+
+\\bf\\blue Visibility:\\
+Here you can choose, which scenes should be visible and 
+which not. Note that the currently active scene is marked red. This
+scene is always visible as long as it is active.
+
+\\bf\\blue Z-order:\\
+Here you can give z - values to scenes that specify, what scene
+has to be drawn first. Note that the currently active scene is always
+drawn on top. Choose 'Use z-order for redraw' to activate this mode.
+Note that a higher z-value indicates, that the scene will be drawn behind
+scenes with a lower z-value. No two scenes should have an equal z-value,
+when 'Use z-order for redraw' is activated.
+
+\\bf\\blue Options:\\
+In this submenu you will find option dialogs for the scenes of 
+this GeoWin. Here you can set a lot of scene parameters. For details see 
+the 'Scene options' help-menu entry.
+
+\\bf\\blue Activate:\\
+Here you can activate one of the editable scenes of GeoWin. The
+activated scene will get input focus.
+
+\\bf\\blue Groups:\\
+If GeoWin has scene groups, you can have a look at them in this
+submenu.
+
+\\bf\\blue Contents:\\
+You can see the contents (textual representation of the objects
+of a scene) in a window.

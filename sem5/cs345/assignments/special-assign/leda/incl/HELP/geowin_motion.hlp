@@ -1,0 +1,34 @@
+This demo shows the usage of the Minkowski difference algorithm
+for motion planning. The demo program has two input scenes:\\
+
+- the polygon scene holding the "robot" (or simply the object 
+to move from one point to another) and a number of obstacles.\\
+The robot is described by the first polygon of the scene and
+is drawn in yellow color, the obstacles are drawn in
+blue color.\\
+
+- the point scene; this scene holds the start and end point
+of the path of the robot.\\
+
+There are two other scenes:\\
+The scene "Allowed space" shows the space where the robot can be
+placed savely without touching/intersecting an obstacle. The "Allowed
+space" is drawn in light grey color.
+Please note that placing the robot means placing the reference point
+of the robot. The reference point of the polygon is in the example
+the point (0,0). One can imagine the reference point as the start
+point of an invisible stick with the polygon on the other end of the stick.
+For a better understanding it is recommended to place the robot with
+the reference point INSIDE ( but this is not a must).
+
+The scene "PATH from source to target" shows a path (not always the
+shortest) from the start point to the end point. The computation
+of the "Allowed space" is done by using the Minkowski difference
+algorithm. \\
+If you choose the "Animation" option, the demo program will show you
+the way of the robot on the computed path from the start point
+to the end point.
+
+
+
+

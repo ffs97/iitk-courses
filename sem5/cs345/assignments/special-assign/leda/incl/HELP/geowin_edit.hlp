@@ -1,0 +1,20 @@
+\\bf\\blue Selection:\\
+In this submenu are options to select some or all 
+and to deselect all objects of the currently edited scene.
+
+\\bf\\blue Edit Selection:\\
+In this submenu you have options to copy, paste, 
+move, rotate and delete the selected objects of a scene. It is also 
+possible to write the contents of the selection buffer to the 
+standard output ('Show buffer').
+
+\\bf\\blue Read Object:\\
+In this submenu are options to input an object with the 
+keybord or mouse. This object will be added to the currently edited 
+scene.
+
+\\bf\\blue Generate:\\
+calls a generator dialog for the currently edited scene.
+You can choose among some generator functions that generate objects
+and insert them into the current scene. Note that not all editable
+scenes have generators available.

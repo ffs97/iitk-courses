@@ -1,0 +1,25 @@
+
+You are installing LEDA, The Platform for Combinatorial and Geometric
+Computing.
+                                                                 
+    FOR ANY USE OF THIS SOFTWARE A LICENSE IS REQUIRED. 
+    YOU ARE BREAKING A LAW WHEN USING LEDA WITHOUT 
+    OWNING A LICENSE.                   
+
+These terms are valid for all LEDA versions following version 3.0
+For more information about the license terms please contact      
+                                                                 
+
+                 Algorithmic Solutions Software GmbH
+                 Schuetzenstrasse 3 - 5
+                 66123 Saarbruecken 
+                 Germany
+                 http:  www.algorithmic-solutions.com
+                 email: contact@algorithmic-solutions.com
+                 phone: +49 681 87647-0
+                 fax:   +49 681 87647-29
+
+You are allowed to continue with the installation of LEDA only if you are 
+owner of a valid license.
+Otherwise, you must stop the installation now.
+

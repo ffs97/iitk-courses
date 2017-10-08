@@ -1,0 +1,14 @@
+\bf\blue Phase Two\rm\black
+
+animates the strongly connected components algorithm
+on the graph constructed in phase one.\\ 
+It helps to be vaguely familiar with the algorithm.
+Consult either the LEDA book or try the help buttons.\\
+We recommend that you have a quick look at the help buttons 
+now and then run the demo for a few steps and consult them again.
+
+The animation explains every step of the algorithms by a short
+text and asks you to click the \blue done \black button before
+it continues with the next step. You can also click on the \blue
+exit\black button in the \it File \rm menu, then the algorithm
+is completed in a single step.

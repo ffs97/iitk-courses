@@ -1,0 +1,17 @@
+This demo allows you to construct a scene of points and to
+visualize several geometric data structures for these points:\\
+- the nearest and furthest site Delaunay diagram\\
+- the nearest and furthest site Voronoi diagram\\
+- the convex hull\\
+- the crust\\
+
+You can input the points with the mouse, load and save the points (see File - menu)
+or generate them using one of the provided generator functions
+(see Edit-Generate).
+
+You can also use a different input function:
+Enter the options dialog of the point scene by clicking on the background with the
+right mouse button and select an input function.
+
+
+

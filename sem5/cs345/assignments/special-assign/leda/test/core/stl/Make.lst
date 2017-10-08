@@ -1,0 +1,12 @@
+
+PROGS = \
+iterator1$(e) \
+list1$(e) \
+list2$(e) \
+list3$(e) \
+list4$(e) \
+prio$(e) \
+dic$(e) \
+seq$(e) \
+set$(e)
+

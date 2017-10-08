@@ -1,0 +1,8 @@
+This little demo program lets you play with the affine 
+transformations provided by LEDA.
+
+Use Edit->Configure Transformation to change the transformation
+matrix. 
+
+Use Edit->Selection->Transform to transform the SELECTED objects
+of the active scene.

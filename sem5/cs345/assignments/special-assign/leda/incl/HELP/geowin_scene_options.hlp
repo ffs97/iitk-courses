@@ -1,0 +1,31 @@
+\\bf\\blue highlight:\\
+choose this option, if you want that the object under the mouse-
+pointer in the currently active scene should be highlighted.
+
+\\bf\\blue show/handle def. points:\\
+In some scenes (for instance edit scenes of LEDA 
+polygons) it is possible to move not only objects, but also points defining 
+the object (like the vertices of the polygon). Here you can choose, whether 
+you want to switch this feature off (Hide) or on (Show or Highlight). 
+If you choose Show, all defining points of objects in the scene will be shown,
+if you choose Highlight, only the defining points of the object under the mouse 
+pointer will be shown.
+
+\\bf\\blue Input Functions:\\
+For some editable scenes other input modes are available than
+the default input using the window input operator. Here you can choose them.
+
+\\bf\\blue Colors - interior/boundary/selected:\\
+Here you can choose the default object colors
+of a scene. If you choose enum colors for a scene, then in this scene (if it is an
+edit scene) new inserted objects will get different colors.
+
+\\bf\\blue Points - point style, Lines - line style/width, active width:\\
+Here you can choose a
+point style for points and line parameters for lines in a scene. In an active scene
+lines will be displayed with active width, in non active scenes with line width.
+
+\\bf\\blue Debug - Output input scene, file name:\\
+This option is only important for result scenes.
+If you choose Output input scene, every time when the result scene is updated its input scene is
+saved. You can choose the file name of the saved scene under 'Debug mode - File name'.

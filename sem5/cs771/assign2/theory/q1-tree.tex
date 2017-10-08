@@ -1,0 +1,41 @@
+\documentclass[preview]{standalone}
+\usepackage{decision-tree}
+
+\begin{document}
+\begin{tree}
+    \node (s0) [attr] {\# of Meetings}
+    child {%
+        node (s10) [attr] {Workload}
+        child{%
+            node (s20) [leaf] {NO}
+            edge from parent node [above left] {Heavy}
+        }
+        child {%
+            node (s21) [leaf] {YES}
+            edge from parent node [below left] {Average}
+        }
+        child {%
+            node (s22) [attr] {Interest in Research Area}
+            child {%
+                node (s30) [leaf] {YES}
+                edge from parent node [above left] {Yes}
+            }
+            child {%
+                node (s31) [leaf] {NO}
+                edge from parent node [above right] {No}
+            }
+            edge from parent node [above right] {Light}
+        }
+        edge from parent node [above left] {0 -- 1}
+    }
+    child {%
+        node (s11) [leaf] {NO}
+        edge from parent node [below right] {2 -- 3}
+    }
+    child {%
+        node (s12) [leaf] {NO}
+        edge from parent node [above right] {3 $>$}
+    }
+    ;
+\end{tree}
+\end{document}

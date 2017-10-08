@@ -1,0 +1,1696 @@
+-----------------------------------------------------------------------------
+LEDA-6.3
+------------------------------------------------------------------------------
+
+min cost flow
+         -- bug in cost scaling algorithm fixed
+
+node/edge_array 
+         -- problems with multi-thread programs fixed
+
+mt_memory_manager
+         -- memory leak under windows (LEDA_THREAD_BEGIN macro) 
+
+d3_window
+         -- event handling problem fixed
+
+-----------------------------------------------------------------------------
+LEDA-6.2.2
+------------------------------------------------------------------------------
+
+xlman
+         -- ascii demos now work as expected
+
+graphics
+         -- buffer overflow in x_load_font fixed
+         -- draw_filled_polygon:
+            problem with non-weakly polygons fixed
+graphwin
+         -- problem with connecting to AGD server fixed
+         -- problem in AGD server dialog fixed
+
+geometry
+         -- fixed bug in buffer computation (r_circle_polygon)
+
+MAX_WEIGHT_MATCHING: 
+         -- special versions for undirected graphs (ugraph)
+         -- exception in case of illegal heuristic parameter
+
+MAX_CARD_MATCHING: 
+         -- special versions for undirected graphs (ugraph)
+
+MIN_COST_FLOW
+         -- bug in mcf_cost_scaling fixed (inf_bound/af_factor too small)
+
+
+-----------------------------------------------------------------------------
+LEDA-6.2.1
+------------------------------------------------------------------------------
+
+
+GRAPH<T1,T2>:  problem with special variants of G.new_edge(...) fixed
+
+param_types.h:  improved handling of gcc -O2 problem  (gcc-4.3)
+
+
+MAXFLOW: - replaced capacity value-parameter by reference parameter
+         - added missing scale_weights call in floating-point version
+
+count_streambuf:  removed __exportC (solves DLL problem)
+
+bigfloat input operator (>>):
+    -replaced fixed size buffer by dynamic string 
+    -input of negative values now works correctly
+
+
+AGD:  changes for fixing compilation problems with latest gcc
+
+
+-----------------------------------------------------------------------------
+LEDA-6.2
+------------------------------------------------------------------------------
+
+
+parameterized partition: bug in make_block (number of blocks not counted)
+
+integer/bigfloat:  mutexes were not properly destroyed in destructor
+
+graphics(mswin):   increased number of colors (MAX_COLORS) to 2048
+
+components/bicomponents:  fixed problem with undirected graphs (infinite loop)
+                          fixed problem with self-loops
+
+graph algorithms:
+           dijkstra now works for undirected graphs
+           min_cost_flow (cost scaling) 
+               - now can deal with problems where all edges have cost zero
+               - some infeasible problems have been handled incorrectly
+
+
+-----------------------------------------------------------------------------
+LEDA-6.1
+------------------------------------------------------------------------------
+
+point_set:  bug in point_set::compute_voronoi fixed
+            (incorrect edge labels)
+
+list:     problem in destructor for large element types
+          (fixed by a new version of deallocate_list)
+
+h_array:  nested forall_defined loops did not work
+
+
+-----------------------------------------------------------------------------
+LEDA-6.0
+------------------------------------------------------------------------------
+
+
+r_circle_polygon: bug in approximate_area() fixed 
+
+r_circle_polygon: exception problem in constructor fixed
+
+r_circle_polygon: test for weak simplicity always returned true
+
+array2   : bug in constructor/destructor
+
+graphics : scalable font problem under x11 fixed
+
+integer  : problem with modulo-operator (%) fixed
+
+bigfloat/real :  uninitialized mutex in bigfloat constructor
+
+(gen_)polygon : transformations (translate, rotate90, reflect ...)
+                could produce inconsistent representations 
+    
+graph :   CopyGraph did not work correctly for undirected graphs
+
+          problem with conflicting definitions of forall-iteration macros for
+          graph and static_graph no longer exists.
+
+
+
+------------------------------------------------------------------------------
+LEDA-5.2
+------------------------------------------------------------------------------
+
+point_set: bug in k-nearest-neighbor search fixed
+           now result is ordered by distance from query point for k >= n
+
+array:    bug in default-constructor fixed 
+
+integer:  bug in double_quotient(a,b) fixed
+          bug in new_rep (uninitialized mutex) fixed
+
+MIN_COST_FLOW:
+          cost scaling did not handle self-loops correctly (fixed)
+
+d_int_set:
+          bug on 64-bit platforms fixed
+
+Makefiles:
+          problem with gnu make solved (sometimes new object files were not 
+          added to the corresponding library archive)
+
+------------------------------------------------------------------------------
+LEDA-5.1.1
+------------------------------------------------------------------------------
+
+g++ >= 4.0:  -O2 optimization problems solved (new version of param_types.h)
+
+node_pq/bin_heap
+   serious memory bug fixed (occured when using system mememory manager)
+
+h_array:
+   memory leak in operator= fixed.
+
+graph_register.h:
+   bug fixed
+
+integer.h
+   bug in modulo-operator (operator%) fixed 
+
+------------------------------------------------------------------------------
+LEDA-5.1
+------------------------------------------------------------------------------
+
+rat_point
+  p.normalize() did not update floating point approximations 
+  of the homogeneous coordinates (XD(),YD(),WD()), fixed.
+
+  p.xcoordD() and p.ycoordD() now first normalize the coordinates
+  before computing the floating point approximations to avoid
+  overflow conditions (NaN values).
+  
+array
+  fixed permute problem, first element was never permuted
+
+min cost flow
+  fixed mispelling in MIN_COST_FLOW with lcap=0
+
+integer_vector
+  fixed bug reported by M. Behle
+  
+d_int_set
+  fixed bug in join when first set is empty
+  
+interval
+  fixed bug for AMD64
+
+segment_set/rat_segment_set
+  fixed some bugs
+
+rat_vector
+  fixed bug in rotate90
+
+r_circle_gen_polygon
+  fixed bug in operator<<
+
+real
+  fixed bug in error computation of negation and sqrt; fixed
+  bug in convert_to_dbl
+  fixed separation bound for rational
+
+eb_tree
+  fixed implementation, was not usable anymore
+
+
+FIVE_COLOR
+  serious bug fixed 
+   
+
+------------------------------------------------------------------------------
+LEDA-5.0.1
+------------------------------------------------------------------------------
+
+static_graph
+  added missing destructor
+
+cuckoo_hash
+  fixed some bugs
+  
+segment_set
+  fixed memory leak and bug in intersection query
+  
+real_point
+  added work-around for compiler bug in Borland 5.6
+  
+real_point, rat_point, point
+  fix for MSVC6 (related to mod arithmetics)
+  
+MW_MATCHING
+  fixed some bugs
+  
+EULER_TOUR
+  fixed bug
+
+min cost flow
+  removed bug in capacity scaling
+
+graphwin
+  added missing assignment operator for edge_info
+  gw_move_edge_slider made safer
+  
+memory_manager
+  LEDA_MEMORY macro: operator delete is now safe for NULL-pointers
+  added work-around for compiler bug in Borland 5.6
+
+Rijndael
+  fixed bug in destructor
+
+r_circle_segment sweep
+  fixed bug related to isolated nodes
+  
+bigfloat
+  fixed bug in sqrt_bf
+  
+interval
+  fixed several bugs
+
+fpu
+  fixed false initial fpu rounding mode for Solaris
+
+------------------------------------------------------------------------------
+LEDA-5.0
+------------------------------------------------------------------------------
+r_heap
+	bugfix on 64-bit platforms
+
+cuckoo_hash
+	bugfix on 64-bit platforms
+
+FEASIBLE_FLOW
+	bugfix (endless loop for some inputs)
+
+graph
+	write/read problems with DOS file format fixed
+
+GraphWin
+	writing and reading of graphs (gw-format) fixed
+	connection to AGD-server now works again
+
+window
+	fixed bug in create_pixrect(string filename) (both Windows and Linux)
+	transparent xpm are now displayed correctly
+
+r_circle_point
+	fixed bug in constructor r_circle_point(const rat_circle& c, const rat_line& l, tag which)
+
+AutoDecoder
+	fixed bug in constructor AutoDecoder(const char*, const char*)
+
+------------------------------------------------------------------------------
+LEDA-4.5
+------------------------------------------------------------------------------
+
+Manual
+            fixed several misspellings, definitely improved description of many
+            types and algorithms (several errors reported by J. Ziegler)
+
+b_priority_queue
+            manual entries were missing
+            
+bigfloat
+            to_string() function added an unwanted char to the output -fixed
+
+graph
+		    write() function did not write whether graph was undirected or directed. As a
+            result, the graph was always directed when it was read from a file; fixed.
+
+GraphWin    
+            destructor crash fixed (reported by T. Erlebach)
+            additional features documented
+            misplaced arrow in the drawings: fixed
+                     
+LEDA/misc.h
+            fixed undef error for min and max
+
+ALL_PAIR_SHORTEST_PATH
+            Extra node that is added to perform the computation was not removed when the
+            function returned false, fixed.
+
+STRAIGHT_LINE_EMBEDDING
+            did not work for graphs with only two nodes; fixed.
+
+bin_heap
+            fixed error in copy constructor (reported by. T. Willhalm)
+            
+
+
+------------------------------------------------------------------------------
+LEDA-4.4.1
+------------------------------------------------------------------------------
+
+graphwin
+           bug in destructor (reported by T. Erlebach) fixed
+
+window
+           bug in destructor fixed 
+           X-error bad font problem when starting second graphwin 
+           fixed (Linux/Unix platforms only)
+
+real
+          "sign cannot be determined"-bug fixed
+
+graph
+           node_array::use_node_data(G)
+           edge_array::use_edge_data(G)
+           did not work in 4.4 (slots were never used!), fixed. 
+           bug in compare for nodes, edges, fixed
+
+graph_iterators
+           changes in <LEDA/graph_iterator.h> to make graph iterators 
+           work with namespace leda
+           bug in reinitialization of adjacent iterators, fixed
+
+gml_graph
+           not exported to DLL (missing __exportC)
+
+
+graph_alg
+           CHECK_MAX_FLOW  always reported error (fval != excess[t])
+           INDEPENDENT_SET multiple removal of nodes 
+           MIN_COST_FLOW access violation in rare cases, 
+           fixed by new improved version (see Changes)
+
+graph_map
+           memory leak, fixed
+
+node_map  
+           bug in lazy extension of map fixed
+
+pp_dictionary
+           bug in compare fixed
+
+convex hull
+           pointer delete problem fixed
+
+point
+           bug in reflect fixed
+           
+
+geometry kernel on .NET and SPARC v9
+           rounding mode was not set TO_NEAREST, fixed                        
+
+number types 
+           integer,bigfloat,real are now thread-safe
+
+int_set/d_int_set
+           workaround for MSC6-Bug (static const replaced by enum)
+
+ab_tree
+           functions min_item, max_item missing (necessary for
+           usage as implementation parameter), fixed
+
+gen_polygon
+           bug in constructor, fixed
+           
+array / list
+           print - minor problems fixed, functions now behave indentical
+           
+d3_plane / d3_rat_plane
+           bug in intersection fixed
+
+Manual
+           many minor changes
+
+------------------------------------------------------------------------------
+LEDA-4.4
+------------------------------------------------------------------------------
+
+(rat_)triangle
+       bug in region_of fixed
+
+d_int_set::choose
+       fixed as suggested by Thomas Erlebach
+
+h_array::size
+       was not declared as const
+
+scale_weights:
+       incorrect return value for identical input and output arrays
+       (fix as suggested by D. Martindale on comp.lang.c++.leda)
+
+INDEPENDENT_SET:
+       multiple removal of nodes fixed
+
+transform:
+       bug in reflection at point fixed
+
+GraphWin:
+      moving of nodes was not correctly visualized for Undirected Graphs
+      multiple display() calls crashed program (status window)
+      set_frame_label() did not work if called before display()
+
+
+------------------------------------------------------------------------------
+LEDA-4.3.1
+------------------------------------------------------------------------------
+
+
+number package:
+       fixed problems with sparc-v9 (64 bit) fpu assembler functions
+       renamed problematic global names (e.g. "base", or "sz_t") in digit.h 
+       fixed memory leak in rational operator+
+
+point_set:
+      bug fixed in compute_voronoi (only occured for "degenerate input") 
+
+bin_heap:
+      bug in bin_heap(int n) - Konstruktor (for n == 1)
+      (caused a problem in _mcf_cap_scaling.c).
+     
+window:
+     exporting a windows meta file did not work under windows 2000
+     colors change after a number of zooming operations
+     (problem with tmp font table in x11.c fixed)
+
+     W.put_pixrect(prect) did not work correctly in presence of a menu bar
+
+
+------------------------------------------------------------------------------
+LEDA-4.3
+------------------------------------------------------------------------------
+
+general:
+
+     gen_polygon and rat_gen_polygon added to REDEFINE_NAMES.h
+     and UNDEFINE_NAMES.h
+
+handle_types:
+     mutex unlocks for already deleted objects 
+
+array:
+     operator= and copy constructor could not handle empty arrays
+     A.resize(int sz) could not create an empty array (sz=0)
+
+graph_alg:
+     BFS(G,s,dist,pred): missing pred[s] = nil assignment
+
+point_set:
+     T.compute_voronoi(GRAPH<CIRCLE,POINT>& V)
+     missing reversal pointers in V added
+
+bool line::intersection(segment,point&)
+     result was not correct for colinear segments
+
+
+polygon/gen_polygon:
+     changed Test in input operator to WEAKLY_SIMPLE
+     (otherwise weakly-simple polygons cannot be read)
+
+     check_weak_simplicity was not correct for (degenerated)
+     polygons with less than 4 points
+
+
+Is_Undirected_Simple (former Is_Simple_Undirected)
+    did not work for graphs with more than 2^16 nodes
+
+
+VISIBILITY_REPRESENTATION (graph_draw)
+    failed in presence of more than two parallel edges
+
+
+
+Window
+   renamed W.draw_rectangle(p,q,rndness col)  to W.draw_roundrect(p,q, ...)
+
+   file_panel could not handle initial file name of length 0 (empty string)
+
+
+
+------------------------------------------------------------------------------
+LEDA-4.2.1
+------------------------------------------------------------------------------
+
+
+point
+      missing functions  inside/on/outside_circle  added
+
+node_pq
+      bug in print_node method
+
+random_source
+      added private copy_constructor
+
+events
+      problem with macros solved by using no-macro version
+
+polygon
+      bug in bounding_box method fixed
+      bug in simplicity test fixed
+
+
+
+------------------------------------------------------------------------------
+LEDA-4.2
+------------------------------------------------------------------------------
+
+
+
+dynamic_trees
+       bug in evert operation has been fixed
+
+slist
+       assignment (operator=) was not guarded against self-assignment
+
+matrix
+       in matrix::triang an array was deleted without "[]"
+       
+
+_d_array:
+       missing clear operation
+
+partition
+       incorrect P.size(x) after split operations
+
+graph
+       problem with graph::clear() and destructor in presence
+       of hidden nodes or edges
+
+node/edge/face_map
+       memory leak  fixed
+
+
+
+TRIANGULATE_POLYGON  
+       crashed if input size < 2, 
+       inner & outer edges exchanged
+
+
+GraphWin:
+       opening context menu crashed after removing items of main menu removed
+       memory leak in gw.clear_graph() fixed
+
+
+
+------------------------------------------------------------------------------
+LEDA-4.1
+------------------------------------------------------------------------------
+
+General Fixes
+        name clash with __volatile under FreeBSD
+
+Multi-Thread  (-DLEDA_MULTI_THREAD)
+        problem in <LEDA/thread/mem_mgment.h>: used "string" but did
+        not include <LEDA/string.h>
+
+Numbers
+       some minor fixes in _real.c
+
+int_set
+       bug on 64-bit platforms fixed
+
+Sortseq
+       reverse iteration (forall_rev_items) did not work
+
+Demos
+       demo_cout/DataTypes/sortseq_merge.c :  name clash with "quad"
+       demo_cout/Impl/p_queue_test.c       :  f_heap redefined
+
+GRAPH<vtype,etype>
+       bug in operator= (not guarded against self-assignment) fixed
+
+GraphWin
+       error in gw_add_call template fixed
+
+d3_ray.h
+       missing prefixing macros
+
+
+------------------------------------------------------------------------------
+LEDA-4.0
+------------------------------------------------------------------------------
+
+prefixing:
+   missing prefixing macros in <LEDA/d3_hull.h>
+
+linux: 
+   replaced setfpucw by corresponding assembler command
+
+Makefiles:
+   clean and del targets did not work properly for demo and test subdirectories
+   man target: added -o to dvips to prevent sending the output to the printer
+
+
+integer:
+   memory leak in integer::divide fixed
+
+rat_vector:
+   constructor rat_vector(rational,rational) was declared but not defined
+
+map:
+   forall_defined iteration works for integer and pointer types
+
+
+(rat_)polygon:
+   missing implementation of operator==
+
+(rat_)point_set:
+   lookup crashed on empty point_set
+
+window:
+   ALT-<chr> shortcuts did not work for linux/X11
+   After >>-input the frame label was always reset to the LEDA 
+   copyright string ignoring the label defined by W.set_frame_label().
+
+
+GraphWin:
+   gw.win_init(x0,x1,y0) failed if called before gw.display()
+   memory leak in read and read_gml fixed
+   bug in write_ps (ghost edges) fixed
+   memory leak in clear (if called from graph menu)
+
+
+
+------------------------------------------------------------------------------
+LEDA-3.8
+------------------------------------------------------------------------------
+
+graph::hide/restore_edge(e)
+   now can be called in forall_edges(e,G) - Loops
+
+graph iterator demo
+   gw_git_demo.c caused internal error in egcs 1.1.x
+
+graph::move_edge
+   did not work for selfloops
+
+cmp-based data types (dictionary, p_queue, sortseq ...)
+   memory leak: dynamically allocated cmp-object not deleted
+
+random_source:
+   operator()(int bits) did only produce bits-1 random bits
+
+integer:
+   integer::random(int bits) every 32-th bit was zero
+
+prefixing:
+   missing prefixing macros in <LEDA/list.h>
+
+partition:
+   iteration did not work
+   missing const qualifiers
+
+graph_misc:
+    Make_Simple did not find (and remove) parallel edges in undirected graphs
+  
+
+point_set:
+   missing const qualifiers for point_set::inf and point_set::key
+
+ALL_PAIRS_SHORTEST_PATHS
+   did not work for undirected graphs (because of a selfloop), now does.
+
+DIJKSTRA(G,s,t,...)
+   had a memory leak (node_pq's not deleted)
+
+rat_circle:
+   bug in point_on_circle fixed
+
+graphwin:
+   color "invisible" could not be represented in gml format
+   postscript output: incorrect bounding box
+   read_gml: changed y-coordinates of nodes
+
+
+------------------------------------------------------------------------------
+LEDA-3.7.1
+------------------------------------------------------------------------------
+
+map2
+    bug in copy constructor fixed
+
+array2
+    memory leak in operator=
+
+d_array
+   assignment did not copy default entry
+
+leda_cmp_base (dictionary, p_queue, sortseq, ...)
+    cmp_ptr pointed to deleted object after copy construction or
+    assignment
+
+Is_Biconnected/Is_Triconnected:
+    did not work correctly in presence of selfloops
+
+window
+    uncatched overflow in W.message()
+
+d3_window
+    memory leak
+
+graphwin:
+    gw.acknowledge(...)  could not be called in handler functions
+    place_into_box/win: division by zero for horizontal/vertical graphs 
+
+graph_alg
+    bug in MAX_CARD_MATCHING (non-initialized node_array)
+    bug in MAX_FLOW (illegal memory access in level_queue)
+
+face_map, edge_set, node_map2
+    mising copy constructor and assignment operator
+
+node_pq
+    find_min() crashed on empty queue
+
+d3_point, d3_rat_point
+    incorrect orientation predicate (flipped sign)
+    error in point_on_positive_side
+
+d3_(rat_)plane
+    missing constructor d3_(rat_)plane(const point&, const point&) added
+
+d3_rat_plane
+    bug in "normal_project" caused errors in "sqr_dist" and "reflect"
+
+d3_hull
+    incorrect orientation of initial triangle (caused crashes for some inputs)
+
+set
+    bug in stl-style iterator access
+
+prefixing
+    several missing type names added to (RE/UN)DEFINE_NAMES.h
+
+
+------------------------------------------------------------------------------
+LEDA-3.7 
+------------------------------------------------------------------------------
+
+CONVEX_HULL:
+   did not work correctly for collinear points
+
+dictionary:
+   bug in ab_tree copy constructor and assignment operator fixed
+
+segment:
+   missing definition of s.distance() (distance from origin) added
+
+ray:
+   precision problem in r.intersection(segment) fixed
+
+p_dictionary:
+   missing implementation of D.del_item(it) added
+   insert did not change information if key already present
+
+map:
+   M.defined(x) returned always true for x = current table size
+
+graph:
+ - forall macros did not work in presence of -DLEDA_PREFIX
+ - memory leak in GRAPH<vtype,etype>::read() (for non-simple types vtype/etype)
+ - I/O for parameterized graphs with type parameter "bool" did not work
+ - copy constructor and assignment (copy_graph) destroyed ordering of 
+   incoming edges
+
+integer:
+   bug in I/O functions on 64-bit systems
+
+delaunay_triang:
+   bug in constructor delaunay_triang(const list<point>&) 
+   (missing initializations)
+
+
+------------------------------------------------------------------------------
+LEDA-3.6.1 
+------------------------------------------------------------------------------
+
+FIVE_COLOR:
+    now can handle graphs with parallel or bidirected edges
+
+bigfloat/real
+    did not work on 64 bit systems (irix64)
+
+array::binary_search
+    was not declared "const"; now is
+
+random_planar_graph(graph& G, int n)
+    ocasionally crashed
+
+graph::split_face
+    did not update size of faces
+
+list::contents(list_item)
+    used non-const access (replaced LEDA_ACCESS by LEDA_CONST_ACCESS)
+
+array::binary_search
+    illegal memory access
+
+d3_(rat_)point
+    bug in contained_in_simplex
+
+map2
+    illegal memory access in operator()
+
+read_directory
+    forgot to close directory structure
+
+bin_tree
+    bug in copy_tree (pointer into freed memory)
+
+memory_manager
+    allignment bug (caused crash when using large matrices)
+
+node_pq
+    illegal memory access in P.prio(it) fixed
+
+CLOSEST_PAIR:
+    illegal array access fixed
+
+window
+   w.read_event(...) returned "no_event" for motion events inside of
+   the panel area instead of ignoring them  (fixed)
+
+GraphWin
+    - editing (setup) of data labels for nodes and edges did not work
+    - loading of undirected graphs now works (produced "cannot merge
+      directed with undirecte graph" error message before)
+    - (un)selecting nodes by clicking and dragging a rectangle with the
+      middle button did only work if dragged from the lower left to
+      the upper right corner.
+    - context menues were not fully displayed when opened near the lower
+      edge of the window
+
+
+------------------------------------------------------------------------------
+LEDA-3.6 
+------------------------------------------------------------------------------
+
+- subdivision::locate_point
+    was completely broken
+
+- array<T>::sort()
+    illegal memory access (for class types T) 
+
+- integer
+    integer::div  (incorrect size of quotient)
+    integer::ceil 
+    integer::islong
+
+- polygon::intersect(polygon) and unite
+    still had bugs, now is based on a new algorithm using planar maps
+
+- b_heap
+    bug in decrease_key  (incorrect computation of max/min index)
+
+- window
+    very slow opening of windows and panels was caused by repeated
+    construction of icons (even for windows that did not use icons)
+
+    in action functions attached to buttons drawing mode was always
+    set to xor_mode (now the mode is not changed)
+
+- color
+    made get-functions const
+    included color into the name redefine procedure
+
+
+- graphwin
+    crashed when writing a postscript file of a graph without edges
+    did not draw edge labels in postscript output
+
+- edge_set
+    missing iteration functions added (now forall(e,S) works)
+
+- mem_mgment.h (multi-thread save memory manager)
+    syntax error (missing \) corrected
+
+
+------------------------------------------------------------------------------
+LEDA-3.5.2 
+------------------------------------------------------------------------------
+
+- array
+     forall(x,A) did not work with hpuxc++
+
+- graph::read
+     now can read old graph format (without reversals)
+     restriction of label size to 1024 bytes eliminated
+
+- GRAPH<T1,T2>::read
+     null pointer reference
+
+- array2::operator=
+     did not allocate space for new table
+
+- node_pq::del_min 
+     crashed for emtpy queue
+
+- bug in handle_base destructor and operator= in presence of -DMULTI_THREAD
+
+- array
+     memory leak in operator=
+
+- Dictionaries with implementation parameter: _dictionary<K,I,impl>
+     did not work for impl = ch_hash (missing equal_key function)
+
+- Memory Management 
+     did not compile with -DMULTI_THREAD
+
+- bounded queues
+     b_queue<T> Q(n)  could only contain n-1 elements
+
+- forall_rev_items
+     did NOT traverse the items in reversed order
+
+- GraphWin
+     could not save or read paramaterized graphs (GRAPH<T1,T2>)
+
+- window
+     W.create_pixrect(xpm_data) did not work for "chars_per_pixel > 1"
+
+- d3_(rat_)plane
+     missing default constructor definition
+
+
+
+------------------------------------------------------------------------------
+LEDA-3.5.1 
+------------------------------------------------------------------------------
+
+-  hide_edge/restore edge (many problems, documentation bug)
+
+   There was a change in the semantics of G.hide_edge(e) from Version 3.4
+   to Verson 3.5: 
+
+     G.hide_edge(e)  
+        removes e from the corresponding adjaceny lists
+        AND from the list of all edges E
+
+   The old definition of hide_edge (removed e only from the adjacency lists)
+   caused a lot of problems with algorithms working on the global edge
+   list of a graph. So, we decided that G.hide_edge(e) should completely
+   hide e, i.e., temporarily have the same effect as G.del_edge(e).
+
+
+   In previous version (< 3.5) the fact that hidden edges remained
+   in the list of all edges was used to restore all hidden edges as in
+
+       forall_edges(e,G) G.restore_edge(e);
+
+   Now you must either use the restore_all operation
+
+       G.restore_all_edges();
+
+   or collect all hidden edges in a list, say hidden, and use
+
+       forall(e,hidden) G.restore_edge(e);
+
+
+   However, LEDA-3.5 had a bug just in graph::restore_all_edges() so 
+   that only the second alternative worked. The bug is fixed in 3.5.1.
+
+
+   Another problem caused by the fact that hidden edges now
+   are removed from the global edge list was that the loop
+
+      forall_edges(e,G) G.hide_edge(e)
+
+   did not work anymore. This has also been fixed in LEDA-3.5.1
+   
+
+
+
+- integer::tostring  
+     (did not allocate enough memory)
+
+- list::reverse_items(it1,it2)
+     (only reversed sub-list [it1,...,pred(it2)], now reverses [it1,...it2]) 
+
+- int_set
+     (memory leak fixed)
+
+- graph::restore_all_edges()
+     (restored only one edge)
+
+- graph::write/graph::read 
+     (now also write and read the reversal information of edges)
+
+- graph: forall_edges/forall_nodes/forall_adj ...
+     (deleting nodes/edges or hiding edges now works in forall loops)
+
+- graph: forall_inout_edges
+     (break now works as expected)
+
+- node/edge_map::init()
+     (unitialized memory caused crash in destructor)
+
+- node_set/edge_set
+     (declared member(x) as const, replaced array by map)
+
+- Is_Simple(const graph&)
+     (crashed when called for empty graph)
+
+- Make_Biconnected
+     (did not work for graphs with self-loops)
+
+- polygon::intersection(line/segment)
+     (computed multiple points if line/segment passed through vertex)
+
+- polygon::intersection(polygon)/polygon::translate(...)
+     (bug in translate that caused crash in intersection fixed)
+
+- polygon::inside(point)
+     (produced inconsistent results for points on the boundary of the polygon,
+      now returns true for boundary points)
+
+- SMALLEST_ENCLOSING_CIRCLE
+     (error if all points are cocircular)
+
+- TRIANGULATE_POINTS (-->SMALLEST_ENCLOSING_CIRCLE) 
+     (crashed when called for a single point)
+
+- SEGMENT_INTERSECTION
+     (definition was missing)
+
+- x11 (colors)
+     (bug in x_new_color: returned incorrect color id)
+
+- GraphWin
+    (set_flush, set_node_width, set_node_height worked only after gw.display())
+
+- Redefine/Undefine Names (leda_ - prefix)
+     (did not work with graphwin.h, ps_file.h )
+
+
+------------------------------------------------------------------------------
+LEDA-3.5 
+------------------------------------------------------------------------------
+
+ - bug in point::angle(q,r) (now reports an error for degenerate inputs)
+
+ - bug in ch_hash::insert (returned illegal pointer)
+
+ - bug in segment::distance(point) fixed  and missing
+   rat_segment::sqr_distance(rat_point) inserted
+
+ - bug in operator>>(random_source&,integer&)
+
+ - bug in vector::operator=  (assignment of zero-dimensional vector)
+
+ - missing copy constructor and assignment operator for node/edge_map
+
+ - param_types.h: declared some of the GenPtr variables as "volatile"
+
+ - problems when including string.h before any other header file
+
+ - bug in graph::del_edge(e) for hidden edge e (incorrect degree of source)  
+
+ - bug in leda_copy (missing initialization in non-template versions)
+
+ - bug in window::choice_item() (for fixed (6,7,8) numbers of strings)
+
+ - bug in node_set  (missing copy constructor and assignment operator)
+
+ - bug in polygon::unit() fixed
+
+ - bug in MAXFLOW (in presence of zero capacity edges) fixed
+
+ - bug in VORONOI (wrong edge labels)
+
+ - bug in set<T> symdiff operator  (% and %=)
+
+ - bug in list::move_to_rear
+
+ - PLANAR replaced by PLANAR0
+
+ - bug in circle output/input operators fixed 
+
+ - bug in straight line embedding algorithms (did not work for n < 3) 
+
+ - bug in skilist memory allocation on 64bit machines
+
+ - PLANAR_MAP::split_edge(edge e, vtype x)
+   tried to assign node info x to an edge  
+
+ - missing initialization in "triangulated_planar_graph"
+
+ - bug in k_heap (parent computation failed for root)
+
+------------------------------------------------------------------------------
+LEDA-3.4.1 
+------------------------------------------------------------------------------
+
+ New (beta) version of GraphWin (see .../src/graphwin/Changes)
+
+ Bug in PLANAR_MAP constructors fixed
+
+ Bug in random_planar_graph fixed
+
+ Bug in Is_Biconnected fixed
+
+ changed type of arguments in Is_...(G) (graph_misc.h) to "const graph&"
+
+ name conflict with "mutex":  renamed mutex to leda_mutex
+
+ _os2.c : Makefile fixed and missing bitmap operations added
+
+ polygon/rat_polygon  several bugs (union,area,...)            FIXED
+
+ graph::size(face) always returned 0                           FIXED
+
+ graph::write() produced self-loops for undirected graphs      FIXED
+
+ INT<cmp> name conflicts with MFC                              FIXED
+
+ array<int>::sort(cmp)  ignored cmp function                   FIXED  
+
+ graph::compute_faces() did not delete existing list of faces  FIXED
+
+ list::rank()  did not work at all                             FIXED      
+
+ window::string_item()  did not update string length           FIXED
+                        now strings can bed edited using
+                        mouse and cursor keys
+
+------------------------------------------------------------------------------
+LEDA-3.4-p1  (patch1) 
+------------------------------------------------------------------------------
+
+- work-around for hpc++ bug:
+
+    new versions of rat_vector.h und _rat_vector.c
+    (moved constructors into c-file)
+    inserted some casts from integer to rational in _rational.c
+
+- missing }*/ in bigfloat.h ( after todouble() ) inserted
+
+
+- real.h
+   made sign(real) inline
+
+
+------------------------------------------------------------------------------
+LEDA-3.4 (02.09.1996)
+------------------------------------------------------------------------------
+
+the following problems have been fixed:
+
+- Color allocation problem
+
+- memory problem in graph
+
+- round for rationals
+
+- rotation bug in rb_tree
+
+- uninitialized memory
+
+- missing constructors for p_queue and r_heap
+
+- bug in k_heap for  k>2   
+
+- shared libs for LINUX  
+
+- Bug in hashing
+
+- Bug in panel::int_item("...",x,1,1);  
+
+- Bug in integer bitwise or                             
+
+- Bug in line::perpendicular 
+
+- Bug im sweep Algorihtmus
+
+- Bug Tree Collection
+
+- Bug when using colors without opening window
+
+- problem with m_heap::print
+
+- Iterators and g++ warnings
+
+
+------------------------------------------------------------------------------
+LEDA-3.3.1 (09.04.1996)
+------------------------------------------------------------------------------
+
+BUG: lconfig script 
+
+FIX: replace in lines 104 and 107 of <LEDA>/lconfig 
+     src/Make.pro by prog/Make.pro
+
+
+BUG: memory leak in graph copy constructor and assignment
+
+FIX: delete or comment out lines 70 and 77 in <LEDA>/src/_graph.c
+     (70)  memory_allocate_block(sizeof(node_struct),n);
+     (77)  memory_allocate_block(sizeof(edge_struct),m);
+
+
+BUG: window destructor should be declared virtual 
+
+FIX: replace in line 288 of <LEDA>/incl/LEDA/base_window.h
+        ~BASE_WINDOW();
+     by
+        virtual ~BASE_WINDOW();
+
+
+BUG: planar_map(const planar_map&) copy constructor missing
+
+FIX: insert after line 140 in <LEDA>/incl/LEDA/planar_map.h the line
+        planar_map(const planar_map& M) : graph(M) { make_planar_map(); }
+
+
+BUG: memory leak in Karatsuba multiplication (_integer.c)
+
+FIX: insert in <LEDA>/src/numbers/_integer.c after line 813 the line
+       delete[] trp;
+
+
+BUG: problem with grid_mode cursor in windows in presence of 
+     other (panel) windows
+
+FIX: insert in file <LEDA>/src/window/_base_window.c the following 
+     two lines at the beginning of  function void BASE_WINDOW::cursor(void) 
+
+     if (this != read_window) return;
+     x_set_read_gc(draw_win);
+
+
+
+PROBLEM: "shadow" warnings by g++ (2.7.2)
+
+FIX:     remove the definition of the __NEW_SCOPE_RULES__ macro 
+         in <LEDA/system.h>
+
+
+
+BUG: error in gen_array::binary_search
+
+FIX: replace in <LEDA>/src/basic/_array.c the gen_array::binary_search  by
+
+int gen_array::binary_search(GenPtr x)
+{ int l = 0;
+  int r = sz-1;
+ 
+  if (int_type())
+    { int x_i = LEDA_ACCESS(int,x);
+      while (l <= r)
+      { int m = (l+r)/2;
+        int m_i = LEDA_ACCESS(int,v[m]);
+        if (x_i == m_i) return m+Low;
+        if (x_i > m_i)
+           l = m+1;
+        else
+           r = m-1;
+       }
+     }
+  else
+     while (l <= r)
+     { int m = (l+r)/2;
+       int c = cmp(x,v[m]);
+       if (c == 0) return m+Low;
+       if (c > 0)
+          l = m+1;
+       else
+          r = m-1;
+      }
+ 
+  return  Low-1;
+}
+
+
+
+PROBLEM: conflicts with "node_data" and "edge_data" macros
+         in REDEFINE_NAMES.h and <LEDA/node/edge_map.h>
+
+FIX:     delete all occurences of these two macros
+
+
+
+PROBLEM: cannot construct and delete interval sets in the dynamic memory
+         using the new and delete operators
+
+FIX:     remove "LEDA_MEMORY(range_tree)" from <LEDA/impl/range_tree.h>
+
+
+
+PROBLEM: compilation problems with microsoft visual c++
+
+FIX:     replace <strstream.h> by <strstrea.h>, undefine __TEMPLATE_FUNCTIONS__
+         in <LEDA/system.h>,  use /c option before /Tp option in make.src
+
+
+
+PROBLEM: missing documentation of set join,intersect,difference operations
+FIX:     added manual descriptions in <LEDA/set.h>
+
+
+PROBLEM: output statement (cout << ...) in _rational.c
+FIX:     remove it
+
+
+
+PROBLEM: memory leak in graph::clear()
+FIX:     replace in <LEDA>/src/graph/_graph.c line  193
+            forall(v,v_list) delete v;
+         by
+            forall(v,v_free) delete v;
+
+PROBLEM: plan_demo program crashes in presence of a K5 Kuratowski graph
+FIX:     substitute in file prog/demo/plan_demo.c line 342
+           forall_nodes(v,G) if (G.degree(v) == 3) break;
+         by
+           forall_nodes(v,G) 
+              if (v == G.last_node() || G.degree(v) == 3) break;
+     
+------------------------------------------------------------------------------
+ LEDA-3.3 (15.02.96)
+------------------------------------------------------------------------------
+
+Bugs have been fixed in
+
+- basic
+     string::operator[](int)
+     string::string(const char*, const char*)
+     real/bigfloat (pow2 problem)
+     integer::random
+
+- dictionaries
+     h_array 
+     map
+
+- graph
+    read/write
+    copy_graph
+    operator=
+    make_directed()
+    clear
+    generators
+
+- planar_map
+    operator=
+    copy constructor
+
+-graph_alg
+    bellman_ford
+    planarity test
+    min_cut
+
+-geometry
+    rat_point
+    circle::intersection
+    line::perpendicular
+    segment::intersection
+    polygon::unite
+    DELAUNAY_TRIANG
+
+- windows 
+    panel string item
+    nested panels (menues)
+
+- installation
+    problem with REDEFINE.h fixed
+
+
+
+------------------------------------------------------------------------------
+ LEDA  3.2.3  (18.9.95)
+------------------------------------------------------------------------------
+
+- bug in sweep_segments fixed
+- missing initialization in function template "Convert"
+- bug in string::operator[] fixed
+- bug in integer cmp fixed
+
+
+------------------------------------------------------------------------------
+ LEDA  3.2.2  (01.9.95)
+------------------------------------------------------------------------------
+
+- node_pq::member   returned always true
+- rat_segment::intersection(rat_segment)
+- intersection(rat_segment,rat_segment)  for vertical segments
+- array2: missing copy-constructor and assignment operator inserted
+- ugraph::first_adj_edge(node v)
+- ugraph::last_adj_edge(node v)
+- point,rat_point,segment,rat_segment (sign of the orientation primitive)
+- h_array (empty array now has default size of 1 instead of 512)
+- polygon::unite
+
+
+------------------------------------------------------------------------------
+ LEDA  3.2.1 (27.7.95)
+------------------------------------------------------------------------------
+
+ - segment: orientation
+ - missing destructor for handle_base
+ - forall - macro 
+ - list::split operation 
+ - iteration for constant sets
+ - bug in MIN_CUT graph algorithm 
+ - bug in orientation(segment,point) 
+ - polygon::intersection and polygon::inside rewritten
+ - bug in window grid drawing
+
+
+------------------------------------------------------------------------------
+ LEDA  3.2    (7.7.95)
+------------------------------------------------------------------------------
+
+
+- SEGMENT_INTERSECTION
+
+            now also works in case of "degenerate" input
+
+- graphs
+            graph::cyclic_in_succ, graph::cyclic_in_pred,
+            graph::first_adj_edge, and graph::last_adj_edge fixed
+
+            new_edge(e1,e2,dir1,dir2) fixed
+
+            copy constructor and assingment now preserve order of 
+            adjacency lists
+
+            missing implementation of graph::in_edges(v) included
+
+            bug in copy constructor of node/edge_array and node/edge_map fixed
+
+            b_node_pq: first insert now initalizes minimum correctly
+
+            planar_map::split_edge fixed
+  
+
+
+- param_types
+             one-word class types
+             64 bit architectures
+
+- h_array
+            iteration (forall_defined) now works
+
+- set
+           copy constructor and operator=
+           (bug in bin_tree::copy_tree fixed)
+
+
+- map<I,E>  destructor now deletes E's
+            bug in rehash fixed
+
+- array
+            array::read(istream in) replaced by  array::read(istream& in)
+
+- panel
+            panel("...",w,h)   now creates a panel with width w and height h
+
+ 
+- skiplist  change_inf now destroys old and copies new information
+ 
+- matrix    memory leak in triang fixed
+
+
+
+
+------------------------------------------------------------------------------
+Version 3.1.2       (3.02.95)
+------------------------------------------------------------------------------
+
+-list.h:   made list_item list::operator[](int i)  const
+-string.h: made operator+ a friend function
+-map.h:    replace int(x)   by  int(Convert(x))
+-graph.h:  replace in line 258 and 268 "next_power(i)"  by "next_power(i+1)"
+-integer.c: replace line 1752 { cout << "0"; by { out << "0";
+            replace line 1769 if (x.PTR->sign == NEGATIVE) cout << "-";
+-real.c: many changes
+
+SUNPRO C++ (use 4.0.1 NOT 4.0, use -pto flag )
+- do not use assembler code in _string.c
+- define __svr4__ if __SVR4 is defined
+- use format_string variant of string constructor
+- changes to avoid some of the "something hides something" warnings
+
+------------------------------------------------------------------------------
+Version 3.1.1       (27.01.95)
+------------------------------------------------------------------------------
+
+ array.h:     operator[] now calls gen_array::entry (instead of inf)
+ edge_set.h:  node_array<list_item> replaced by edge_array<list_item>
+ list.h:      cmp_ptr set to nil in list::search()
+ list.h:      missing app - function inserted.
+ node_pq.h    print_inf  now prints index of node
+ dlist.h:     replaced EOF by char(EOF) (problems with EOF <0)
+ _g_inout.c:  read & write for user defined node/edge types fixed
+ _g_update.c: infinite loop in insert_reverse_edges eliminated
+ _skiplist.c: locate_succ, locate fixed
+ _integer.c:  memory leak in integert:integer(double) fixed
+ _real.c:     special floating point functions calls replaced
+ _random.c:   BSD Code for random/srandom included 
+ _basic.c:    usleep replaced by sleep
+ _g_map.c:    table is deleted only if table_size > 0
+ _bin_tree.c: copy constructor now sets corr-pointer of rightmost leaf
+ Type_Name function defined for basic LEDA types (point,string, ...)
+
+ Makefiles: _sparc.s will be assembled only on sparc machines
+
+------------------------------------------------------------------------------
+Version 3.1
+------------------------------------------------------------------------------
+
+16.01.95    array::operator=  fixed
+
+13.01.95    graph::read and graph::write did not work for unparameterized
+            graphs, fixed. 
+
+13.01.95    node_set edge_set rewritten
+            int_set: hard coded word size replaced by sizeof-call
+
+ 6.01.95    list<T>::sort(cmp_func), list<T>::bucket_sort(ord_func)
+            list<T>::min(cmp_func), list<T>::max(cmp_func), 
+            list<T>::apply(app_func) did not work for types with
+            sizof(T) > sizeof(void*); bug is fixed.
+
+            array::sort(cmp_func), array::sort(l,h,cmp_func)
+            array::binary_search(cmp_func), same problem as in lists fixed
+
+21.11.94    bug in vector::operator=(const vector&) fixed
+            (old (d) and new (n) dimensions exchanged)
+
+17.11.94    bug in rs_tree (set<T>) copy constructor fixed
+
+15.11.94    LEDA_MEMORY: operator new & delete now use the size argument 
+
+07.10.94    bug in array copy constructor fixed
+            memory leak in list::assign() fixed
+            polygon CONVEX_HULL(list<point>)  new algorithm (Graham's Scan)
+            bugs in segment::intersection() and line::intersection() fixed
+        
+29.09.94    bug in binary heaps (negative integer keys) fixed
+
+28.09.94    UGRAPH::assign(node/edge,...) fixed
+
+ 6.09.94    bug in list<node> graph::adj_nodes() (undirected graphs) fixed 
+
+ 8.08.94    Iteration (forall_defined) for h_arrays 
+
+ 4.08.94    some problems in _leda_panel.c fixed (slider items, buttons, ...)
+
+11.07.94    Multi-definition problem with read_mouse(window, ...) and g++ fixed
+
+22.03.94    bug in skiplist copy constructor fixed
+
+22.12.93    memory leaks in leda panels 
+
+21.12.93    nested forall-loops
+
+17.12.93    string::read now can read strings of arbitrary length
+
+11.10.93    made dlist::bucket_sort stable
+            corrected return value of COMPUTE_CORRESPONDENCE 
+
+08.09.93    memory bug in dp_hash (dynamic perfect hashing) fixed
+
+12.08.93    k_heap::del_item fixed 
+
+25.06.93    made rs_tree::change_inf (dictionary) clear old and copy new 
+            information 
+
+16.06.93    dlist::search (replaced != by call of virtual cmp function)
+
+07.06.93    line::intersection (used to report intersection of parallel lines)
+
+01.06.93    fixed bug in queue::append (replaced Convert by Copy)
+
+05.05.93    bugs in MAX_WEIGHT_BIPARTITE_MATCHING fixed (by M. Paul)
+
+05.04.93    prio.h: added missing ostream argument cout to Print calls
+
+12.03.93    stack::push(x)    replaced Convert(x) by Copy(x)
+
+09.03.93    segment::angle()  returns zero for segments of length zero
+
+05.03.93    memory leak in draw_(filled_)polygon fixed
+
+25.01.93    bug in ab_tree::clear() fixed (forgot to set counter to zero)
+
+30.12.92    made dlist update operations protected
+
+20.12.92    changed type "SIG_PF" in basic.h to "LEDA_SIG_PF"
+
+07.12.92    missing operation ugraph::read(istream&) inserted
+
+
+
+------------------------------------------------------------------------------
+Version 3.0
+------------------------------------------------------------------------------
+
+09.11.92    Convert and Access for parameter types of size smaller than 
+            pointers (e.g. char, short) fixed
+
+16.07.92    bug with colinear points in delaunay_tree, VORONOI, point_set, ...
+            fixed
+
+27.05.92    MAX_WEIGHT_BIPARTITE_MATCHING(double) (_mwb_matching.c)
+            fixed precicision problem that caused a negative loop in DIJKSTRA
+
+19.05.92    list::sort now works for lists of length 1
+
+12.05.92    type conversion for "char" (Copy,Convert,Access, ...)  fixed
+
+
+------------------------------------------------------------------------------
+Version 2.2
+------------------------------------------------------------------------------
+
+27.04.92    matrix::operator=(const matrix&) 
+            matrix::triang()
+
+17.04.92    lost memory bug in string::operator+ fixed   (Nicolas Caillaud)
+
+16.04.92    made all destructors virtual
+
+13.04.92    bug in GRAPH::assign(node/edge,vtype/etype) fixed
+            made operator<< and operator>> for circles reverse ops
+
+11.04.92    copy-bug in graph::operator=() and graph(const graph&) fixed
+
+
+------------------------------------------------------------------------------
+Version 2.1
+------------------------------------------------------------------------------
+
+16.12.91    fixed Copy bug for list, GRAPH, and UGRAPH
+
+10.12.91    defined read(write)_node(edge)_entry for UGRAPH
+
+
+28.11.91    made void*-functions (append,push, ....) in dlist, graph
+            and ugraph protected
+
+12.11.91    vector/matrix subtypes for arrays
+            operator=  & operator== now may be called for objects with
+            differnt dimensions
+
+
+11.11.91    Copy(vector&) ---> Copy(const vector&)
+            Copy(matrix&) ---> Copy(const matrix&)
+
+
+31.10.91    string& string::operator=(const char* s)
+            Bug: Zugriff auf deallocierten Speicher fuer p->s = s
+
+
+28.10.91    in bool line::operator==(const line&)
+            Bug: funktionierte nicht fuer 2 vertikale Linien
+

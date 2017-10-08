@@ -1,0 +1,23 @@
+\bf Data Structures\rm
+
+The algorithm uses two stacks of nodes and two node labellings to
+keep track of the strongly connected components of $G_c$.
+
+Each reached node has a dfs-number. Unreached nodes have dfs-number equal
+to -1. Each reached node shows its dfs-number.
+Each node has a component number. For nodes in permanent components this
+is the number of the component and for all other nodes this number is -1.
+Nodes in permanent components show their component number.
+
+There are two stacks, a stack unfinished and a stack roots. The first
+stack contains all nodes in active components in increasing order of their
+dfs-number and the second stack contains for each active scc the lowest
+numbered node of the scc (the so-called root of the scc). In our figures
+roots are shown as wide rectangles.
+
+The roots stack is a subsequence of the unfinished-stack and therefore
+its elements partition unfinished into segments.
+Each segment forms a tentative strongly connected component.
+
+This completes the description of the data structure.
+   

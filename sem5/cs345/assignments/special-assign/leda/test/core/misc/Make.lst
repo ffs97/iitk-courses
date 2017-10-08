@@ -1,0 +1,18 @@
+
+PROGS  =\
+array_test$(e) \
+array2_test$(e) \
+calen$(e) \
+date_demo$(e) \
+date_test$(e) \
+list_test$(e) \
+list_ptr$(e) \
+qs$(e) \
+qsort_isort$(e) \
+sort_test$(e) \
+sort2_test$(e) \
+order$(e) \
+order1$(e) \
+pair$(e) \
+partition$(e) \
+trace$(e)

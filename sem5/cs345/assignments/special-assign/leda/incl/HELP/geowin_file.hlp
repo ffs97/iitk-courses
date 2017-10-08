@@ -1,0 +1,25 @@
+\\bf\\blue Load Scene:\\
+Lets you load a scene (collection of geometric 
+objects) into GeoWin. If you have saved the scene with Export, 
+you have to choose 'Read without Header'. Normally the contents 
+of the old scene will be overwritten and replaced by the loaded 
+objects. If you don't want that, you can choose 'Add objects to 
+scene'.
+
+\\bf\\blue Save Scene/ Export Scene:\\
+Here you can save the contents of the 
+currently edited scene to a file. If you choose 'Export Scene', 
+the file will be saved without a file header. To load scenes saved 
+with 'Export' you have to open a appropriate scene in GeoWin, and 
+then you have to choose 'Read without Header'.
+
+\\bf\\blue PS active scene/ PS visible scenes:\\
+Here you can output the contents 
+of the currently active scene/ all visible scenes in Postscript format.
+
+\\bf\\blue Screenshot:\\
+writes a screenshot of the GeoWin window to a file. You can 
+choose, whether you want color or black and white output.
+
+\\bf\\blue Quit:\\
+here you can exit GeoWin.

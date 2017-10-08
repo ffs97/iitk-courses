@@ -1,0 +1,36 @@
+Name: date test
+Task: test
+Error in constructor: (d m y):
+  Test failed: err::fetch() == "date: invalid date"
+  In file date_test.cpp at line 189
+Error in constructor: (d m y):
+  Test failed: err::fetch() == "date: invalid date"
+  In file date_test.cpp at line 191
+Error in constructor: (d m y):
+  Test failed: err::fetch() == "date: invalid date"
+  In file date_test.cpp at line 193
+Error in constructor:string:
+  Test failed: err::fetch() == "date: invalid date"
+  In file date_test.cpp at line 201
+Error in constructor:string:
+  Test failed: err::fetch() == "date: invalid date"
+  In file date_test.cpp at line 203
+Error in constructor:string:
+  Test failed: err::fetch() == "date: invalid date"
+  In file date_test.cpp at line 205
+Error in set_language:
+  Test failed: err::fetch() == "date: invalid language"
+  In file date_test.cpp at line 223
+Error in input5:
+  Test failed: err::fetch() == "date: invalid format"
+  In file date_test.cpp at line 272
+Error in output5:
+  Test failed: err::fetch() == "date: invalid format"
+  In file date_test.cpp at line 303
+Error in lower range end 2:
+  Test failed: err::fetch() == "date: date out of range in an arithmetic operation"
+  In file date_test.cpp at line 468
+Error in upper range end 2:
+  Test failed: err::fetch() == "date: date out of range in an arithmetic operation"
+  In file date_test.cpp at line 474
+date-test finished with errors!

@@ -1,0 +1,15 @@
+PROGS = \
+wget$(e) \
+agd_client1$(e) \
+time_server$(e) \
+tclient$(e) \
+c_client$(e) \
+cc$(e) \
+mf_server$(e)\
+mf_client$(e)\
+LedaInputStream.class\
+LedaOutputStream.class\
+LedaSocket.class\
+Mf_client.class
+
+
