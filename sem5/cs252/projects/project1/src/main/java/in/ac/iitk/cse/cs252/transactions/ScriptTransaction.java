@@ -4,9 +4,9 @@ import com.google.common.collect.ImmutableSet;
 import org.bitcoinj.core.*;
 import org.bitcoinj.crypto.TransactionSignature;
 import org.bitcoinj.kits.WalletAppKit;
-import org.bitcoinj.params.MainNetParams;
 import org.bitcoinj.script.Script;
-import org.bitcoinj.script.ScriptBuilder;
+import org.bitcoinj.wallet.Wallet;
+import org.bitcoinj.wallet.SendRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.spongycastle.util.encoders.Hex;
@@ -18,13 +18,14 @@ import java.net.UnknownHostException;
 /**
  * Created by bbuenz on 24.09.15.
  */
+
 public abstract class ScriptTransaction implements AutoCloseable {
 
     private final WalletAppKit kit;
     private final NetworkParameters parameters;
     private final static Logger LOGGER = LoggerFactory.getLogger(ScriptTransaction.class);
 
-    /**
+    /*
      * @param parameters which network to use
      * @param file You wallet directory
      * @param password The password to secure your wallet
@@ -43,9 +44,8 @@ public abstract class ScriptTransaction implements AutoCloseable {
             kit.peerGroup().addAddress(InetAddress.getByName("eligius.st"));
             kit.peerGroup().addAddress(InetAddress.getByName("test-insight.bitpay.com"));
             kit.peerGroup().addAddress(InetAddress.getByName("insight.bitpay.com"));
-
         } catch (UnknownHostException ex) {
-            LOGGER.warn("Failled to add eligius", ex);
+            LOGGER.warn("Failed to add eligius", ex);
         }
     }
 
@@ -70,7 +70,7 @@ public abstract class ScriptTransaction implements AutoCloseable {
     public Transaction createOutgoingTransaction(Script script, Coin amount) throws InsufficientMoneyException {
         Transaction transaction = new Transaction(parameters);
         transaction.addOutput(amount, script);
-        Wallet.SendRequest request = Wallet.SendRequest.forTx(transaction);
+        SendRequest request = SendRequest.forTx(transaction);
         kit.wallet().completeTx(request);
         return transaction;
     }
@@ -84,7 +84,7 @@ public abstract class ScriptTransaction implements AutoCloseable {
     }
 
     public void sendTransaction(Transaction transaction) throws InsufficientMoneyException {
-        Wallet.SendRequest request = Wallet.SendRequest.forTx(transaction);
+        SendRequest request = SendRequest.forTx(transaction);
         LOGGER.info("Transaction hex you can directly submit this to a block explorer:\n{}", new String(Hex.encode(transaction.bitcoinSerialize())));
         kit.wallet().commitTx(transaction);
         kit.peerGroup().broadcastTransaction(transaction);

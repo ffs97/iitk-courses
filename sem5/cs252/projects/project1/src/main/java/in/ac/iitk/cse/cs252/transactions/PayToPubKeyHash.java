@@ -16,22 +16,31 @@ import static org.bitcoinj.script.ScriptOpCodes.OP_VERIFY;
  * Created by bbuenz on 24.09.15.
  */
 public class PayToPubKeyHash extends ScriptTransaction {
-    // TODO: Problem 1
+    private DeterministicKey key;
 
     public PayToPubKeyHash(NetworkParameters parameters, File file, String password) {
         super(parameters, file, password);
+        key = getWallet().freshReceiveKey();
     }
 
     @Override
     public Script createInputScript() {
-        // TODO: Create a P2PKH script
-        // TODO: be sure to test this script on the mainnet using a vanity address
-        return null;
+        ScriptBuilder builder = new ScriptBuilder();
+        builder.op(OP_DUP);                                                 // To duplicate the top value in the hash
+        builder.op(OP_HASH160);                                             // To generate hash of the signature
+        builder.data(key.getPubKeyHash());                                  // To verify signature using hash of public key
+        builder.op(OP_EQUALVERIFY);                                         // To check equality
+        builder.op(OP_CHECKSIG);
+        return builder.build();
     }
 
     @Override
     public Script createRedemptionScript(Transaction unsignedTransaction) {
-        // TODO: Redeem the P2PKH transaction
-        return null;
+        TransactionSignature txSig = sign(unsignedTransaction, key);
+
+        ScriptBuilder builder = new ScriptBuilder();
+        builder.data(txSig.encodeToBitcoin());
+        builder.data(key.getPubKey());
+        return builder.build();
     }
 }

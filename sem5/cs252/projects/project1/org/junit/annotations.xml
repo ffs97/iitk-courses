@@ -1,0 +1,5 @@
+<root>
+    <item name='org.junit.Test'>
+        <annotation name='java.lang.Deprecated'/>
+    </item>
+</root>

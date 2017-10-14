@@ -12,21 +12,19 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.security.SecureRandom;
 
-/**
- * Created by bbuenz on 23.09.15.
- */
+
 public class ScriptTests {
-    // TODO: Change this to true to use mainnet.
     private boolean useMainNet = false;
-    // TODO: Change this to the address of the testnet faucet you use.
-    private static final String faucetAddress = "n2eMqTT929pb1RDNuqEnxdaLau1rxy3efi";
+    private static final String faucetAddress = "mv4rnyY3Su5gjcDNzbMLKBQkBicCtHUtFB";
 
     private String wallet_name;
     private NetworkParameters networkParameters;
     private WalletAppKit kit;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ScriptTests.class);
+
 
     public ScriptTests() {
         if (useMainNet) {
@@ -41,15 +39,17 @@ public class ScriptTests {
         kit = new WalletAppKit(networkParameters, new File(wallet_name), "password");
     }
 
-    public void downloadBlockchain() {
+
+    private void downloadBlockchain() {
         LOGGER.info("Starting to sync blockchain. This might take a few minutes");
         kit.setAutoSave(true);
         kit.startAsync();
         kit.awaitRunning();
         kit.wallet().allowSpendingUnconfirmedTransactions();
         LOGGER.info("Synced blockchain.");
-        LOGGER.info("You've got " + kit.wallet().getBalance() + " in your pocket");
+        LOGGER.info("You've got " + kit.wallet().getBalance().toFriendlyString() + " in your pocket");
     }
+
 
     @Test
     public void printAddress() {
@@ -58,6 +58,27 @@ public class ScriptTests {
         kit.stopAsync();
         kit.awaitTerminated();
     }
+
+
+    @Test
+    public void generateVanityAddress() {
+        NetworkParameters mainNetworkParameters = new MainNetParams();
+
+        String prefix = "sing";
+
+        SecureRandom seed = new SecureRandom();
+        while (true) {
+            ECKey key = new ECKey(seed);
+            Address address = new Address(mainNetworkParameters, key.getPubKeyHash());
+
+            if (address.toString().indexOf("1" + prefix) == 0) {
+                LOGGER.info("Bitcoin Address: " + address.toString());
+                System.out.println("Private Key: " + key.getPrivateKeyAsHex());
+                return;
+            }
+        }
+    }
+
 
     private void testTransaction(ScriptTransaction scriptTransaction) throws InsufficientMoneyException {
         final Script inputScript = scriptTransaction.createInputScript();
@@ -71,62 +92,61 @@ public class ScriptTests {
         scriptTransaction.sendTransaction(redemptionTransaction);
     }
 
-    // TODO: Uncomment this once you have coins on mainnet or testnet to check that transactions are working as expected.
-//    @Test
-//    public void testPayToPubKey() throws InsufficientMoneyException {
-//        try (ScriptTransaction payToPubKey = new PayToPubKey(networkParameters, new File(wallet_name), "password")) {
-//            testTransaction(payToPubKey);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Assert.fail(e.getMessage());
-//        }
-//    }
 
-    // TODO: Uncomment this when you are ready to test PayToPubKeyHash.
-//    @Test
-//    public void testPayToPubKeyHash() throws InsufficientMoneyException {
-//        try (ScriptTransaction payToPubKeyHash = new PayToPubKeyHash(networkParameters, new File(wallet_name), "password")) {
-//            testTransaction(payToPubKeyHash);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Assert.fail(e.getMessage());
-//        }
-//    }
+    @Test
+    public void testPayToPubKey() throws InsufficientMoneyException {
+        try (ScriptTransaction payToPubKey = new PayToPubKey(networkParameters, new File(wallet_name), "password")) {
+            testTransaction(payToPubKey);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail(e.getMessage());
+        }
+    }
 
-    // TODO: Uncomment this when you are ready to test LinearEquationTransaction.
-//    @Test
-//    public void testLinearEquation() throws InsufficientMoneyException {
-//        try (LinearEquationTransaction linEq = new LinearEquationTransaction(networkParameters, new File(wallet_name), "password")) {
-//            testTransaction(linEq);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Assert.fail(e.getMessage());
-//        }
-//    }
 
-    // TODO: Uncomment this when you are ready to test MultiSigTransaction.
-//    @Test
-//    public void testMultiSig() throws InsufficientMoneyException {
-//        try (ScriptTransaction multiSig = new MultiSigTransaction(networkParameters, new File(wallet_name), "password")) {
-//            testTransaction(multiSig);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            Assert.fail(e.getMessage());
-//        }
-//    }
+    @Test
+    public void testPayToPubKeyHash() throws InsufficientMoneyException {
+        try (ScriptTransaction payToPubKeyHash = new PayToPubKeyHash(networkParameters, new File(wallet_name), "password")) {
+            testTransaction(payToPubKeyHash);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail(e.getMessage());
+        }
+    }
 
-    // TODO: Uncomment this when you are ready to send money back to Faucet on testnet.
-//    @Test
-//    public void sendMoneyBackToFaucet() throws AddressFormatException, InsufficientMoneyException {
-//        if (useMainNet) {
-//            return;
-//        }
-//        downloadBlockchain();
-//        Transaction transaction = kit.wallet().createSend(new Address(networkParameters, faucetAddress), kit.wallet().getBalance().subtract(Coin.MILLICOIN));
-//        kit.wallet().commitTx(transaction);
-//        kit.peerGroup().broadcastTransaction(transaction);
-//        kit.stopAsync();
-//        kit.awaitTerminated();
-//    }
+
+    @Test
+    public void testLinearEquation() throws InsufficientMoneyException {
+        try (LinearEquationTransaction linEq = new LinearEquationTransaction(networkParameters, new File(wallet_name), "password")) {
+            testTransaction(linEq);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail(e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void testMultiSig() throws InsufficientMoneyException {
+        try (ScriptTransaction multiSig = new MultiSigTransaction(networkParameters, new File(wallet_name), "password")) {
+            testTransaction(multiSig);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Assert.fail(e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void sendMoneyBackToFaucet() throws AddressFormatException, InsufficientMoneyException {
+        if (useMainNet) {
+            return;
+        }
+        downloadBlockchain();
+        Transaction transaction = kit.wallet().createSend(new Address(networkParameters, faucetAddress), kit.wallet().getBalance().subtract(Coin.MILLICOIN));
+        kit.wallet().commitTx(transaction);
+        kit.peerGroup().broadcastTransaction(transaction);
+        kit.stopAsync();
+        kit.awaitTerminated();
+    }
 }
