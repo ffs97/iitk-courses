@@ -2,55 +2,52 @@
 #include <LEDA/geo/random_point.h>
 #include <LEDA/geo/circle.h>
 #include <LEDA/core/list.h>
-#include <iostream>
 
+#include <iostream>
+#include <limits>
 
 using namespace leda;
-using std::cout; using std::endl;
+using std::cout; using std::endl; using std::cin;
 
 
-void min_enclosing_circle(list<point> *L, circle *C);
-void min_enclosing_circle_through_points(list<point> *L, circle *C, list<point> *I, list_item end_it);
+bool point_outside_circle(circle C, point p);
+void min_enclosing_circle(list<point> *L, circle *C, list<point> *I, list_item end_it);
 
 
-int main() 
-{
-    list<point> L; random_points_in_unit_square(1000, 1000, L);
+int main() {
+    int n;
+    double x, y;
+
+    cin >> n;
     
-    circle C;
-    min_enclosing_circle(&L, &C);
+    list <point> L;
+    for (int i = 0; i < n; i++) {
+        cin >> x >> y;
+        L.append(point(x, y));
+    }
 
-    cout << C.center() << endl
+    circle C;
+    list <point> I;
+    min_enclosing_circle(&L, &C, &I, NULL);
+
+    cout << C.center().xcoord() << ","
+         << C.center().ycoord() << endl
          << C.radius() << endl;
 }
 
 
-void min_enclosing_circle(list<point> *L, circle *C) {
+// Using this function as Circle::Outside does not work for trivial circles
+bool point_outside_circle(circle C, point p) {
+    // This allows for some error as using floating point numbers introduces some amount of error, which does not generate correct circles
+    return p.distance(C.center()) > C.radius() + C.radius() * 1e-14;
+}
+
+
+void min_enclosing_circle(list <point> *L, circle *C, list<point> *I, list_item end_it) {
     if (L->length() == 0) {
         return;
     }
 
-    list_item it = L->first();
-    point p = L->contents(it);
-
-    *C = circle(p);
-
-    list <point> I;
-
-    for (it = L->succ(it); it; it = L->succ(it)) {
-        p = L->contents(it);
-        if (!(*C).inside(p)) {
-            I.push(p);
-            min_enclosing_circle_through_points(L, C, &I, it);
-            I.pop();
-        }
-    }
-    
-    return;
-}
-
-
-void min_enclosing_circle_through_points(list <point> *L, circle *C, list<point> *I, list_item end_it) {
     switch (I->length()) {
         case 3:
             {
@@ -71,16 +68,16 @@ void min_enclosing_circle_through_points(list <point> *L, circle *C, list<point>
             } break;
         case 0:
             {
-            return;
+            *C = circle(point(0.0, 0.0));
             } break;
     }
 
     point p;
     for (list_item it = L->first(); it != end_it; it = L->succ(it)) {
         p = L->contents(it);
-        if (!(*C).inside(p)) {
+        if (point_outside_circle(*C, p)) {
             I->push(p);
-            min_enclosing_circle_through_points(L, C, I, it);
+            min_enclosing_circle(L, C, I, it);
             I->pop();
         }
     }

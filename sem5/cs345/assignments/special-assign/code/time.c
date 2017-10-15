@@ -1,89 +1,107 @@
-
 #include <LEDA/geo/point.h>
 #include <LEDA/geo/random_point.h>
 #include <LEDA/geo/circle.h>
 #include <LEDA/core/list.h>
 #include <LEDA/system/timer.h>
-#include <iostream>
 
+#include <iostream>
 #include <fstream>
+#include <limits>
 
 
 using namespace leda;
-using std::cout; using std::endl;
+using std::cout; using std::endl; using std::cin;
 using std::ofstream;
 
-void min_enclosing_circle(list<point> *L, circle *C);
+
+bool point_outside_circle(circle C, point p);
+void min_enclosing_circle_welzl(list<point> *L, circle *C, list<point> *I, list_item end_it);
 void min_enclosing_circle_brute(list<point> *L, circle *C);
-void min_enclosing_circle_through_points(list<point> *L, circle *C, list<point> *I, list_item end_it);
 
 
-int main() 
-{
+int main() {
     timer t;
+
+    ofstream welzl_file, brute_file;
+    welzl_file.open("welzl.dat");
+    brute_file.open("brute.dat");
 
     circle C;
 
-    int N_welzl[7] = {10, 100, 1000, 10000, 50000, 1000000, 5000000};
+    cout << "Using Welzl Algorithm:" << endl << endl;
+    cout << "# Points\tTime" << endl << endl;
+
+    int N_welzl[] = {1000, 10000, 50000, 75000, 100000, 250000, 375000, 500000, 625000, 750000, 1000000};
     int n;
-    for (int i = 0; i < 7; i++) {
-        n = 1000;
+    double time;
+
+    for (int i = 0; i < *(&N_welzl + 1) - N_welzl; i++) {
+        n = 100;
+
         t.reset();
         t.start();
+
+        time = 0.0;
+
+        welzl_file << N_welzl[i] << "\t";
+
         while (n--) {
             list<point> L; random_points_in_unit_square(N_welzl[i], 100000, L);
+            list <point> I;
 
-            min_enclosing_circle(&L, &C);
+            t.reset();
+            t.start();
+            min_enclosing_circle_welzl(&L, &C, &I, NULL);
+            t.stop();
+
+            welzl_file << t.elapsed_time() << "\t";
+
+            time += t.elapsed_time();
         }
 
-        cout << N_welzl[i] << "\t";
+        welzl_file << endl;
+
         t.stop();
-        cout << t << endl;
+        cout << N_welzl[i] << "\t\t";
+        cout << time * 10 << "ms" << endl;
     }
 
-    /*cout << endl;*/
+    cout << endl << endl;
 
-    /*int N_brute[7] = {5, 10, 20, 40, 80, 100};*/
-    /*for (int i = 0; i < 6; i++) {*/
-        /*cout << N_brute[i] << "\t";*/
+    cout << "Using Brute Force:" << endl << endl;
+    cout << "# Points\tTime" << endl << endl;
 
-        /*list<point> L; random_points_in_unit_square(N_welzl[i], 1000, L);*/
+    int N_brute[] = {50, 100, 200, 500, 625, 750, 875, 1000, 1125, 1250};
+    for (int i = 0; i < *(&N_brute + 1) - N_brute; i++) {
+        list<point> L; random_points_in_unit_square(N_brute[i], 10000, L);
 
-        /*t.reset();*/
-        /*t.start();*/
-        /*min_enclosing_circle_brute(&L, C);*/
-        /*t.stop();*/
-        /*cout << t << endl;*/
-    /*}*/
+        t.reset();
+        t.start();
+        min_enclosing_circle_brute(&L, &C);
+        t.stop();
+
+        brute_file << N_brute[i] << "\t" << t.elapsed_time() << endl;
+
+        cout << N_brute[i] << "\t\t";
+        cout << t.elapsed_time() << "s" << endl;
+    }
+
+    welzl_file.close();
+    brute_file.close();
 }
 
 
-void min_enclosing_circle(list<point> *L, circle *C) {
+// Using this function as Circle::Outside does not work for trivial circles
+bool point_outside_circle(circle C, point p) {
+    return (p.distance(C.center()) - C.radius()) > 1e-14;
+}
+
+
+void min_enclosing_circle_welzl(list <point> *L, circle *C, list<point> *I, list_item end_it) {
     if (L->length() == 0) {
         return;
     }
 
-    list_item it = L->first();
-    point p = L->contents(it);
-
-    *C = circle(p);
-
-    list <point> I;
-
-    for (it = L->succ(it); it; it = L->succ(it)) {
-        p = L->contents(it);
-        if (!(*C).inside(p)) {
-            I.push(p);
-            min_enclosing_circle_through_points(L, C, &I, it);
-            I.pop();
-        }
-    }
-    
-    return;
-}
-
-
-void min_enclosing_circle_through_points(list <point> *L, circle *C, list<point> *I, list_item end_it) {
     switch (I->length()) {
         case 3:
             {
@@ -104,16 +122,16 @@ void min_enclosing_circle_through_points(list <point> *L, circle *C, list<point>
             } break;
         case 0:
             {
-            return;
+            *C = circle(point(0.0, 0.0));
             } break;
     }
 
-    point p, pt;
+    point p;
     for (list_item it = L->first(); it != end_it; it = L->succ(it)) {
         p = L->contents(it);
-        if (!(*C).inside(p)) {
+        if (point_outside_circle(*C, p)) {
             I->push(p);
-            min_enclosing_circle_through_points(L, C, I, it);
+            min_enclosing_circle_welzl(L, C, I, it);
             I->pop();
         }
     }
@@ -125,7 +143,7 @@ void min_enclosing_circle_brute(list <point> *L, circle *C) {
     bool in;
     list_item i, j, k;
 
-    *C = circle(0.0, 0.0, 1024);
+    *C = circle(0.0, 0.0, std::numeric_limits<float>::infinity());
     circle C_t;
 
     for (i = L->first(); i; i = L->succ(i)) {
@@ -138,7 +156,7 @@ void min_enclosing_circle_brute(list <point> *L, circle *C) {
                 
                 in = true;
                 forall(p, (*L)) {
-                    if (C_t.outside(p)) {
+                    if (point_outside_circle(C_t, p)) {
                         in = false;
                         break;
                     }
@@ -156,7 +174,7 @@ void min_enclosing_circle_brute(list <point> *L, circle *C) {
             
             in = true;
             forall(p, (*L)) {
-                if (C_t.outside(p)) {
+                if (point_outside_circle(C_t, p)) {
                     in = false;
                     break;
                 }
