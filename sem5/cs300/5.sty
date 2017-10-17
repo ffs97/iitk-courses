@@ -1,0 +1,261 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin = 0.7in]{geometry}
+\usepackage{amsmath, amssymb, mathtools, bm, amsthm}
+\usepackage{scrextend}
+\usepackage{tikz,forest}
+\usepackage{xspace}
+\usepackage{algorithm, algpseudocode}
+\usepackage{mdframed}
+\usepackage{hyperref}
+\usepackage{framed}
+\usepackage{float}
+
+\usetikzlibrary{arrows.meta,automata}
+
+% Set paragraph indent to zero
+\setlength\parindent{0pt}
+
+% Change line number format in algorithms
+\algrenewcommand\alglinenumber[1]{\footnotesize #1 \quad}
+
+% Left Rule box environment
+\newmdenv[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep]
+{siderule}
+
+% Set CourseTitle and AssignmentCode
+\newcommand{\institute}{Indian Institute of Technology, Kanpur}
+\newcommand{\setinstitute}[1]{\renewcommand{\institute}{#1}}
+
+\newcommand{\seriestitle}{Some petty course title}
+\newcommand{\setseriestitle}[1]{\renewcommand{\seriestitle}{#1}}
+
+\newcommand{\scribecode}{1}
+\newcommand{\setscribecode}[1]{\renewcommand{\scribecode}{#1}}
+
+\newcommand{\authname}{Gurpreet Singh}
+\newcommand{\setauthname}[1]{\renewcommand{\authname}{#1}}
+
+\newcommand{\instrname}{}
+\newcommand{\setinstrname}[1]{\renewcommand{\instrname}{#1}}
+
+\newcommand{\headate}{\today}
+\newcommand{\setheadate}[1]{\renewcommand{\headate}{#1}}
+
+\newcommand{\title}{}
+\newcommand{\settitle}[1]{\renewcommand{\title}{#1}}
+
+\newcounter{thisyear}
+\newcounter{nextyear}
+
+\addtocounter{thisyear}{\year}
+\addtocounter{thisyear}{-2000}
+
+\addtocounter{nextyear}{\thethisyear}
+\addtocounter{nextyear}{1}
+
+\newcommand{\makeheader}{%
+	\parbox{0.75\textwidth}{%
+		{\sffamily\bfseries \institute}
+
+		{\sffamily\bfseries \seriestitle, \thethisyear--\thenextyear}
+
+        \rule{0mm}{2pt}%
+
+        {\em Instructors:\/} \instrname
+
+        {\em Authors:\/} \authname
+
+        {\em Date:\/} \headate
+
+	}
+    \hfill
+    \begin{tabular}{c@{}}
+        {\sffamily\bfseries\Large LECTURE}\\
+        \rule{0mm}{15mm}\scalebox{5}{\sffamily \scribecode}
+    \end{tabular}
+
+    \def\toptitlebar{\hrule height1pt\vskip .25in\vskip-\parskip}
+    \def\bottomtitlebar{\vskip .1in\vskip-\parskip\hrule height1pt\vskip.09in}
+
+    \vbox{%
+        \hsize\textwidth\linewidth\hsize
+        \phantom{\hspace{\textwidth}}
+        \bottomtitlebar%
+    }
+
+    \begin{center}
+        \scalebox{1.5}{\texttt \title}
+    \end{center}
+}
+
+\newcommand{\set}[1]{\{#1\}}
+\newcommand{\bset}[1]{\big\{ #1 \big\}}
+\newcommand{\bbset}[1]{\bigg\{ #1 \bigg\}}
+
+\newcommand{\brac}[1]{[#1]}
+\newcommand{\bbrac}[1]{\big[ #1 \big]}
+\newcommand{\bbbrac}[1]{\bigg[ #1 \bigg]}
+
+\newcommand{\para}[1]{(#1)}
+\newcommand{\bpara}[1]{\big(#1 \big)}
+\newcommand{\bbpara}[1]{\bigg(#1 \bigg)}
+
+\newcommand{\bt}[1]{\textbf{#1}} 
+\newcommand{\st}[1]{\textsc{#1}}
+
+\newcommand{\sbr}{\vspace{1.5mm}\xspace}
+\newcommand{\br}{\vspace{2.5mm}\xspace}
+\newcommand{\nbr}{\vspace{5mm}\xspace}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\E}[1]{\mathbb{E}\bbrac{#1}}
+\newcommand{\is}[1]{\mathbb{I} \bbrac{#1}}
+
+\newcommand{\abs}[1]{\left| {#1} \right|}
+\newcommand{\norm}[1]{\left\| {#1} \right\|}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
+\newcommand{\dotp}[2]{\langle{#1},{#2}\rangle}
+\newcommand{\pipe}{\,|\,}
+
+% Functions
+\newcommand{\sigmoid}[1]{\sigma \bpara{#1}}
+
+\newcommand{\ND}[1]{\mathcal{N} \bpara{#1}}
+\newcommand{\D}{\mathcal{D}}
+
+\newcommand{\pr}[1]{#1^{\prime}}
+
+\newcommand{\argmin}{\mathop{\arg\min}}
+\newcommand{\argmax}{\mathop{\arg\max}}
+\newcommand{\ind}[1]{\bI\bc{{#1}}}
+\newcommand{\cond}{\,|\,}
+
+\newenvironment{ssection}[1]
+    {%
+		\section{#1}
+		\begin{addmargin}{1.5em}
+	}
+	{%
+		\end{addmargin}
+	}
+
+\newenvironment{ssubsection}[1]
+	{%
+		\subsection{#1}
+		\begin{addmargin}{1.5em}
+	}
+	{%
+		\end{addmargin}
+	}
+
+
+\newenvironment{spart}[1]
+	{%
+		\subsection*{Part #1}
+		\begin{addmargin}{1.5em}
+	}
+	{%
+		\end{addmargin}
+	}
+
+\newenvironment{margin}[]
+	{%
+		\begin{addmargin}{1.5em}
+	}
+	{%
+		\end{addmargin}
+	}
+
+\newenvironment{scase}[2]
+	{%
+        \bt{\st{Case #1 }} \textit{#2}
+		\sbr\
+		\begin{addmargin}{1em}
+		\begin{siderule}
+	}
+	{%
+		\end{siderule}
+		\end{addmargin}
+		\sbr\
+	}
+
+\newenvironment{sproof}[1]
+	{%
+        \bt{\st{Claim }} {\em #1\/}
+
+        \bt{\st{Proof}}
+		\sbr\
+		\begin{addmargin}{1em}
+		\begin{siderule}
+	}
+	{%
+		\end{siderule}
+		\end{addmargin}
+		\sbr\
+	}
+
+\floatstyle{plain}
+\newfloat{salgo}{tbhp}
+
+\newcounter{salgorithm}
+\newenvironment{salgorithm}[3][0.5\textwidth]
+{
+	\refstepcounter{salgorithm}
+    \begin{salgo}[#2]
+	\begin{center}
+    \begin{minipage}{#1}
+    \begin{framed}
+    \begin{center}
+    Algorithm \theqalgorithm: #3
+	\end{center}
+
+    \nbr
+}
+{
+	\end{framed}
+	\end{minipage}
+	\end{center}
+	\end{salgo}
+}
+
+\newtheoremstyle{theorems}{\topsep}{\topsep}{\itshape}{0pt}{\bfseries}{ }{ }{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
+\theoremstyle{theorems}
+
+\newcommand{\qnote}[1]{\bt{Note: } {\em #1\/}}
+\newtheorem{stheorem}{\bt{\st{Theorem}}}[section]
+\newtheorem{scorollary}{\bt{\st{Corollary}}}[stheorem]
+\newtheorem{slemma}[qtheorem]{\bt{\st{Lemma}}}
+\newtheorem{sdefinition}{\bt{\st{Definition}}}
+
+% Vectors
+\def\LatinUpper{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+\def\LatinLower{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
+
+\renewcommand{\vec}[1]{{\mathbf{#1}}}
+\newcommand{\genLatinVec}[1]{\expandafter\newcommand\csname v#1\endcsname{{\vec #1}}}
+\@for\i:=\LatinLower\do{%
+	\expandafter\genLatinVec\i
+}
+
+\newcommand{\genLatinVecU}[1]{\expandafter\newcommand\csname v#1\endcsname{{\vec #1}}}
+\@for\i:=\LatinUpper\do{%
+	\expandafter\genLatinVecU\i
+}
+
+\def\mydefgreek#1{\expandafter\def\csname v#1\endcsname{\text{\boldmath$\mathbf{\csname #1\endcsname}$}}}
+\def\mydefallgreek#1{\ifx\mydefallgreek#1\else\mydefgreek{#1}%
+   \lowercase{\mydefgreek{#1}}\expandafter\mydefallgreek\fi}
+\mydefallgreek
+{alpha}{beta}{gamma}{delta}{epsilon}{zeta}{eta}{theta}{iota}{kappa}{lambda}{mu}{nu}{xi}{omicron}{pi}{rho}{sigma}{tau}{upsilon}{phi}{chi}{psi}{omega}{Theta}{Lambda}{Sigma}{Delta}{Gamma}\mydefallgreek
+
+\newcommand{\vzero}{\vec{0}}
+\newcommand{\vone}{\vec{1}}

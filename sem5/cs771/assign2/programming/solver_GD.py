@@ -133,12 +133,13 @@ def main():
     Xtr = csr_matrix(Xtr)
 
     w = csr_matrix((d, 1))
+    w_bar = csr_matrix((d, 1))
     
-    n_log = int(math.ceil(float(n_iter)/spacing)) + 1
+    # n_log = int(math.ceil(float(n_iter)/spacing)) + 1
     
-    time_elapsed = np.zeros(n_log)
-    tick_vals = np.zeros(n_log)
-    obj_val = np.zeros(n_log)
+    # time_elapsed = np.zeros(n_log)
+    # tick_vals = np.zeros(n_log)
+    # obj_val = np.zeros(n_log)
     
     tick = 0
     
@@ -161,37 +162,42 @@ def main():
 
         w = w - eta * g
         w = csr_matrix(w)
+
+        #w_bar = (w_bar * t + w) / (t + 1)
         
-        if t % spacing == 0:
-            t_now = datetime.now()
-            delta = t_now - t_start
-            time_elapsed[tick] = ttot + delta.total_seconds()
-            ttot = time_elapsed[tick]
-            tick_vals[tick] = tick
+        # if t % spacing == 0:
+            # t_now = datetime.now()
+            # delta = t_now - t_start
+            # time_elapsed[tick] = ttot + delta.total_seconds()
+            # ttot = time_elapsed[tick]
+            # tick_vals[tick] = tick
 
-            r = r.toarray()
-            obj_val[tick] = w_old.multiply(w_old).sum() / 2.0 + np.sum(1 - r[indices])
-            print("%14f\t%14f" % (ttot, obj_val[tick]))
+            # r = r.toarray()
+            # obj_val[tick] = w_old.multiply(w_old).sum() / 2.0 + np.sum(1 - r[indices])
+            # print("%14f\t%14f" % (ttot, obj_val[tick]))
 
-            tick = tick+1
-            t_start = datetime.now()
+            # tick = tick+1
+            # t_start = datetime.now()
     
-    t_now = datetime.now()
-    delta = t_now - t_start
-    time_elapsed[tick] = ttot + delta.total_seconds()
-    ttot = time_elapsed[tick]
-    tick_vals[tick] = tick
+    # t_now = datetime.now()
+    # delta = t_now - t_start
+    # time_elapsed[tick] = ttot + delta.total_seconds()
+    # ttot = time_elapsed[tick]
+    # tick_vals[tick] = tick
 
-    r = XY * w
-    r = r.toarray()
-    obj_val[tick] = w.multiply(w).sum() / 2.0 + np.sum(1 - r[r < 1])
-    print("%14f\t%14f" % (ttot, obj_val[tick]))
+    # r = XY * w
+    # r = r.toarray()
+    # obj_val[tick] = w.multiply(w).sum() / 2.0 + np.sum(1 - r[r < 1])
+    # print("%14f\t%14f" % (ttot, obj_val[tick]))
 
     w_final = w.toarray().reshape(d)
     np.save("model_GD.npy", w_final)
 
-    data = np.array([tick_vals*nd*spacing, time_elapsed, obj_val]).transpose()
-    np.save("gd.npy", data)
+    # data = np.array([tick_vals*n*d*spacing, time_elapsed, obj_val]).transpose()
+    # np.save("gd.npy", data)
+
+    # r = np.sum(XY * w, 1)
+    # print("Accuracy: ", np.sum(r > 0) * 100.0 / n)
 
 
 if __name__ == '__main__':

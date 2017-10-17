@@ -9,7 +9,7 @@
 \usepackage{mdframed}
 \usepackage{graphicx}
 
-\usetikzlibrary{arrows.meta,automata}
+\usetikzlibrary{arrows,automata}
 
 % Set paragraph indent to zero
 \setlength\parindent{0pt}
@@ -91,14 +91,23 @@
 \newcommand{\bbbrac}[1]{\bigg[ #1 \bigg]}
 
 \newcommand{\para}[1]{(#1)}
-\newcommand{\bpara}[1]{\big(#1 \big)}
-\newcommand{\bbpara}[1]{\bigg(#1 \bigg)}
+\newcommand{\bpara}[1]{\big( #1 \big)}
+\newcommand{\bbpara}[1]{\bigg( #1 \bigg)}
 
-\newcommand{\bt}[1]{\textbf{#1}} 
+\newcommand{\angl}[1]{\langle #1 \rangle}
+\newcommand{\bangl}[1]{\big\langle #1 \big\rangle}
+\newcommand{\bbangl}[1]{\bigg\langle #1 \bigg\rangle}
+
+\newcommand{\func}[2]{#1 \bpara{#2}}
+
+\newcommand{\bt}[1]{\textbf{#1}}
 \newcommand{\st}[1]{\textsc{#1}}
+
+\newcommand{\mt}[1]{\,\text{#1}\,}
 
 \newcommand{\sbr}{\vspace{1.5mm}\xspace}
 \newcommand{\br}{\vspace{2.5mm}\xspace}
+\newcommand{\lbr}{\vspace{3mm}\xspace}
 \newcommand{\nbr}{\vspace{5mm}\xspace}
 
 \newcommand{\R}{\mathbb{R}}
@@ -113,7 +122,11 @@
 \newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
 \newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
 \newcommand{\dotp}[2]{\langle{#1},{#2}\rangle}
-\newcommand{\pipe}{\,|\,}
+\newcommand{\pipe}{\,\big|\,}
+\newcommand{\eps}{\epsilon}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\la}{\leftarrow}
+\newcommand{\eq}{\quad=\quad}
 
 % Functions
 \newcommand{\sigmoid}[1]{\sigma \bpara{#1}}
@@ -125,8 +138,6 @@
 
 \newcommand{\argmin}{\mathop{\arg\min}}
 \newcommand{\argmax}{\mathop{\arg\max}}
-\newcommand{\ind}[1]{\bI\bc{{#1}}}
-\newcommand{\cond}{\,|\,}
 
 \newcounter{question}
 \newenvironment{question}[]
@@ -146,6 +157,7 @@
 	}
 	{%
 		\end{addmargin}
+		\lbr
 	}
 
 
@@ -156,6 +168,7 @@
 	}
 	{%
 		\end{addmargin}
+		\lbr
 	}
 
 \newenvironment{margin}[]

@@ -30,14 +30,14 @@ def main():
     Ytr = csr_matrix(Ytr)
     Ytr_t = Ytr.transpose()
 
-    w = csr_matrix((d, 1))
     d_alpha = np.zeros(n)
+    w = csr_matrix((d, 1))
 
-    n_log = int(math.ceil(float(n_iter)/spacing)) + 1
+    # n_log = int(math.ceil(float(n_iter)/spacing)) + 1
     
-    time_elapsed = np.zeros(n_log)
-    tick_vals = np.zeros(n_log)
-    obj_val = np.zeros(n_log)
+    # time_elapsed = np.zeros(n_log)
+    # tick_vals = np.zeros(n_log)
+    # obj_val = np.zeros(n_log)
 
     tick = 0
     
@@ -56,41 +56,44 @@ def main():
         w_old = w
         w = w + (d_alpha[i_rand] - d_alpha_old)*XY[i_rand, :].transpose();
 	
-	if t % spacing == 0:
-            t_now = datetime.now();
-            delta = t_now - t_start;
-            time_elapsed[tick] = ttot + delta.total_seconds();
-            ttot = time_elapsed[tick];
-            tick_vals[tick] = tick;
+        # if t % spacing == 0:
+            # t_now = datetime.now();
+            # delta = t_now - t_start;
+            # time_elapsed[tick] = ttot + delta.total_seconds();
+            # ttot = time_elapsed[tick];
+            # tick_vals[tick] = tick;
 
-            r = XY * w_old
-            indices = (r < 1).nonzero()[0]
-            r = r.toarray()
+            # r = XY * w_old
+            # indices = (r < 1).nonzero()[0]
+            # r = r.toarray()
 
-            obj_val[tick] = w_old.multiply(w_old).sum() / 2.0 + np.sum(1 - r[indices])
-            print("%11f\t%15f" % (ttot, obj_val[tick]))
+            # obj_val[tick] = w_old.multiply(w_old).sum() / 2.0 + np.sum(1 - r[indices])
+            # print("%11f\t%15f\t%8.2f" % (ttot, obj_val[tick], np.sum(r > 0) * 100.0 / n))
 
-            tick = tick + 1;
-            t_start = datetime.now();
+            # tick = tick + 1;
+            # t_start = datetime.now();
 		
-    t_now = datetime.now();
-    delta = t_now - t_start;
-    time_elapsed[tick] = ttot + delta.total_seconds();
-    ttot = time_elapsed[tick];
-    tick_vals[tick] = tick;
+    # t_now = datetime.now();
+    # delta = t_now - t_start;
+    # time_elapsed[tick] = ttot + delta.total_seconds();
+    # ttot = time_elapsed[tick];
+    # tick_vals[tick] = tick;
 
-    r = XY * w
-    indices = (r < 1).nonzero()[0]
-    r = r.toarray()
+    # r = XY * w
+    # indices = (r < 1).nonzero()[0]
+    # r = r.toarray()
 
-    obj_val[tick] = w.multiply(w).sum() / 2.0 + np.sum(1 - r[indices])
-    print("%11f\t%15f" % (ttot, obj_val[tick]))
+    # obj_val[tick] = w.multiply(w).sum() / 2.0 + np.sum(1 - r[indices])
+    # print("%11f\t%15f\t%8.2f" % (ttot, obj_val[tick], np.sum(r > 0) * 100.0 / n))
 
     w_final = w.toarray().reshape(d);
     np.save("model_SCD.npy", w_final);
 
-    data = np.array([tick_vals*d*spacing, time_elapsed, obj_val]).transpose()
-    np.save("scd.npy", data)
+    # data = np.array([tick_vals*d*spacing, time_elapsed, obj_val]).transpose()
+    # np.save("scd.npy", data)
+
+    # r = np.sum(XY * w, 1)
+    # print("Accuracy: ", np.sum(r > 0) * 100.0 / n)
 
 
 if __name__ == '__main__':

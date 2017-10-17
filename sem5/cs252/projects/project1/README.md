@@ -2,6 +2,9 @@
 
 I have used bitcoinj version 0.14.5, with only a few changes in the ScriptTransaction.java file.
 
+**Mainnet address generated**: 1singbArgqyTSSoYjbJ2hGNuPGmNJp27L
+**Corresponding Private Key**: 5KHNgnxN5fJV1Kqn4Z4r5Wuuy4bZeUaTzVU98BczhidnHBmQbRH
+
 ## Transaction Hashes
 
 **Block Explorer Link:** https://live.blockcypher.com/btc-testnet/tx/<tx_hash>

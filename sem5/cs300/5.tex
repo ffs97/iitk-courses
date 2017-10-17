@@ -1,0 +1,124 @@
+\documentclass{article}
+
+\usepackage{5}
+\setseriestitle{Machine Learning Lecture Scribes}
+\setinstrname{Piyush Rai and Purushottam Kar}
+\setscribecode{1}
+\setauthname{Gurpreet Singh}
+\setheadate{September 8, 2017}
+\settitle{Clustering and K-Means Algorithm}
+
+\begin{document}
+\makeheader%
+
+\begin{ssection}{Clustering}
+    
+    \begin{sdefinition}
+        Cluster analysis or clustering is the task of grouping a set of objects in such a way that objects in the same group (called a cluster) are more similar (in some sense or another) to each other than to those in other groups (clusters). It is a main task of exploratory data mining, and a common technique for statistical data analysis, used in many fields, including machine learning, pattern recognition, image analysis, information retrieval, bioinformatics, data compression, and computer graphics.
+    \end{sdefinition}~\cite{wiki-cluster} \br%
+
+    A cluster essentially represents a set of samples which are visually or statistically similar. Similarity can be defined using various methods, one such metric is explained in the k-means algorithm. \br%
+
+    Clustering is the process of separating samples into their various clusters. This is a very crucial method, and has various applications in the world of Machine Learning and Data Mining.
+
+\end{ssection}
+
+\begin{ssection}{K-Means Clustering}
+
+    K-Means clustering partitions the sample data into K voronoi cells. The K-Means objective is based on Gaussian based kernels, with the similarity/closeness measure as the euclidian distance \textit{i.e.} the $l_2$ norm of the difference of the point vectors. \br%
+
+    Essentially, this is a NP hard problem, however there are heuristic algorithms, which are used to quickly converge the problem to a local optima. A very common algorithm is Lloyd's Algorithm (discussed in the next section), commonly known as the standard `k-means algorithm'. \br%
+
+\end{ssection}
+
+\begin{ssection}{K-Means Algorithm}
+
+    The K-Means clustering is a non-convex optimization problem, and is solved by alternating optimization \textit{i.e.} we use an initial estimate of the cluster means to find cluster sets, which are further used to find a better solution. This process is repeated until convergence, and is essentially the K-Means algorithm. \br%
+
+    The K-Means objective function tries to achieve minimum variance in the clusters. Formally, we need to assign clusters so that the sum of the variance multiplied by the cluster size in each cluster is minimum. This can be expressed as the following optimization problem
+
+    \begin{equation}
+        \argmin_{S} \sum_{k = 1}^{K} \sum_{\vx \in S_k} \norm{\vx - \vmu_k}_2^2
+        \label{eq:obj}
+    \end{equation}
+
+    It appears that a set $S_k$ is represented by a single point $\vmu_k$. This is essentially the center point of the cluster $k$. Therefore, our objective is to find out $\bset{\vmu_k}_{k = 1}^{K}$, as well as assign clusters to each point, such that the objective is minimized. \br%
+
+    \snote{$C_n$ represents the cluster of sample n and $\vx_n$ represents the sample vector} \br%
+
+    \begin{salgorithm}[0.9\textwidth]{h!}{\textit{Alternating Optimization --- K-Means Algorithm}}
+
+        Initialize $\vmu_k$ to $\vmu_k^0$
+
+        while \textbf{no convergence}:
+        \begin{margin}
+            
+            \begin{align*}
+                \shortintertext{\textbf{Update} $S$}
+                &\forall n \in \brac{N}: \quad &C_n     &= \argmin_k \norm{\vx_n - \vmu_k} \\
+                \\
+                \shortintertext{\textbf{Update} $\vmu$}
+                &\forall n \in \brac{K}: \quad &\vmu_k  &= \frac{1}{\abs{S_k}} \sum_{\vx \in S_k} \vx
+            \end{align*}
+
+        \end{margin}
+         
+    \end{salgorithm}
+
+    The intuition behind this algorithm is that for any set of means (sets), any sample will be in the cluster with the mean of the cluster closest to it. This obviously reduces variance. If we, on the other hand, fix the cluster assignments, we can say that the point (mean) which will minimize the variance based on gaussian kernel will be the emperical mean of the data itself. \br%
+
+    This is a hard assignment K-Means algorithm \textit{i.e.} we only consider the possibility of a point being in one and only one cluster. Another approach to this is a soft assignment, in which we consider the expected probability of a point being in a cluster, and use alternating optimization then.
+
+\end{ssection}
+
+\begin{ssection}{Probabilistic look on Lloyd's Algorithm}
+
+    Consider the clusters to be represented by Gaussian Kernels with means $\vmu_k$ and variance $\sigma^2$ (Note, the variance is the same for all clusters, which is an essential assumption for K-Means Clustering). We then maximize the total probability of the points belonging to their corresponding clusters. Let us write the probability of a point being in the $k^{th}$ cluster
+    
+    \begin{align*}
+        P(C_n = k \pipe \vmu_k)                         &= \ND{x_n \pipe \vmu_k, \sigma^2} \\
+        \implies P(S \pipe \bset{\vmu_k}_{k = 1}^{K})   &= \prod_{n = 1}^{N} \ND{x_n \pipe \vmu_{C_k}, \sigma^2}
+    \end{align*} \br%
+
+    Since we need to maximize this probability, we maximize it's log
+
+    \begin{align*}
+        \,          &\max \quad \log\bpara{\ND{\vx_n \pipe \vmu_{C_n}, \sigma^2}} \\
+        \implies    &\min \quad \frac{1}{\sigma^2} \sum_{n = 1}^{N} \norm{\vx_n - \vmu_{C_n}}_2^2
+    \end{align*}
+
+    This is the same optimization problem as given earlier. The probabilistic approach gives more insight into the working of the K-Means Clustering.
+    
+\end{ssection}
+
+\begin{ssection}{Problems in K-Means Clustering}
+
+    K-Means Clustering works only for clusters which represent gaussian distributions. Hence, we cannot use K-Means Clustering for finding complex clusters or non-convex clusters. \br%
+
+    The K-Means Algorithm is very sensitive to initialization, and hence one must be careful while initializing the cluster means. \br%
+
+    The Algorithm can get stuck at a local optima, finding clusters different from those originally wanted. This is also a factor affected by the initialization of the cluster means.
+    
+\end{ssection}
+
+\begin{thebibliography}{9}
+    \bibitem{wiki-cluster} 
+    Cluster Analysis
+    \textit{Wikipedia} 
+    \url{https://en.wikipedia.org/wiki/Cluster\_analysis}
+
+    \bibitem{wiki-kmeans} 
+    K-Means Clustering
+    \textit{Wikipedia} 
+    \url{https://en.wikipedia.org/wiki/K-means\_clustering}
+
+    \bibitem{bis}
+    C. Bishop.
+    \textit{Pattern Recognition and Machine Learning}
+
+    \bibitem{ssbd}
+    S. Shalev-Shwartz and S. Ben-David.
+    \textit{Understanding Machine Learning --- From Theory to Algorithms}
+\end{thebibliography}
+
+\end{document}

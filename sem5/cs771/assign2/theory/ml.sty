@@ -87,7 +87,8 @@
 \def\mydefgreek#1{\expandafter\def\csname v#1\endcsname{\text{\boldmath$\mathbf{\csname #1\endcsname}$}}}
 \def\mydefallgreek#1{\ifx\mydefallgreek#1\else\mydefgreek{#1}%
    \lowercase{\mydefgreek{#1}}\expandafter\mydefallgreek\fi}
-\mydefallgreek {alpha}{beta}{gamma}{delta}{epsilon}{zeta}{eta}{theta}{iota}{kappa}{lambda}{mu}{nu}{xi}{omicron}{pi}{rho}{sigma}{tau}{upsilon}{phi}{chi}{psi}{omega}\mydefallgreek
+\mydefallgreek
+{alpha}{beta}{gamma}{delta}{epsilon}{zeta}{eta}{theta}{iota}{kappa}{lambda}{mu}{nu}{xi}{omicron}{pi}{rho}{sigma}{tau}{upsilon}{phi}{chi}{psi}{omega}{Theta}{Lambda}{Sigma}{Delta}{Gamma}\mydefallgreek
 
 % Vector numerals
 \newcommand{\vzero}{\vec{0}}
@@ -143,12 +144,12 @@
 \newenvironment{mlalgorithm}[3][0.5\textwidth]
 {
 	\refstepcounter{mlalgorithm}
-	\begin{mlalgo}[#2]
+    \begin{mlalgo}[#2]
 	\begin{center}
-	\begin{minipage}{#1}
-	\begin{framed}
-	\begin{center}
-		Algorithm \themlalgorithm: #3
+    \begin{minipage}{#1}
+    \begin{framed}
+    \begin{center}
+    Algorithm \themlalgorithm: #3
 	\end{center}
 }
 {
