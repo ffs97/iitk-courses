@@ -1,0 +1,10 @@
+../test/testloop3 30
+../test/testloop3 10
+../test/testloop3 48
+../test/testloop3 79
+../test/testloop3 34
+../test/testloop3 65
+../test/testloop3 75
+../test/testloop3 50
+../test/testloop3 89
+../test/testloop3 99
