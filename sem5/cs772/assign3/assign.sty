@@ -1,0 +1,126 @@
+\usepackage{common}
+
+% Set CourseTitle and AssignmentCode
+\newcommand{\coursetitle}{Some petty course title}
+\newcommand{\setcoursetitle}[1]{\renewcommand{\coursetitle}{#1}}
+
+\newcommand{\assigncode}{1}
+\newcommand{\setassigncode}[1]{\renewcommand{\assigncode}{#1}}
+
+\newcommand{\authname}{Gurpreet Singh}
+\newcommand{\setauthname}[1]{\renewcommand{\authname}{#1}}
+
+\newcommand{\authroll}{150259}
+\newcommand{\setauthroll}[1]{\renewcommand{\authroll}{#1}}
+
+\newcommand{\headate}{\today}
+\newcommand{\setheaddate}[1]{\renewcommand{\headate}{#1}}
+
+\newcounter{thisyear}
+\newcounter{nextyear}
+
+\addtocounter{thisyear}{\year}
+\addtocounter{thisyear}{-2000}
+
+\addtocounter{nextyear}{\thethisyear}
+\addtocounter{nextyear}{1}
+
+\newcommand{\makeheader}{%
+	\parbox{0.75\textwidth}{%
+		{\sffamily\bfseries Indian Institute of Technology Kanpur}
+
+		{\sffamily\bfseries \coursetitle, \thethisyear--\thenextyear}
+
+        \rule{0mm}{2pt}%
+
+        {\em Student Name:\/} \authname%
+
+        {\em Roll Number:\/} \authroll%
+
+        {\em Date:\/} \headate%
+
+	}
+    \hfill
+    \begin{tabular}{c@{}}
+        {\sffamily\bfseries\Large ASSIGNMENT}\\
+        \rule{0mm}{15mm}\scalebox{5}{\sffamily \assigncode}
+    \end{tabular}
+
+    \def\toptitlebar{\hrule height1pt\vskip .25in\vskip-\parskip}
+    \def\bottomtitlebar{\vskip .1in\vskip-\parskip\hrule height1pt\vskip.09in}
+
+    \vbox{%
+        \hsize\textwidth\linewidth\hsize
+        \phantom{\hspace{\textwidth}}
+        \bottomtitlebar%
+    }
+}
+
+
+\newcounter{question}
+\newenvironment{question}[]
+    {%
+		\refstepcounter{question}
+		\section*{Question \thequestion}
+		\begin{addmargin}{1.5em}
+	}
+	{%
+		\end{addmargin}
+	}
+
+\newenvironment{qsection}[1]
+	{%
+		\subsection*{#1}
+		\begin{addmargin}{1.5em}
+	}
+	{%
+		\end{addmargin}
+		\lbr%
+	}
+
+
+\newenvironment{qpart}[1]
+	{%
+		\subsection*{Part #1}
+		\begin{addmargin}{1.5em}
+	}
+	{%
+		\end{addmargin}
+		\lbr%
+	}
+
+\newenvironment{qcase}[2]
+	{%
+        \bt{\st{Case #1 }} \textit{#2}
+		\sbr\
+		\begin{addmargin}{1em}
+		\begin{siderule}
+	}
+	{%
+		\end{siderule}
+		\end{addmargin}
+		\sbr\
+	}
+
+\newenvironment{qproof}[1]
+	{%
+        \bt{\st{Claim }} {\em #1\/}
+
+        \bt{\st{Proof}}
+		\sbr\
+		\begin{addmargin}{1em}
+		\begin{siderule}
+	}
+	{%
+		\end{siderule}
+		\end{addmargin}
+		\sbr\
+	}
+
+\newenvironment{qsubsection}[1]
+    {%
+		\br%
+		\textbf{#1}
+    }
+    {%
+    }
