@@ -1,0 +1,49 @@
+\documentclass{standalone}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+
+\usetikzlibrary{arrows, automata}
+
+\begin{document}
+
+\begin{tikzpicture}[->, >=stealth', shorten >=1pt, auto, node distance=2.8cm, semithick]
+
+	\node[state] (s)				{$S$};
+	\draw[<-]	 (s) -- node[above] {source} (-2cm,0);
+
+	\draw[dotted, --]	 (s) (2.8cm, -1cm) -- (2.8cm,-1.8cm);
+	\node[state] (a) [right of=s] 	{$B_2$};
+	\node[state] (b) [above of=a] 	{$B_1$};
+	\node[state] (c) [below of=a] 	{$B_m$};
+	
+	\draw[dotted, --]	 (s) (5.6cm, -1cm) -- (5.6cm,-1.8cm);
+	\node[state] (d) [right of=a] 	{$C_2$};
+	\node[state] (e) [above of=d] 	{$C_1$};
+	\node[state] (f) [below of=d] 	{$C_n$};
+
+	\node[state] (t) [right of=d] 	{$T$};
+
+	\path	(s)		edge	node		{$0 \,|\, 2$}	(a)
+					edge	node		{$0 \,|\, 2$}	(b)
+					edge	node [swap]	{$0 \,|\, 2$}	(c)
+
+			(b)		edge	node		{$0 \,|\, 1$}	(e)
+
+			(a)		edge	node		{$0 \,|\, 1$}	(d)
+
+			(c)		edge	node		{$0 \,|\, 1$}	(d)
+					edge	node		{$0 \,|\, 1$}	(f)
+
+			(d)		edge	node		{$k \,|\, \infty$}	(t)
+			(e)		edge	node		{$k \,|\, \infty$}	(t)
+			(f)		edge	node [swap]	{$k \,|\, \infty$}	(t);
+	
+\end{tikzpicture}
+
+\end{document}
+
+
+
+
