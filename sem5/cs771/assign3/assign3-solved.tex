@@ -1,0 +1,88 @@
+document\documentclass{article}
+
+\usepackage{mlsubmit}
+\usepackage{scrextend}
+
+\begin{document}
+\setlength\parindent{0pt}
+
+\initmlsubmision{2}{Gurpreet Singh}{150259}
+
+\begin{mlsolution}
+
+	\subsection*{Part 1}
+	\begin{addmargin}{1.5em}
+
+		We know that Gaussian-Gaussian has the conjugacy property, and hence, we can say that the marginal probability of $\vx$ \textit{i.e.} $\prob{\vx}$ \br%
+
+		Therefore, we can write the marginal probability of $\vx$ as a gaussian distribution with mean $\pr{\vmu}$ and covariance matrix $\Lambda$.
+
+		\begin{align*}
+			\prob{\vx \pipe \vmu, W, \sigma}	\eq&	\int_{\vz} \prob{\vx \pipe \vz, \vmu, W, \sigma} \prob{\vz \pipe 0, \iden} d\vz \\
+												\eq&	\ND{\vx \pipe \pr{\vmu}, \Lambda}
+		\end{align*}
+
+		Also, we know that $\vx = W\vz + \vmu + \eps$, and from the properties of Gaussian, we know $\pr{\vmu} = \E{\vx}$ and $\Lambda = \func{cov}{\vx}$. Hence
+
+		\begin{align*}
+			\pr{\vmu}		\eq&	\E{\vx} \\
+							\eq&	\E{W\vz + \vmu + \eps} \\
+							\eq&	W\para{\E{\vz} = 0} + \para{\E{\vmu} = \vmu} + \para{\E{\eps} = 0} \\
+							\eq&	\vmu \\
+			\\
+			\pr{\Lambda}	\eq&	\E{\para{\vx - \E{\vx}} \para{\vx - \E{\vx}}^T} \\
+							\eq&	\E{\para{W \vz + \eps} \para{W \vz + \eps}^T} \\
+							\eq&	\E{W \vz \vz^T W^T + W \vz \eps^T + \eps W \vz^T + \eps \eps^T} \\
+							\eq&	W \E{\vz \vz^T} W^T + 0 + 0 + \E{\eps \eps^T} \\
+							\eq&	W \iden \iden^T W^T + \sigma^2 \iden \\
+							\eq&	W W^T + \sigma^2 \iden
+		\end{align*}
+
+		Hence, we can write $\prob{\vx} = \ND{\vmu, C}$ where $C = W W^T + \sigma^2 \iden$
+
+	\end{addmargin}
+
+	\subsection*{Part 2}
+	\begin{addmargin}{1.5em}
+
+		\textbf{Note:} I will use $C = W W^T + \sigma^2 \iden$ for the rest of the question
+
+		Since all the sample points are independent, we can write $\prob{X} = \prod_{i = 1}^{n} \prob{\vx^i}$. Therefore
+
+		\begin{align*}
+			\prob{X \pipe \vmu, W, \sigma}			\eq&	\prod_{i = 1}^{n} \prob{\vx^i \pipe \vmu, W, \sigma} \\
+													\eq&	\prod_{i = 1}^{n} \ND{\vx^i \pipe \vmu, C} \\
+			\implies \prob{X \pipe \vmu, W, \sigma}	\eq&	\prod_{i = 1}^{n} \frac{1}{\sqrt{2 \pi \norm{C}}} \exp{\frac{-1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T}
+		\end{align*}
+
+	\end{addmargin}
+
+	\subsection*{Part 3}
+	\begin{addmargin}{1.5em}
+
+		We can write the MLE estimate of $\vmu$ as
+
+		\begin{align*}
+			\vmu^{MLE}	\eq&	\argmax_{\vmu \in \R^d} \prob{X \pipe \vmu, W, \sigma} \\
+						\eq&	\argmax_{\vmu \in \R^d} \log{\prob{X \pipe \vmu, W, \sigma}} \\
+						\eq&	\argmax_{\vmu \in \R^d} \log{\prod_{i = 1}^{n} \prob{\vx^i \pipe \vmu, W, \sigma}} \\
+						\eq&	\argmax_{\vmu \in \R^d} \sum_{i = 1}^{n} \log{\prob{\vx^i \pipe \vmu, W, \sigma}} \\
+						\eq&	\argmin_{\vmu \in \R^d} \sum_{i = 1}^{n} \frac{1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T + \frac{1}{2} \log{2 \pi \norm{C}} \\
+						\eq&	\argmin_{\vmu \in \R^d}	\sum_{i = 1}^{n} \frac{1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T
+		\end{align*}
+
+		We can simply differentiate the RHS term, and using differentials of matrices, we get
+
+		\begin{align*}
+			\derp{RHS}{\vmu}	\eq&	\derp{\sum_{i = 1}^{n} \frac{1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T}{\vmu}	\eq	0 \\
+								\qimpl&	\sum_{i = 1}^{n} C^{-1} \para{\vx^i - \vmu}	\eq	0 \\
+								\qimpl&	\vmu^{MLE}	\eq	\frac{1}{n} \sum_{i = 1}^{n} \vx^i
+		\end{align*}
+
+		Therefore, the MLE estimate of $\vmu$ is, as expected, the emperical mean of all the data points. Hence we use this to centralize for the PCA algorithm.
+
+	\end{addmargin}
+
+\end{mlsolution}
+
+\end{document}

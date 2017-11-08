@@ -1,4 +1,6 @@
 *-env*
-sem5/cs330/assignments/assign2*
 *.log
 *.aux
+*.out
+*.zip
+*.gz

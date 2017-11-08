@@ -61,7 +61,7 @@
 
 
 \newcounter{question}
-\newenvironment{question}[]
+\newenvironment{question}
     {%
 		\refstepcounter{question}
 		\section*{Question \thequestion}
@@ -124,7 +124,9 @@
 \newenvironment{qsubsection}[1]
     {%
 		\br%
+
 		\textbf{#1}
+
 		\sbr%
     }
     {%

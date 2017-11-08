@@ -1,0 +1,308 @@
+\documentclass{article}
+
+\usepackage{assign}
+
+\setcoursetitle{CS340: Theory of Computation}
+\setassigncode{4}
+\setheaddate{November 7, 2017}
+
+\begin{document}
+\makeheader%
+
+\begin{question}
+
+	\begin{qpart}{1}
+
+		\begin{align*}
+			L_1	\eq	\set{\angl{M, N} \pipe M \mt{takes fewer steps on} \eps \mt{than} N}
+		\end{align*}
+
+		This language is undecidable. We can prove this by finding a valid reduction from $A_{TM}$ to $L_1$. Therefore, for all machines $\pr{M}$, there exists some machines $M$ and $N$ such that $\pr{M}$ accepts $w \iff M$ takes fewer steps on $\eps$ than $N$. \br%
+
+		\bt{Description of the Reduction Function} $f$ \br%
+
+		\ut{Input:} $\angl{\pr{M}, w}$
+		\begin{enumerate}[label = (\alph*) ]
+			\item If $\pr{M}$ accepts $w$, then
+				\begin{enumerate}[label = (\roman*) ]
+					\item Construct $M$ such that $M$ accepts $\eps$ in constant number of (one) steps
+					\item Construct $N$ such that $N$ loops forever on input $\eps$
+				\end{enumerate}
+			\item Else
+				\begin{enumerate}[label = (\roman*) ]
+					\item Construct $M$ such that $M$ loops forever on input $\eps$
+					\item Construct $N$ such that $N$ accepts $\eps$ in constant number of (one) steps
+				\end{enumerate}
+		\end{enumerate}
+
+		\begin{qsubsection}{Proof of Correctness}
+
+			If $\pr{M}$ accepts $w$, then we have two machines $M$ and $N$ such that machine $M$ takes only one step whereas $N$ never halts on input $\eps$. This satisfies the definition of the reduction function. \br%
+
+			If $\pr{M}$ does not accept $w$, then we have two machines $M$ and $N$ such that machine $N$ takes only one step whereas $M$ never halts on input $\eps$. Again, this satisfies the definition of the reduction function.
+
+		\end{qsubsection}
+
+		Hence our reduction function is valid. Therefore, $L_1$ is undecidable.
+
+	\end{qpart}
+
+	\begin{qpart}{2}
+
+		This language is decidable. The concept used is that for limited number of steps, we can have only limited number of inputs, as for any input with length $> 2^{340}$ will be read only till the first $2^{340} (let $= k$)$ characters, and hence the total number of strings we can have is $\abs{\Sigma}^{k}$. For any string, we can also check if the machine halts in $k$ steps or not. Hence, our turing machine will be as follows \br%
+
+		\bt{Description of the Turing Machine} $D$ \br%
+
+		\ut{Input:} $\angl{M}$
+		\begin{enumerate}[label = (\alph*) ]
+			\item For all strings with size $\abs{w} \le k$, check if M halts on w within $k$ steps. If any such string found, \et{accept}
+			\item If not accepted yet, \et{reject}
+		\end{enumerate}
+
+		Since this is a halting turing machine, we can say that $L_2$ is decidable.
+
+	\end{qpart}
+
+	\begin{qpart}{3}
+
+		Since for any Turing Machine, there are always infinitely many Turing Machines which are equivalent, we can always accept if the input indeed is a turing machine. \br%
+
+		\bt{Description of the Turing Machine} $D$ \br%
+
+		\ut{Input:} $\angl{M}$
+		\begin{enumerate}[label = (\alph*) ]
+			\item If $M$ is a turing machine, \et{accept}
+			\item Else, \et{reject}
+		\end{enumerate}
+
+	\end{qpart}
+
+	\begin{qpart}{4}
+
+		\begin{align*}
+			L_4	\eq	\set{\angl{M, N} \pipe L(M) \cap L(N) \, \text{is infinite}}
+		\end{align*}
+
+		This language is undecidable. We will prove this by finding a valid reduction such that $\overline{H_{TM}} \le L_4$ \br%
+
+		\textbf{The reduction function} $f$ \br%
+
+		\ut{Input:} $\angl{\pr{M}, w}$
+		\begin{enumerate}[label= (\alph*) ]
+			\item Construct a turing machine $M$ such that on input $x$
+			\begin{enumerate}[label= (\roman*) ]
+				\item If $M$ halts on $w$ (in say $k$ steps), \et{accept} $x$
+				\item If $M$ does not halt on $w$, \et{reject}
+			\end{enumerate}
+			\item Construct a turing machine $N$ such that $N$ accepts all strings $x$
+		\end{enumerate}
+		\ut{Output:} $\angl{M, N}$ \br%
+
+		From the construction of the reduction function, it is clear that our reduction function is valid. \br%
+
+		Therefore, $\func{f}{\angl{\pr{M}, w}} \in L_4 \iff \angl{\pr{M}, w} \in \overline{H_{TM}}$, hence, we can say that $\overline{H_{TM}} \le L_4$. \br%
+
+		Since we already know that $\overline{H_{TM}}$ is undecidable, therefore, $L_4$ is also undecidable.
+
+	\end{qpart}
+\end{question}
+
+\begin{question}
+
+	We can show that $\overline{A}_{TM}$ reduces to $\overline{REG}_{TM}$. In order to show this, we can equivalently show that $A_{TM}$ reduces to $REG_{TM}$. \br%
+
+	This is because $A_{TM} \le _m REG_{TM} \iff \overline{A}_{TM} \le _m \overline{REG}_{TM}$ \br%
+
+	We can find a reduction function $f$ such that for every machine $M$ and string $w$, $\func{f}{\angl{M, w}} = \angl{\pr{M}}$ such that if $M$ accepts $w \iff \func{L}{\func{f}{\angl{M, w}}}$ is regular.
+
+	\begin{qsubsection}{Description of the Reduction Function $f$}
+
+		\ut{Input:} $\angl{M, w}$
+		\begin{enumerate}[label = (\alph*) ]
+			\item Construct a machine $\pr{M}$, such that on input $x$
+				\begin{enumerate}[label = (\roman*)]
+					\item If $M$ accepts $w$, then $\pr{M}$ accepts $x$
+					\item Else, $\pr{M}$ accepts $x$ if $x$ is of the form $0^n 1^n$i else rejects
+				\end{enumerate}
+		\end{enumerate}
+		\ut{Output:} $\angl{\pr{M}}$
+
+	\end{qsubsection}
+
+	\begin{qsubsection}{Proof of Correctness}
+
+		The proof is straightforward. If $M$ accepts $w$, then we create a machine $\pr{M}$ which accepts every input. Clearly, $L(\pr{M})$ is a regular language. \br%
+
+		Otherwise, $\pr{M}$ accepts all strings of the form $0^n 1^n$. Therefore $L(\pr{M})$ is non-regular. Hence the reduction is well defined.
+
+	\end{qsubsection}
+
+	Since we have found a valid reduction from $A_{TM} \le _m REG_{TM}$. Therefore $\overline{A}_{TM} \le _m \overline{REG}_{TM}$. Since $\overline{A}_{TM}$ is turing unrecognizable, hence $REG_{TM}$ is also not co-turing recognizable.
+
+\end{question}
+
+\begin{question}
+
+	We can show that $A$ is turing recognizable whereas $B$ is not.
+
+	\begin{qpart}{A}
+
+		We can find a turing machine $M$, that accepts the language $A$ (not halting) \br%
+
+		\bt{Description of the Turing Machine} $M$ \br%
+
+		\ut{Input:} $\angl{M}$
+		\begin{enumerate}[label= (\alph*) ]
+			\item Set a variable $count = 0$
+			\item For all strings of the alphabet $\Sigma$ of the machine $M$, generate all strings $w \in \Sigma*$. Loop
+			\begin{enumerate}[label= (\roman*) ]
+				\item For string $w$, if $M$ accepts $w$, add 1 to count
+				\item If $count = 340$, \et{accept}
+			\end{enumerate}
+			\item If not accepted yet, \et{reject}
+		\end{enumerate}
+
+		Since this is a valid turing machine, and $L(M) = A$, we can say that $A$ is turing recognizable.
+
+		We can also claim using a similar turing machine that $\pr{A} = \set{\angl{M} \pipe \abs{\func{L}{M}} \ge 341}$ is also turing recognizable.
+
+	\end{qpart}
+
+	\begin{qpart}{B}
+
+		Since, for an undecidable language $L$ which is turing recognizable, $\overline{L}$ will be turing unrecognizable. \br%
+
+		Hence, in order to prove $B$ is turing unrecognizable, we can instead show that $\pr{A}$ is undecidable as $\overline{B} = \pr{A}$ and we have already shown that $pr{A}$ is turing recognizable. \br%
+
+		We can show that $\pr{A}$ is turing unrecognizable by showing that there exists a reduction from $A_{TM}$. \et{i.e.} for every machine $M$, there exists another machine $\pr{M}$, if $M$ accepts $w \iff \abs{\func{L}{\pr{M}}} > 340$  \br%
+
+		\bt{Description of the Reduction Function} $f$ \br%
+
+		\ut{Input:} $\angl{M, w}$
+		\begin{enumerate}[label = (\alph*) ]
+			\item Construct a turing machine $\pr{M}$ such that on input $x$
+				\begin{enumerate}[label = (\alph*)]
+					\item If $M$ accepts $w$, \et{accept}
+					\item If $M$ does not accept $w$, \et{reject}
+				\end{enumerate}
+		\end{enumerate}
+		\ut{Output:} $\angl{\pr{M}}$
+
+		\begin{qsubsection}{Proof of Correctness}
+
+			The proof is straightforward, if $M$ accepts $w$, then we create a turing machine $\pr{M}$ which accepts all inputs, therefore $\abs{\func{L}{\pr{M}}} > 340$ \br%
+
+			If the machine $M$ does not accept $w$, then we create a machine which does not accept any string, hence $\abs{\func{L}{\pr{M}}} \le 340$
+
+		\end{qsubsection}
+
+		Since we have proved $\pr{A}$, and hence $A$ to be undecidable, we can say that $B$ is turing unrecognizable.
+
+	\end{qpart}
+
+\end{question}
+
+\begin{question}
+
+	\begin{qpart}{A}
+
+		For the $LPATH$ problem, we can easily solve in NP time, by finding all paths from s to t which can be done in $2^{\abs{E(G)}}$ time. For each path, we can find in linear time if the length is $\le k$. \br%
+
+		Therefore, $LPATH \in$ NP\. We further need to prove that $LPATH$ is NP-Hard. For this, we will reduce the problem of Hamiltonian Path to $LPATH$, \et{i.e.} $HAMPATH \le _m LPATH$. \br%
+
+		\begin{qsubsection}{Description of the Reduction Function $f$}
+
+			\ut{Input:} $\angl{G, s, t}$
+			\begin{enumerate}[label = (\alph*) ]
+				\item Construct a graph $\pr{G}$ such that
+					\begin{enumerate}[label = (\roman*) ]
+						\item $V(\pr{G}) = V(G)$
+						\item $E(\pr{G}) = E(G)$
+					\end{enumerate}
+				\item Set $k = \abs{V(G)} - 1$
+				\item Set $\pr{s} = s$ and $\pr{t} = t$
+			\end{enumerate}
+			\ut{Output:} $\angl{\pr{G}, \pr{s}, t, k}$
+
+		\end{qsubsection}
+
+		\begin{qsubsection}{Proof of Correctness}
+
+			If there is a Hamiltonian Path in the graph $G$, then we can say that there is a path of length $\abs{V(G)} - 1$ in $G$. Hence, there is a path of length $k$ in the graph $\pr{G}$ as they are the same graphs. \br%
+
+			If there is a simple path in $\pr{G}$ such that the length is at least $k = \abs{V(G)}$. Since this is maximum length any path can have, hence we say that there is a path of length $\abs{V(G)} - 1$. Since this path will pass through every vertex, henc e is a Hamiltonian Path. \br%
+
+		\end{qsubsection}
+
+		Therefore, our reduction function is valid. Since $HAMPATH$ is NP-Complete (as discussed in class), we can say that $LPATH$ is NP-Hard. However, since $LPATH \in$ NP, therefore $LPATH$ is NP-Complete.
+
+	\end{qpart}
+
+	\begin{qpart}{B}
+
+		\bt{Reference:} Introduction to the Theory of Computation --- Michael Sipser (for the proof that $VertexCover$ is NP-Complete) \br%
+
+		First we need to show that the $VertexCover$ problem is NP-Complete. Clearly $VertexCover$ is in NP, as we can check for all subsets of the graph vertices in polynomial time if it is a vertex cover. Hence, we only need to show that $VertexCover$ is NP-Hard. \br%
+
+		In order to show this, we prove the reduction $3SAT \le _m VertexCover$. \br%
+
+		\bt{Description of the Reduction Function} \br%
+
+		\ut{Input:} $\angl{\phi}$
+		\begin{enumerate}[label = (\alph*) ]
+			\item Construct a graph G with the following properties
+				\begin{enumerate}[label = (\roman*) ]
+					\item For every clause, create three vertices, corresponding to each literal of this clause.with edges between each of these vertices
+					\item For every distinct literal (along with it's complement if it exists), create a vertex and connect to each vertex corresponding to the same literal
+				\end{enumerate}
+			\item Set $k = l + 2m$ where $l$ is the number of distinct literals (not including complements) and $m$ is the number of the number of clauses.
+		\end{enumerate}
+		\ut{Output:} $\angl{G, k}$ \br%
+
+		Hence, $VertexCover$ is NP-Complete. We can use this to prove that $DS$ is also NP-complete, through a reduction $VertexCover \le _m DS$ \br%
+
+		\bt{Reference:} https://people.cs.umass.edu/~barring/cs311/exams/finpracsol.html
+
+		We can easily see that $DS \in$ NP, as we can non-deterministically find all the subsets of the vertex set, and for each subset, check if it is a valid vertex set \et{i.e.} satisfies the required property, which can be done in polynomial time \br%
+
+		Note, we can make a small change in the definition of $VertexCover$ such that the new definition is
+
+		\begin{align*}
+			VertexCover = \set{\angl{G, k} \pipe \mt{G is connected and} \exists S, \abs{S} \le k \mt{and} S \mt{is a vertex cover of} G}
+		\end{align*}
+
+		Since this does not add to the complexity of the problem, nor reduces it, we can still claim the this language is also NP-Complete. Hence, now we can find a reduction function $VertexCover \le _m DS$ \br%
+
+		\qnote{The graphs constructed are undirected}
+
+		\bt{Description of the Reduction Function} \br%
+
+		\ut{Input:} $\angl{G, k}$
+		\begin{enumerate}[label = (\alph*) ]
+			\item Construct a graph $\pr{G}$
+			\item For every vertex $v_i$ in $G$, add a vertex $v_i$ in $\pr{G}$
+			\item For every edge $e_i (u, v)$ in $G$, add a vertex $e_i$ in $\pr{G}$. Add three edges, $(u, v)$, $(u, e_i)$ and $(e_i, v)$ in $\pr{G}$
+			\item Set $\pr{k} = k$
+		\end{enumerate}
+		\ut{Output:} $\angl{\pr{G}, k}$
+
+		\begin{qsubsection}{Proof of Correctness}
+
+			There are two sides. Firstly, if there is a vertex cover of size atmost $k$, then there is a subset $\pr{S} \subset V(\pr{G})$ which satisfies the property of $DS$. Let the vertex cover in $G$ be the subset $S$. Then we can choose $\pr{S}$ to be $S$ itself. \br%
+
+			This is a valid set, since for every edge, we clearly have a neighbour in $\pr{S}$, since for every vertex $e_i$ corresponding to the edge $u, v$, we will have either $u$ or $v$ in the vertex cover, (say $u$ without the loss of generality). Hence, both $v$ and $e_i$ have a neighbour in $S$. Also, since the graph $G$ and hence the graph $\pr{G}$ are connected, all vertices will have at least one neighbour in $\pr{S}$ since all vertices must have at least one edge. \br%
+
+			Hence, if there is a VertexCover of size $k$ in $G \implies$ there is a set $\pr{S} \subset V(\pr{G})$ following the property of $DS$. \br%
+
+			For the opposite case, we assume that there is a set $\pr{S} \subset V(\pr{G})$ which follows the property of $DS$. Hence, size of $\pr{S} \le k$. Therefore, we can add vertices to $\pr{S}$ so that for every edge $u, v$ (corresponding to the edges in $G$) or there is either one of $u$, $v$ of $e_i$ in $\pr{S}$. \br%
+			
+			Also, for every vertex of the form $e_i$ corresponding to edge $u, v$, replace it by either $u$ or $v$. Since, this does not change the property of $\pr{S}$. Also, $\pr{S}$ is clearly a vertex cover in $G$, since for every edge we have a vertex in the set $S$. Therefore the opposite side holds too.
+
+		\end{qsubsection}
+
+		Hence we have proved that $VertexCover \le _m DS$. Therefore, $DS$ is both NP-Hard and $DS \in$ NP\. Therefore, $DS$ is NP-Complete.
+
+	\end{qpart}
+\end{question}
+
+\end{document}

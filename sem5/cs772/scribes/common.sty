@@ -7,11 +7,13 @@
 \usepackage{xspace}
 \usepackage{algorithm, algpseudocode}
 \usepackage{mdframed}
-\usepackage{hyperref}
+\usepackage[colorlinks]{hyperref}
 \usepackage{framed}
 \usepackage{float}
 \usepackage{graphics}
 \usepackage{xifthen}
+\usepackage[normalem]{ulem}
+\usepackage{enumitem}
 
 \usetikzlibrary{arrows,automata}
 
@@ -27,10 +29,10 @@
 	skipbelow=\topsep]
 {siderule}
 
-\hypersetup{%
+\hypersetup{
     colorlinks=true,
     linkcolor=blue,
-    filecolor=magenta,      
+    filecolor=magenta,
     urlcolor=cyan,
 }
 
@@ -48,15 +50,14 @@
 \algrenewcommand\alglinenumber[1]{\footnotesize #1 \quad}
 
 \newcommand{\set}[1]{\left\{ #1 \right\}}
-
 \newcommand{\brac}[1]{\left[ #1 \right]}
-
 \newcommand{\para}[1]{\left( #1 \right)}
-
 \newcommand{\angl}[1]{\left\langle #1 \right\rangle}
 
 \newcommand{\bt}[1]{\textbf{#1}}
 \newcommand{\st}[1]{\textsc{#1}}
+\newcommand{\et}[1]{\textit{#1}}
+\newcommand{\ut}[1]{\uline{#1}}
 
 \newcommand{\mt}[1]{\,\text{#1}\,}
 
@@ -73,7 +74,9 @@
 }
 \newcommand{\is}[1]{\, \mathbb{I} \brac{#1}}
 \newcommand{\bigO}[1]{\mathcal{O}(#1)}
-\newcommand{\iden}[1]{\vI_{#1}}
+\newcommand{\iden}[1][]{
+	\ifthenelse{\equal{#1}{}}{\vI}{\vI_{#1}}
+}
 \newcommand{\trace}[1]{\func{\mt{Tr}}{#1}}
 
 
@@ -89,10 +92,10 @@
 \newcommand{\ND}[1]{\func{\mathcal{N}}{#1}}
 \newcommand{\D}{\mathcal{D}}
 \newcommand{\prob}[2][]{%
-	\ifthenelse{\equal{#1}{}}{\func{p}{#2}}{\func{p_{#1}}{#2}}
+	\ifthenelse{\equal{#1}{}}{\mathbb{P} \brac{#2}}{\mathbb{P}_{#1} \brac{#2}}
 }
 \newcommand{\aprob}[2][]{%
-	\ifthenelse{\equal{#1}{}}{\func{\tilde{p}}{#2}}{\func{\tilde{p}_{#1}}{#2}}
+	\ifthenelse{\equal{#1}{}}{\tilde{\mathbb{P}} \brac{#2}}{\tilde{\mathbb{P}}_{#1} \brac{#2}}
 }
 
 \newcommand{\der}[2]{\frac{d \para{#1}}{d \para{#2}}}
@@ -115,8 +118,13 @@
 \newcommand{\la}{\leftarrow}
 
 \newcommand{\eq}{\quad = \quad}
+\newcommand{\qimpl}{\quad \implies \quad}
 \newcommand{\qsim}{\quad \sim \quad}
 \newcommand{\qprop}{\quad \propto \quad}
+\newcommand{\qlt}{\quad < \quad}
+\newcommand{\qgt}{\quad > \quad}
+\newcommand{\qle}{\quad \le \quad}
+\newcommand{\qge}{\quad \ge \quad}
 
 %\renewcommand{\forall}{\forall\,}
 
@@ -141,13 +149,13 @@
 }
 
 
-\newenvironment{margin}[]
-	{%
-		\begin{addmargin}{1.5em}
-	}
-	{%
-		\end{addmargin}
-	}
+\newenvironment{margin}
+{
+	\begin{addmargin}{1.5em}
+}
+{
+	\end{addmargin}
+}
 
 
 \floatstyle{plain}
