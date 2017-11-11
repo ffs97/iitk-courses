@@ -10,6 +10,289 @@
 
 \begin{document}
 \makeheader%
+%\setstartnewpage{TRUE}
+
+\begin{question}
+
+	For implementing this structure, we can have two (sorted) arrays, with space utilization $\ge \frac{1}{4}$. One array will store the the values of the elements in the set, whereas the other will store the count / validity of the element. Since we are not taking insertion into consideration, we need not worry about the sorted structure of the array.
+
+	\begin{qsection}{Algorithm}
+
+		\begin{qsubsection}{Explanation}
+
+			The only difference from a normal sorted array implementation is that we are lazily deleting the elements \et{i.e.} we are deleting (rather reconstructing) when we there have been $\frac{n}{2}$ deletions, where $n$ is the size when the array is full (no element has been deleted, either after reconstruction or initially). \br%
+
+			The \ct{elements} array stores the element values in a sorted manner. This allows us to search through the elements, even if a few have been deleted, without reconstructing the array after every deletion. The validity of the element, \et{i.e.} checking whether the element has been previously deleted is supported by the additional array (here \ct{pointers}). \br%
+
+			The pointer array stores -1, at index $i$ if the element in the \ct{elements} array at index $i$ has not been deleted, \et{i.e.} is valid. \br%
+
+			If a series of elements have been deleted, say from index $i$ to $j$, then the \ct{pointers} will have the values $j$ at index $i$ and value $i$ at the index $j$. This allows us to know the length of the series that has been deleted from either the starting index or the last index of the series. For the indices between $i$ and $j$ (exclusive), the value can be anything, but $\ge$ 0, therfore valid. \br%
+
+			This series is also easy to update if any element after or before this series gets deleted, we can just merge this into this series (considering the concatention if there is one element between two separate series). Since we do not care about the values in between unless they are not -1, we can do this in constant time. This is crucial for the predecessor function, as otherwise, we would have to iterate throught the array to find the predecessor (since $\bigO{n}$) elements can get deleted.
+
+		\end{qsubsection}
+
+		\begin{algo}[0.9\textwidth]{h!}{Initialization of Arrays and Function for Recreating / Reordering Elements Array}
+			\begin{algorithmic}
+				\State{elements $\gets$ \Call{SortedArray}{S}}				\Comment{Array of values of elements in sorted manner}
+				\State{pointers $\gets$ \Call{Array}{-1, -1 \ldots\, -1}}	\Comment{Array of -1s representing validity of elements}
+				\State{numElements $\gets$ \Call{size}{S}}
+				\\
+				\Procedure{reorder}{size}
+					\State{newElements $\gets$ \Call{Array}{$size$}}
+					\\
+					\State{count $\gets$ 0}
+					\For{i in $\set{0 \ldots \para{\text{elements.length} - 1}}$}
+						\If{pointers[i] = -1}
+							\State{newElements[count] $\gets$ elements[i]}
+							\State{count $\gets$ count + 1}
+						\EndIf%
+					\EndFor%
+					\\
+					\State{$elements \gets newElements$}
+					\State{$pointers \gets$ \Call{Array}{$\set{-1, -1 \ldots\, -1}, size$}}		\Comment{Array of `size' -1s}
+				\EndProcedure%
+			\end{algorithmic}
+		\end{algo}
+
+		\begin{algo}[0.9\textwidth]{h!}{Functions for Finding Index of Element}
+			\begin{algorithmic}
+				\Procedure{find}{key}
+					\State{start $\gets$ 0, \quad end $\gets$ elements.length - 1}
+					\\
+					\While{start $\ne$ end}
+						\State{mid $\gets \frac{\mt{start} + \mt{end}}{2}$}		\Comment{Integer Division with Round Down}
+						\\
+						\If{elements[mid] $>$ key}
+							\State{end $\gets$ mid}
+						\ElsIf{elements[mid] $<$ key}
+							\State{start $\gets$ mid + 1}
+						\Else%
+							\State{\Return{mid}}
+						\EndIf%
+					\EndWhile%
+					\\
+					\State{\Return{start}}
+				\EndProcedure%
+			\end{algorithmic}
+		\end{algo}
+
+		\begin{algo}[0.9\textwidth]{h!}{Functions for Search, Predecessor and Delete}
+			\begin{algorithmic}
+				\Procedure{search}{key}
+					\State{index $\gets$ \Call{find}{key}}
+					\\
+					\If{elements[index] = key \bt{and} pointers[index] = -1}
+						\State{\Return{TRUE}}
+					\Else%
+						\State{\Return{FALSE}}
+					\EndIf%
+				\EndProcedure%
+				\\
+				\Procedure{predecessor}{key}
+					\State{index $\gets$ \Call{find}{key} - 1}
+					\\
+					\If{index $\ge$ 0}
+						\If{pointers[index] = -1}
+							\State{\Return{elements[index]}}
+						\ElsIf{pointers[index] $>$ 0}
+							\State{\Return{elements[pointers[index] - 1]}}
+						\EndIf%
+					\EndIf%
+					\\
+					\State{\Return{NULL}}
+				\EndProcedure%
+				\\
+				\Procedure{delete}{key}
+					\State{index $\gets$ \Call{find}{key}}
+					\\
+					\If{elements[index] $\ne$ key \bt{or} pointers[index] $\ne$ -1}
+						\State{\Return{FALSE}}
+					\EndIf%
+					\\
+					\State{start $\gets$ index, \quad end $\gets$ index}
+					\If{index $>$ 0 \bt{and} pointers[index - 1] $\ne$ -1}
+						\State{start $\gets$ pointers[index - 1]}
+					\EndIf%
+					\If{index < elements.length - 1 \bt{and} pointers[index + 1] $\ne$ -1}
+						\State{end $\gets$ pointers[index - 1]}
+					\EndIf%
+					\\
+					\State{pointers[start] $\gets$ end, \quad pointers[end] $\gets$ start}
+					\\
+					\State{numElements $\gets$ numElements - 1}
+					\If{numElements $\le$ elements.length \,/\, 2}
+						\State{\Call{reorder}{\ }}
+					\EndIf%
+					\\
+					\State{\Return{TRUE}}
+				\EndProcedure%
+			\end{algorithmic}
+		\end{algo}
+
+	\end{qsection}
+
+	\clearpage
+
+	\begin{qsection}{Time Complexity Analysis}
+
+		For \st{search} and \st{predecessor} functions, it can be observed that we are simply using Binary Search (in the \st{find} function), and hence the worst case time in these cases is $\bigO{\log{n}}$ \br%
+
+		For the case of deletion, since we are reordering when the number of elements deleted is equal to the total size of the array, the worst case analysis is a verly loose bound. Hence, we use amortized analysis in this case.
+
+		\begin{qsubsection}{Amortized Analysis of Deletion Operation}
+
+			The potential function we will use for this case is the difference between the number of valid elements in the elements array and the total size of the elements array. In terms of the pseudocode, this can be defined as $\phi = c_3 \para{elements.length - numElements}$. \br%
+
+			\note{$c$ is just a positive constant multiplied to allow the proper use of the potential function} \br%
+
+			\note{Valid element is an element that has not been deleted, since all the elements deleted are not instantly removed from the array} \br%
+
+			\begin{qproof}{$\phi$ is a valid potential function}
+
+				Initially, the size of the elements array is $\abs{S}$ and so is the number of valid elements. Hence, initially, $numElements = elements.length \implies \phi = 0$ \br%
+
+				At any time, the length of the array is greater than the number of valid elements as we are never inserting elements. Therefore, $elements.length \ge numElements \implies \phi \ge 0$. \br%
+
+				Therefore, our potential function satisfies the properties of potential functions, and is thus valid.
+
+			\end{qproof}
+
+			For the actual cost, we will have to find the index of the element we require to delete. This is $\bigO{\log{n}}$. In case we need to reorder, we can do so in $\bigO{n}$ \br%
+
+			\note{We set $c = 2 c_3$}
+
+			\begin{table}[h!]
+				\centering
+				\begin{tabular}{| X{5cm} | X{3cm} | X{3cm} | X{3cm} |}
+					\hline
+					\bt{Case}	&	\bt{Actual Cost}	&	$\bm{\Delta \phi}$	&	\bt{Amortized Cost} \\
+					\hline
+					When number of valid elements is greater than half the length of the elements array	&	$c_1 \log{n} + c_2$	&	$c \para{-1}$	&	$c_1 \log{n} + c_2 - 2 c_3$ \\
+					\hline
+					When number of valid elements is equal to one more than the length of the elements array	&	$c_1 \log{n} + \pr{c_3} n + \pr{c_4}$	&	$c \para{- \frac{n}{2}}$	&	$c_1 \log{n} + c_4$ \\
+					\hline
+				\end{tabular}
+			\end{table}
+
+			Hence, the amortized cost for the deletion operation is $\bigO{\log{n}}$. Therefore, our algorithm works in the required constraints.
+
+		\end{qsubsection}
+
+	\end{qsection}
+
+\end{question}
+
+\clearpage
+
+\begin{question}
+
+	\begin{qsection}{Algorithm}
+
+		\begin{algo}[0.9\textwidth]{h!}{Completed Update-R Function}
+			\begin{algorithmic}
+				\Procedure{Update-R}{i, j}
+					\If{R[i] = true \bt{and} R[j] = false}
+						\State{R[j] $\gets$ true}
+						\For{neighbours of j as q}
+							\State{\Call{Update-R}{j, q}}
+						\EndFor%
+					\EndIf%
+				\EndProcedure%
+			\end{algorithmic}
+		\end{algo}
+
+	\end{qsection}
+
+	\begin{qsection}{Amortized Analysis}
+
+		\begin{qsubsection}{Notations}
+
+			We will call each vertex that is unreachable from the source vertex as marked. Therefore, in every insertion of any edge, it is possible that some of the vertices get unmarked \et{i.e.} for these vertices, $R[i]$ is now 1. \br%
+
+			Also, for any edge $e = (u, v)$, we say that the edge $e$ is marked if $u$ is marked \et{i.e.} if $R[u] = 0$.
+
+		\end{qsubsection}
+
+		\begin{qsubsection}{Potential Function}
+
+			We define the potential function to be $\phi = k_1 \para{\#(\text{marked edges})} + k_2 \para{\#(\text{number of edges}) - \#(\text{unmarked nodes})}$ where $k_1$ and $k_2$ are positive constants. \br%
+
+			\note{For simplicity, we ignore the vertex $s$ when counting the unmarked nodes} \br%
+
+			\begin{qproof}{$\phi$ is a valid potential function}
+
+				Initially, when no edge has been inserted, the number of marked edges and total edges is 0. Also, since no vertex is reachable now (as we are excluding the vertex $s$), therefore, the initial value of the potential function is 0, as required. \br%
+
+				Now, for the positivity of the potential function. Clearly, the number of marked edges can be only non-negative. Also, since for any vertex to be unmarked (excluding $s$), there must be at least one incident edge on this vertex. Hence, the number of edges is always greater than or equal to the number of unmarked nodes. Therefore, the potential function is always non-negative.
+
+			\end{qproof}
+
+			Since $\phi$ satisfies the properties of a valid potential function, it is a valid potential function.
+
+		\end{qsubsection}
+
+		\clearpage
+
+		\begin{qsubsection}{Actual Cost}
+
+			There are two cases, when the edge, say $(u, v)$ is inserted, either $v$ is marked or $v$ is unmarked.
+
+			\begin{qcase}{1}{When the vertex $u$ is marked \et{i.e.} $R[u] = 0$}
+				If the vertex $u$ is marked, from the algorithm, we can say, that the algorithm will stop at the first call, as it will not satisfy the outer `if' condition will return $false$. Hence this case will take only constant time, say $c_1$
+			\end{qcase}
+
+			\begin{qcase}{2}{When the vertex $u$ is unmarked \et{i.e} $R[u] = 1$}
+				We will enter a recursion and will unmark all nodes which have not been unmarked yet and are reachable from this vertex. This is exactly doing DFS traversal over the nodes. \br%
+
+				From this analogy, we can say that the time taken will be $\bigO{n + m}$. We can define $n$ to be the number of reachable and unmarked nodes from this vertex, and $m$ to be the number of edges in this subgraph and the number of out-edges in this subgraph to already unmarked nodes. This is essentially the sum of the outdegrees of all the nodes in this subgraph. \br%
+
+				Since we are marking all visited nodes, we can reduce $n$ to be the number of nodes unmarked in this recursion. Therefore, $n = \,\#(\text{\et{nodes unmarked in this insertion}})$. \br%
+
+				Also, since $m$ is the sum of outdegrees. For each edge included in this, it was a marked edge, which is now unmarked, as the vertex from which this is outgoing is now unmarked. Hence, we can define $m = \,\#(\text{\et{edges unmarked in this insertion}})$ \br%
+
+				Hence, the total complexity of this insertion is therefore $\bigO{\#(\text{nodes unmarked in this insertion}) + \,\#(\text{edges unmarked in this insertion})}$
+			\end{qcase}
+
+			From the algorithm, we can see that the complexity of Case 1 will be the coefficient of the second term in the complexity of the second case. If in the number of edges unmarked also includes an edge that has been inserted and unmarked immediately, we can say the complexity of both cases will be $c_2 \,\#(\text{\et{nodes unmarked in this insertion}}) + c_1 \,\#(\text{\et{edges unmarked in this insertion}})$
+
+			Therefore, our actual cost is
+			\[c_2 \,\#(\text{\et{nodes unmarked in this insertion}}) + c_1 \,\#(\text{\et{edges unmarked in this insertion}})\]
+
+		\end{qsubsection}
+
+		\begin{qsubsection}{Amortized Cost}
+
+			We can easily analyse the amortized cost of two cases. Here, we assume that the edge is inserted from $u$ to $v$ \br%
+
+			We can define the difference in the potential function
+			\[\Delta \phi = k_2 - \para{k_1 \,\#(\text{\et{edges unmarked in this insertion}}) + k_2 \,\#(\text{\et{nodes unmarked in this iteration}})}\] \br%
+
+			\begin{table}[h!]
+				\centering
+				\begin{tabular}{| X{5cm} | X{3cm} | X{3cm} | X{3cm} |}
+					\hline
+					\tb{Case}									& \tb{Actual Cost}	& $\mb{\Delta \phi}$			& \tb{Amortized Cost} \\
+					\hline
+					When the vertex $u$ is initially unmarked	& $c_1$				& $k_2$							& $c_1 + c_2$ \\
+					\hline
+					When the vertex $u$ is initially marked		& $c_1 m + c_2 n$	& $k_2 - \para{k_1 m + k_2 n}$	& $c_2$ \\
+					\hline
+				\end{tabular}
+				\caption{Amortized Cost Table}
+			\end{table}
+
+			\note{For the following discussion, assume $n = \,\#(\text{\et{nodes unmarked in this insertion}})$ and $m = \,\#(\text{\et{edges unmarked in this insertion}})$} \br%
+
+			\note{We have taken $k_1 = c_1$ and $k_2 = c_2$}
+
+			Therefore, it is clear that the amortized cost if $\le c_1 + c_2$. Hence the amortized cost is $\bigO{1}$, which implies that the time for $n$ edge insertions is $\bigO{n}$.
+
+		\end{qsubsection}
+
+	\end{qsection}
+
+\end{question}
 
 \begin{question}
 

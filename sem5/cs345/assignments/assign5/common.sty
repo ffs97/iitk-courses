@@ -5,7 +5,7 @@
 \usepackage{scrextend}
 \usepackage{tikz,forest}
 \usepackage{xspace}
-\usepackage{algorithm, algpseudocode}
+\usepackage{algorithm, algorithmicx, algpseudocode}
 \usepackage{mdframed}
 \usepackage[colorlinks]{hyperref}
 \usepackage{framed}
@@ -14,11 +14,20 @@
 \usepackage{xifthen}
 \usepackage[normalem]{ulem}
 \usepackage{enumitem}
+\usepackage{array}
+\usepackage{etoolbox}
+\usepackage{color}
+\usepackage{tabularx}
+\usepackage{makecell}
 
 \usetikzlibrary{arrows,automata}
 
 % Set paragraph indent to zero
 \setlength\parindent{0pt}
+
+% Self Defined Colors
+\definecolor{silver}{RGB}{220, 220, 220}
+\renewcommand{\ttdefault}{lmtt}
 
 % Left Rule box environment
 \newmdenv[
@@ -29,7 +38,7 @@
 	skipbelow=\topsep]
 {siderule}
 
-\hypersetup{
+\hypersetup{%
     colorlinks=true,
     linkcolor=blue,
     filecolor=magenta,
@@ -45,9 +54,18 @@
 \newcommand{\vzero}{\vec{0}}
 \newcommand{\vone}{\vec{1}}
 
-
 % Change line number format in algorithms
 \algrenewcommand\alglinenumber[1]{\footnotesize #1 \quad}
+\AtBeginEnvironment{algorithmic}{\linespread{1.1}\ttfamily\fontseries{l}\selectfont}
+
+% Change vertical cell padding for tables
+\def\arraystretch{1.5}
+
+% Table centering with width
+\newcolumntype{X}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
 \newcommand{\set}[1]{\left\{ #1 \right\}}
 \newcommand{\brac}[1]{\left[ #1 \right]}
@@ -58,6 +76,7 @@
 \newcommand{\st}[1]{\textsc{#1}}
 \newcommand{\et}[1]{\textit{#1}}
 \newcommand{\ut}[1]{\uline{#1}}
+\newcommand{\ct}[1]{\texttt{#1}}
 
 \newcommand{\mt}[1]{\,\text{#1}\,}
 
@@ -149,11 +168,11 @@
 }
 
 
-\newenvironment{margin}
-{
+\newenvironment{margin}[0]
+{%
 	\begin{addmargin}{1.5em}
 }
-{
+{%
 	\end{addmargin}
 }
 
@@ -166,26 +185,31 @@
 {
 	\refstepcounter{algo}
     \begin{algofloat}[#2]
-	\begin{center}
-    \begin{minipage}{#1}
-    \begin{framed}
-    \begin{center}
-    Algorithm \thealgo: #3
-	\end{center}
-
+		\begin{center}
+    		\begin{minipage}{#1}
+    			\begin{framed}
+    				\begin{center}
+						\bt{Algorithm \thealgo}: #3
+						\vspace{1.5mm}
+						\textcolor{silver}{\hline}
+					\end{center}
     \nbr
 }
 {
-	\end{framed}
-	\end{minipage}
-	\end{center}
+				\end{framed}
+			\end{minipage}
+		\end{center}
 	\end{algofloat}
 }
 
 \newtheoremstyle{theorems}{\topsep}{\topsep}{\itshape}{0pt}{\bfseries}{~}{~}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
 \theoremstyle{theorems}
 
-\newcommand{\note}[1]{\textbf{\textsc{Note } } \textit{#1}}
+\newcommand{\note}[1]{%
+	\begin{tabular}[h!]{@{}p{1.3cm} L{\textwidth-1.3cm-0.7in}}
+		\bt{\st{Note } }	&	#1
+	\end{tabular}
+}
 \newtheorem{theorem}{\bt{\st{Theorem}}}[section]
 \newtheorem{corollary}{\bt{\st{Corollary}}}[theorem]
 \newtheorem{lemma}[theorem]{\bt{\st{Lemma}}}
