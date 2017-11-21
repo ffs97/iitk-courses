@@ -1,0 +1,33 @@
+OUTPUT_FORMAT("ecoff-littlemips")
+ENTRY(__start)
+SECTIONS
+{
+  .text  0 : {
+     _ftext = . ;
+    *(.init)
+     eprol  =  .;
+    *(.text)
+    *(.fini)
+     etext  =  .;
+     _etext  =  .;
+  }
+   _fdata = .;
+  .data  . : {
+    *(.sdata)
+    *(.rdata)
+    *(.data)
+    CONSTRUCTORS
+  }
+   edata  =  .;
+   _edata  =  .;
+   _fbss = .;
+  .bss  . : {
+    *(.sbss)
+    *(.scommon)
+    *(.bss)
+    *(COMMON)
+  }
+   end = .;
+   _end = .;
+}
+ 

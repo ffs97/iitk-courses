@@ -1,0 +1,3 @@
+/^# DO NOT DELETE THIS LINE/+2,$d
+$r makedep
+w
