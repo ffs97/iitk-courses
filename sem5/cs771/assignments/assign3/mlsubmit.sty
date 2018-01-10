@@ -1,0 +1,198 @@
+%% mlsubmit.sty v20170827
+%% (c) 2017 Purushottam Kar (Indian Institute of Technology Kanpur)
+%% 
+%% Draws upon style elements from 
+%% the style file for the course CS773 by Purushottam Kar
+%% the style file for the course CS289 by Alexander Sherstov
+%% the class file for the publication NOW FnT(R)-ML by Neal Parikh
+%% the style file for the proceedings of the NIPS 2015 conference
+
+\usepackage{ml}
+\usepackage{tabularx}
+\usepackage{makecell}
+
+\newcounter{mlanswer}
+
+\newenvironment{mlsolution}
+{\refstepcounter{mlanswer}\makeheader}
+{\clearpage}
+
+\newcommand{\initmlsubmision}[3]{
+	\setcounter{mlseries}{#1}
+	\newcommand{\studentname}{#2}
+	\newcommand{\studentroll}{#3}
+}
+
+% The big fancy header
+\newcommand{\makeheader}{
+	\noindent
+	\parbox{0.75\textwidth}{
+		{\sffamily\bfseries Indian Institute of Technology Kanpur}\\
+		{\sffamily\bfseries CS771 Introduction to Machine Learning, 2017-18-a}\\
+		\rule{0mm}{6mm}%
+		{\it Assignment Number:} {\themlseries}\\
+		{\it Student Name:}	{\studentname}\\
+		{\it Roll Number:}   {\studentroll}\\
+		{\it Date:} {\today}
+	}
+\hfill
+\begin{tabular}{c@{}}
+{\sffamily\bfseries\Large QUESTION}\\
+\rule{0mm}{20mm}\scalebox{6.6}{\sffamily\themlanswer}
+\end{tabular}
+
+\def\toptitlebar{\hrule height1pt\vskip .25in\vskip-\parskip}
+\def\bottomtitlebar{\vskip .1in\vskip-\parskip\hrule height1pt\vskip.09in}
+
+\vbox{
+	\hsize\textwidth\linewidth\hsize
+	\phantom{\hspace{\textwidth}}
+	\bottomtitlebar
+}
+}
+
+\newcommand{\set}[1]{\left\{ #1 \right\}}
+
+\newcommand{\brac}[1]{\left[ #1 \right]}
+
+\newcommand{\para}[1]{\left( #1 \right)}
+
+\newcommand{\angl}[1]{\left\langle #1 \right\rangle}
+
+\newcommand{\bt}[1]{\textbf{#1}}
+\newcommand{\st}[1]{\textsc{#1}}
+
+\newcommand{\mt}[1]{\,\text{#1}\,}
+
+\newcommand{\sbr}{\vspace{1.5mm}\xspace}
+\newcommand{\br}{\vspace{2.5mm}\xspace}
+\newcommand{\lbr}{\vspace{3mm}\xspace}
+\newcommand{\nbr}{\vspace{5mm}\xspace}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\I}{\mathbb{I}}
+\newcommand{\Hlb}{\mathcal{H}_K}
+\newcommand{\is}[1]{\, \mathbb{I} \brac{#1}}
+\newcommand{\iden}[1][]{
+	\ifthenelse{\equal{#1}{}}{\vI}{\vI_{#1}}
+}
+
+
+% Functions
+\newcommand{\func}[3][]{%
+	\, #2\ifthenelse{\equal{#1}{}}{}{_{#1}} \para{#3}
+}
+\newcommand{\funcinv}[3][]{%
+	\ifthenelse{\equal{#1}{}}{\func{#2^{-1}}{#3}}{\func{\para{#2^#1}^{-1}}{#3}}%
+}
+
+\newcommand{\sigmoid}[1]{\func{\sigma}{#1}}
+\newcommand{\ND}[1]{\func{\mathcal{N}}{#1}}
+\newcommand{\D}{\mathcal{D}}
+
+\newcommand{\prob}[2][]{%
+	\ifthenelse{\equal{#1}{}}{\mathbb{P} \brac{#2}}{\mathbb{P}_{#1} \brac{#2}}
+}
+\newcommand{\aprob}[2][]{%
+	\ifthenelse{\equal{#1}{}}{\tilde{\mathbb{P}} \brac{#2}}{\tilde{\mathbb{P}}_{#1} \brac{#2}}
+}
+
+\newcommand{\der}[2]{\frac{d \para{#1}}{d \para{#2}}}
+\newcommand{\derp}[2]{\frac{\delta \para{#1}}{\delta \para{#2}}}
+
+\newcommand{\dotp}[2]{\langle{#1},{#2}\rangle}
+\renewcommand{\exp}[1]{e^{#1}}
+\newcommand{\fact}[1]{\para{#1}!}
+\renewcommand{\log}[2][]{%
+	\ifthenelse{\equal{#1}{}}{\func{log}{#2}}{\func{log_#1}{#2}}
+}
+
+\newcommand{\pipe}{\,\big|\,}
+\newcommand{\eps}{\epsilon}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\la}{\leftarrow}
+
+\newcommand{\eq}{\quad = \quad}
+\newcommand{\qimpl}{\quad \implies \quad}
+\newcommand{\qsim}{\quad \sim \quad}
+\newcommand{\qprop}{\quad \propto \quad}
+\newcommand{\qlt}{\quad < \quad}
+\newcommand{\qgt}{\quad > \quad}
+\newcommand{\qle}{\quad \le \quad}
+\newcommand{\qge}{\quad \ge \quad}
+\newcommand{\qin}{\quad \in \quad}
+\newcommand{\qnin}{\quad \notin \quad}
+
+%\renewcommand{\forall}{\forall\,}
+
+\newcommand{\pr}[1]{#1^{\prime}}
+
+\newcolumntype{X}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+
+\newmdenv[
+	topline=false,
+	bottomline=false,
+	rightline=false,
+	skipabove=\topsep,
+	skipbelow=\topsep]
+{siderule}
+
+\newenvironment{base}[1]
+	{%
+		\bt{\st{Base Case}}
+		\sbr\
+		\begin{addmargin}{1em}
+			\begin{siderule}
+	}
+	{%
+			\end{siderule}
+		\end{addmargin}
+		\sbr\
+	}
+
+\newenvironment{hypoth}[1]
+	{%
+		\bt{\st{Hypothesis}}
+		\sbr\
+		\begin{addmargin}{1em}
+			\begin{siderule}
+	}
+	{%
+			\end{siderule}
+		\end{addmargin}
+		\sbr\
+	}
+
+\newenvironment{indctn}[1]
+	{%
+		\bt{\st{Induction}}
+		\sbr\
+		\begin{addmargin}{1em}
+			\begin{siderule}
+	}
+	{%
+			\end{siderule}
+		\end{addmargin}
+		\sbr\
+	}
+
+\newtheoremstyle{theorems}{\topsep}{\topsep}{\itshape}{0pt}{\bfseries}{~}{~}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
+\theoremstyle{theorems}
+
+
+\newcommand{\twocols}[4]{
+	\begin{tabular}[h!]{@{}m{#2} L{#1}}
+		\bt{\st{#3 } }	&	#4
+	\end{tabular}
+}
+
+\newcommand{\note}[2][\textwidth-1.3cm-0.7in]{\twocols{#1}{1.3cm}{Note}{#2}}
+%\newtheorem{theorem}{\bt{\st{Theorem}}}[section]
+%\newtheorem{corollary}{\bt{\st{Corollary}}}[theorem]
+%\newtheorem{lemma}[theorem]{\bt{\st{Lemma}}}
+%\newtheorem{definition}{\bt{\st{Definition}}}
+
+\def\arraystretch{1.5}
