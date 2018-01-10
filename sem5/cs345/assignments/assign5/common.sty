@@ -19,15 +19,53 @@
 \usepackage{color}
 \usepackage{tabularx}
 \usepackage{makecell}
+\usepackage{anyfontsize}
+\usepackage[none]{hyphenat}
+\usepackage{titlesec}
 
 \usetikzlibrary{arrows,automata}
+
+%% General Formatting
 
 % Set paragraph indent to zero
 \setlength\parindent{0pt}
 
 % Self Defined Colors
 \definecolor{silver}{RGB}{220, 220, 220}
+
+% Fonts
 \renewcommand{\ttdefault}{lmtt}
+
+% Title Font Styles
+\def\sectionfont{\fontsize{15.5}{12}\fontfamily{qag}\selectfont\boldmath}
+\def\subsectionfont{\fontsize{13}{12}\fontfamily{qag}\selectfont\boldmath}
+
+\titleformat*{\section}{\sectionfont}
+\titleformat*{\subsection}{\subsectionfont}
+
+% Change line number format in algorithms
+\algrenewcommand\alglinenumber[1]{\footnotesize {#1} \quad}
+\AtBeginEnvironment{algorithmic}{\linespread{1.1}\ttfamily\fontseries{l}\selectfont}
+
+% Change vertical cell padding for tables
+\def\arraystretch{1.5}
+
+% Hyperlinks
+\hypersetup{%
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,
+    urlcolor=cyan,
+}
+
+
+%% Text Formatting
+\newcommand{\bt}[1]{\textbf{#1}}
+\newcommand{\st}[1]{\textsc{#1}}
+\newcommand{\et}[1]{\textit{#1}}
+\newcommand{\ut}[1]{\uline{#1}}
+\newcommand{\ct}[1]{\texttt{#1}}
+
 
 % Left Rule box environment
 \newmdenv[
@@ -38,124 +76,35 @@
 	skipbelow=\topsep]
 {siderule}
 
-\hypersetup{%
-    colorlinks=true,
-    linkcolor=blue,
-    filecolor=magenta,
-    urlcolor=cyan,
-}
 
-\def\mydefgreek#1{\expandafter\def\csname v#1\endcsname{\text{\boldmath$\mathbf{\csname #1\endcsname}$}}}
-\def\mydefallgreek#1{\ifx\mydefallgreek#1\else\mydefgreek{#1}%
-   \lowercase{\mydefgreek{#1}}\expandafter\mydefallgreek\fi}
-\mydefallgreek
-{alpha}{beta}{gamma}{delta}{epsilon}{zeta}{eta}{theta}{iota}{kappa}{lambda}{mu}{nu}{xi}{omicron}{pi}{rho}{sigma}{tau}{upsilon}{phi}{chi}{psi}{omega}{Theta}{Lambda}{Sigma}{Delta}{Gamma}\mydefallgreek
-
-\newcommand{\vzero}{\vec{0}}
-\newcommand{\vone}{\vec{1}}
-
-% Change line number format in algorithms
-\algrenewcommand\alglinenumber[1]{\footnotesize #1 \quad}
-\AtBeginEnvironment{algorithmic}{\linespread{1.1}\ttfamily\fontseries{l}\selectfont}
-
-% Change vertical cell padding for tables
-\def\arraystretch{1.5}
-
-% Table centering with width
-\newcolumntype{X}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
-\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
-
-\newcommand{\set}[1]{\left\{ #1 \right\}}
-\newcommand{\brac}[1]{\left[ #1 \right]}
-\newcommand{\para}[1]{\left( #1 \right)}
-\newcommand{\angl}[1]{\left\langle #1 \right\rangle}
-
-\newcommand{\bt}[1]{\textbf{#1}}
-\newcommand{\st}[1]{\textsc{#1}}
-\newcommand{\et}[1]{\textit{#1}}
-\newcommand{\ut}[1]{\uline{#1}}
-\newcommand{\ct}[1]{\texttt{#1}}
-
-\newcommand{\mt}[1]{\,\text{#1}\,}
-
-\newcommand{\sbr}{\vspace{1.5mm}\xspace}
-\newcommand{\br}{\vspace{2.5mm}\xspace}
-\newcommand{\lbr}{\vspace{3mm}\xspace}
-\newcommand{\nbr}{\vspace{5mm}\xspace}
-
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\I}{\mathbb{I}}
-\newcommand{\E}[2][]{%
-	\, \mathbb{E}\ifthenelse{\equal{#1}{}}{}{_{#1}}\brac{#2}
-}
-\newcommand{\is}[1]{\, \mathbb{I} \brac{#1}}
-\newcommand{\bigO}[1]{\mathcal{O}(#1)}
-\newcommand{\iden}[1][]{
-	\ifthenelse{\equal{#1}{}}{\vI}{\vI_{#1}}
-}
-\newcommand{\trace}[1]{\func{\mt{Tr}}{#1}}
-
-
-% Functions
-\newcommand{\func}[3][]{%
-	\, #2\ifthenelse{\equal{#1}{}}{}{_{#1}} \para{#3}
-}
-\newcommand{\funcinv}[3][]{%
-	\ifthenelse{\equal{#1}{}}{\func{#2^{-1}}{#3}}{\func{\para{#2^#1}^{-1}}{#3}}%
-}
-
-\newcommand{\sigmoid}[1]{\func{\sigma}{#1}}
-\newcommand{\ND}[1]{\func{\mathcal{N}}{#1}}
-\newcommand{\D}{\mathcal{D}}
-\newcommand{\prob}[2][]{%
-	\ifthenelse{\equal{#1}{}}{\mathbb{P} \brac{#2}}{\mathbb{P}_{#1} \brac{#2}}
-}
-\newcommand{\aprob}[2][]{%
-	\ifthenelse{\equal{#1}{}}{\tilde{\mathbb{P}} \brac{#2}}{\tilde{\mathbb{P}}_{#1} \brac{#2}}
-}
-
-\newcommand{\der}[2]{\frac{d \para{#1}}{d \para{#2}}}
-\newcommand{\derp}[2]{\frac{\delta \para{#1}}{\delta \para{#2}}}
-
-\newcommand{\abs}[1]{\left| {#1} \right|}
-\newcommand{\norm}[1]{\left\| {#1} \right\|}
-\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
-\newcommand{\floor}[1]{\left\lfloor #1 \right\rfloor}
-\newcommand{\dotp}[2]{\langle{#1},{#2}\rangle}
-\renewcommand{\exp}[1]{e^{#1}}
-\newcommand{\fact}[1]{\para{#1}!}
-\renewcommand{\log}[2][]{%
-	\ifthenelse{\equal{#1}{}}{\func{log}{#2}}{\func{log_#1}{#2}}
-}
-
-\newcommand{\pipe}{\,\big|\,}
-\newcommand{\eps}{\epsilon}
-\newcommand{\ra}{\rightarrow}
-\newcommand{\la}{\leftarrow}
-
-\newcommand{\eq}{\quad = \quad}
-\newcommand{\qimpl}{\quad \implies \quad}
-\newcommand{\qsim}{\quad \sim \quad}
-\newcommand{\qprop}{\quad \propto \quad}
-\newcommand{\qlt}{\quad < \quad}
-\newcommand{\qgt}{\quad > \quad}
-\newcommand{\qle}{\quad \le \quad}
-\newcommand{\qge}{\quad \ge \quad}
-
-%\renewcommand{\forall}{\forall\,}
-
-\newcommand{\pr}[1]{#1^{\prime}}
-
-\newcommand{\argmin}{\mathop{\arg\min}}
-\newcommand{\argmax}{\mathop{\arg\max}}
-
-% Vectors
+%% Formatted Letters
 \def\LatinUpper{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 \def\LatinLower{a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z}
 
+% Caligraphic fonts
+\newcommand{\genCal}[1]{\expandafter\newcommand\csname c#1\endcsname{{\mathcal #1}}}
+\@for\i:=\LatinUpper\do{%
+	\expandafter\genCal\i
+}
+
+% Blackboard fonts
+\newcommand{\genBb}[1]{\expandafter\newcommand\csname b#1\endcsname{{\mathbb #1}}}
+\@for\i:=\LatinUpper\do{%
+	\expandafter\genBb\i
+}
+
+% Fraktur fonts
+\newcommand{\genFk}[1]{\expandafter\newcommand\csname k#1\endcsname{{\mathfrak #1}}}
+\@for\i:=\LatinUpper\do{%
+	\expandafter\genFk\i
+}
+
+\newcommand{\genFkl}[1]{\expandafter\newcommand\csname k#1\endcsname{{\mathfrak #1}}}
+\@for\i:=\LatinLower\do{%
+	\expandafter\genFkl\i
+}
+
+% Vectors
 \renewcommand{\vec}[1]{{\mathbf{#1}}}
 \newcommand{\genLatinVec}[1]{\expandafter\newcommand\csname v#1\endcsname{{\vec #1}}}
 \@for\i:=\LatinLower\do{%
@@ -167,6 +116,130 @@
 	\expandafter\genLatinVecU\i
 }
 
+% Greek symbol vectors
+\def\mydefgreek#1{\expandafter\def\csname v#1\endcsname{\text{\boldmath$\mathbf{\csname #1\endcsname}$}}}
+\def\mydefallgreek#1{\ifx\mydefallgreek#1\else\mydefgreek{#1}%
+   \lowercase{\mydefgreek{#1}}\expandafter\mydefallgreek\fi}
+\mydefallgreek {alpha}{beta}{gamma}{delta}{epsilon}{varepsilon}{zeta}{eta}{theta}{vartheta}{iota}{kappa}{lambda}{mu}{nu}{xi}{omicron}{pi}{rho}{varrho}{sigma}{tau}{upsilon}{phi}{varphi}{chi}{psi}{omega}\mydefallgreek
+
+% Upper Greek symbol vectors
+\def\mydefugreek#1{\expandafter\def\csname v#1\endcsname{\text{\boldmath$\mathbf{\csname #1\endcsname}$}}}
+\def\mydefallugreek#1{\ifx\mydefallugreek#1\else\mydefugreek{#1}%
+   \lowercase{\mydefugreek{#1}}\expandafter\mydefallugreek\fi}
+\mydefallugreek{Gamma}{Delta}{Theta}{Lambda}{Xi}{Sigma}{Upsilon}{Phi}{Psi}{Omega}\mydefallugreek
+
+% Vector numerals
+\newcommand{\vzero}{\vec{0}}
+\newcommand{\vone}{\vec{1}}
+
+
+%% Table Column Types
+\newcolumntype{X}[1]{>{\centering\arraybackslash\hspace{0pt}}p{#1}}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+
+%% Brackets
+\newcommand{\set}[1]{\left\{ {#1} \right\}}
+\newcommand{\brac}[1]{\left[ {#1} \right]}
+\newcommand{\para}[1]{\left( {#1} \right)}
+\newcommand{\angl}[1]{\left\langle {#1} \right\rangle}
+
+\newcommand{\mt}[1]{\text{#1}\,\,}
+\newcommand{\qmt}[1]{\,\,\text{#1}\,\,}
+
+
+%% Vertical Spacing
+\newcommand{\sbr}{\vspace{1.5mm}\xspace}
+\newcommand{\br}{\vspace{2.5mm}\xspace}
+\newcommand{\lbr}{\vspace{3mm}\xspace}
+\newcommand{\nbr}{\vspace{5mm}\xspace}
+
+\newcommand{\E}[2][]{%
+	\, \bE\ifthenelse{\equal{#1}{}}{}{_{#1}}\brac{#2}
+}
+
+
+%% Math Functions
+\newcommand{\func}[3][]{%
+	\, {#2}\ifthenelse{\equal{#1}{}}{}{_{#1}} \para{#3}
+}
+\newcommand{\tfunc}[3][]{%
+	\, \text{#2}\ifthenelse{\equal{#1}{}}{}{_{#1}} \para{#3}
+}
+\newcommand{\funcinv}[3][]{%
+	\ifthenelse{\equal{#1}{}}{\func{{#2}^{-1}}{#3}}{\func{\para{{#2}^{#1}}^{-1}}{#3}}%
+}
+
+\newcommand{\sigmoid}[1]{\func{\sigma}{#1}}
+
+\newcommand{\prob}[2][]{%
+	\ifthenelse{\equal{#1}{}}{\bP \brac{#2}}{\bP_{#1} \brac{#2}}
+}
+\newcommand{\aprob}[2][]{%
+	\ifthenelse{\equal{#1}{}}{\tilde{\bP} \brac{#2}}{\tilde{\bP}_{#1} \brac{#2}}
+}
+
+\newcommand{\der}[2]{\frac{d \para{#1}}{d \para{#2}}}
+\newcommand{\ders}[1]{\frac{d}{d {#1}}}
+\newcommand{\derp}[2]{\frac{\delta \para{#1}}{\delta \para{#2}}}
+
+\newcommand{\abs}[1]{\left| {#1} \right|}
+\newcommand{\norm}[1]{\left\| {#1} \right\|}
+\newcommand{\ceil}[1]{\left\lceil {#1} \right\rceil}
+\newcommand{\floor}[1]{\left\lfloor {#1} \right\rfloor}
+\newcommand{\dotp}[2]{\langle{#1},{#2}\rangle}
+\renewcommand{\exp}[1]{e^{#1}}
+\newcommand{\fact}[1]{\para{#1}!}
+
+\newcommand{\compl}{\overline}
+
+\renewcommand{\log}[2][]{%
+	\ifthenelse{\equal{#1}{}}{\func{log}{#2}}{\func{log_{#1}}{#2}}
+}
+
+\newcommand{\is}[1]{\bI \brac{#1}}
+\newcommand{\trace}[1]{\func{\mt{Tr}}{#1}}
+
+
+%% Arrows
+\newcommand{\lra}{\longrightarrow}
+\newcommand{\lla}{\longleftarrow}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\la}{\leftarrow}
+
+
+%% Operators
+\newcommand{\eq}{\quad = \quad}
+\newcommand{\qimpl}{\quad \implies \quad}
+\newcommand{\qsim}{\quad \sim \quad}
+\newcommand{\qprop}{\quad \propto \quad}
+\newcommand{\qlt}{\quad < \quad}
+\newcommand{\qgt}{\quad > \quad}
+\newcommand{\qle}{\quad \le \quad}
+\newcommand{\qge}{\quad \ge \quad}
+
+
+%% Math Pre Functions
+\newcommand{\qforall}{\,\forall\,}
+\newcommand{\argmin}{\mathop{\arg\min}}
+\newcommand{\argmax}{\mathop{\arg\max}}
+
+\newcommand{\pr}[1]{{#1}^{\prime}}
+\newcommand{\trans}[1]{{#1}^{\text{T}}}
+
+
+%% Asymptotic notation
+\newcommand{\bigO}[1]{\cO \para{#1}}
+\newcommand{\softO}[1]{\widetilde{\cO}\para{#1}}
+\newcommand{\Om}[1]{\Omega\para{#1}}
+\newcommand{\softOm}[1]{\tilde\Omega\para{#1}}
+
+
+%% Miscellaneous
+\newcommand{\pipe}{\,\big|\,}
+\newcommand{\eps}{\epsilon}
 
 \newenvironment{margin}[0]
 {%
@@ -177,6 +250,7 @@
 }
 
 
+%% Environments
 \floatstyle{plain}
 \newfloat{algofloat}{tbhp}
 
@@ -184,7 +258,7 @@
 \newenvironment{algo}[3][0.8\textwidth]
 {
 	\refstepcounter{algo}
-    \begin{algofloat}[#2]
+    \begin{algofloat}[{#2}]
 		\begin{center}
     		\begin{minipage}{#1}
     			\begin{framed}
@@ -195,22 +269,74 @@
 					\end{center}
     \nbr
 }
-{
+{%
 				\end{framed}
 			\end{minipage}
 		\end{center}
 	\end{algofloat}
 }
 
-\newtheoremstyle{theorems}{\topsep}{\topsep}{\itshape}{0pt}{\bfseries}{~}{~}{\thmname{#1} \thmnumber{#2} \thmnote{(#3)}}
-\theoremstyle{theorems}
+\newenvironment{induction}[0]
+{
+	\newcommand{\base}{%
+		\bt{\st{Base Case}}
+		\sbr\
+		\begin{addmargin}{1em}
+			\begin{siderule}
+	}
 
-\newcommand{\note}[1]{%
-	\begin{tabular}[h!]{@{}p{1.3cm} L{\textwidth-1.3cm-0.7in}}
-		\bt{\st{Note } }	&	#1
+	\newcommand{\hypoth}{%
+			\end{siderule}
+		\end{addmargin}
+		\sbr%
+
+		\bt{\st{Hypothesis}}
+		\sbr%
+		\begin{addmargin}{1em}
+			\begin{siderule}
+	}
+
+	\newcommand{\indctn}{%
+			\end{siderule}
+		\end{addmargin}
+		\sbr%
+		\bt{\st{Induction}}
+		\sbr%
+		\begin{addmargin}{1em}
+			\begin{siderule}
+	}
+}
+{%
+			\end{siderule}
+		\end{addmargin}
+		\br%
+
+		\let\base\undefine
+		\let\hypoth\undefine
+		\let\indctn\undefine
+}
+
+\newcommand{\twocols}[4]{
+	\begin{tabular}[h!]{@{}b{#2} L{#1}}
+		\bt{\st{#3 } }	&	#4
 	\end{tabular}
 }
-\newtheorem{theorem}{\bt{\st{Theorem}}}[section]
-\newtheorem{corollary}{\bt{\st{Corollary}}}[theorem]
-\newtheorem{lemma}[theorem]{\bt{\st{Lemma}}}
-\newtheorem{definition}{\bt{\st{Definition}}}
+
+\newtheoremstyle{fatt}{}{}{}{}{\bfseries}{.}{.5em}{}
+
+\newcounter{seriescode}
+\setcounter{seriescode}{1}
+
+% Theorem environments
+\theoremstyle{fatt}
+\newtheorem{theorem}{Theorem}[seriescode]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+\newtheorem{definition}{Definition}[seriescode]
+\newtheorem{example}{Example}[seriescode]
+\newtheorem{exercise}{Exercise}[seriescode]
+\newtheorem{result}{Result}[definition]

@@ -1,0 +1,626 @@
+\documentclass{article}
+
+\usepackage{mlsubmit}
+\usepackage{scrextend}
+
+\begin{document}
+\setlength\parindent{0pt}
+
+\initmlsubmision{3}{Gurpreet Singh}{150259}
+
+\begin{mlsolution}
+
+	\subsection*{Part 1}
+	\begin{addmargin}{1.5em}
+
+		From the definition of $\vtheta^{MLE}$, we have a MLE estimate $\vtheta$ such that for any $\vtheta \in \Theta$ and $\vtheta \ne \vtheta^{MLE}$
+
+		\begin{equation}
+			\prob{X \pipe \vtheta^{MLE}}	\qgt	\prob{X \cond \vtheta}
+			\label{eq:q1:1}
+		\end{equation} \br%
+
+		Suppose that $\vtheta^{MLE} \notin \argmax_{\vtheta \in \Theta} Q_{\vtheta^{MLE}}(\vtheta)$. \br%
+
+		From \textbf{Lecture 16, Slide 44}, we know that for any $\vtheta \in \Theta$
+
+		\begin{align*}
+			\log{\prob{X \pipe \vtheta}}	\qge	Q_{\vtheta^{MLE}}(\vtheta)
+		\end{align*} \br%
+
+		From equation \ref{eq:q1:1}, we can write
+
+		\begin{align*}
+			\log{\prob{X \pipe \vtheta^{MLE}}}	\qgt	Q_{\vtheta^{1}}(\vtheta^2)
+		\end{align*} \br%
+
+		However, from \textbf{Lecture 16, Slide 42}, we also know
+
+		\begin{align*}
+			\log{\prob{X \pipe \vtheta^{MLE}}}	\eq		Q_{\vtheta^{MLE}}(\vtheta^{MLE})
+		\end{align*} \br%
+
+		Therefore, we can say that for any $\vtheta \in \Theta$
+
+		\begin{align*}
+			Q_{\vtheta^{MLE}}(\vtheta^{MLE})	\eq		Q_{\vtheta^{MLE}}(\vtheta)
+		\end{align*} \br%
+
+		However, this is a contradiction, since we assumed that $\vtheta^{MLE} \notin \argmax_{\vtheta \in \Theta} Q_{\vtheta^{MLE}}(\vtheta)$. Hence, the self-consistency property needs to be satisfied.
+
+	\end{addmargin}
+
+	\subsection*{Part 2}
+	\begin{addmargin}{1.5em}
+
+		From the question, we know that $\vtheta^1$ and $\vtheta^2$ are the optimal MLE solutions. Therefore, we can say
+
+		\begin{align*}
+			\prob{X \pipe \vtheta^1}	\eq	\prob{X \pipe \vtheta^2}
+		\end{align*}
+
+		Since $\vtheta^1$ is one of the optimal solutions, say there is a chain of iterations such that we reach $\vtheta^1$ through one of these chains in $t^i$ iterations. Therefore, $\vtheta^{i} = \vtheta^1$. Again, from \textbf{Lecture 16, Slide 44}
+
+		\begin{align*}
+			\prob{X \pipe \vtheta^{i + 1}}	\qge	Q_{\vtheta^1}(\vtheta^{i + 1})	\qge	\prob{X \pipe \vtheta^1}
+		\end{align*}
+
+		However, since $\vtheta^1$ is a MLE solution, we have $\prob{X \pipe \vtheta^{i + 1}} \le \prob{X \pipe \vtheta^1}$. Hence,
+
+		\begin{align*}
+			\prob{X \pipe \vtheta^1}										&	\eq	Q_{\vtheta^1}(\vtheta^{i + 1})	\eq	\prob{X \pipe \vtheta^{i + 1}}
+		\end{align*}
+
+		Hence, for any $\vtheta^{i + 1}$ that satisies the above constraint will maximise $Q_{\vtheta^1}(\vtheta^{i + 1})$, as that will be the globally maximum possible value. Hence, for any $\vtheta^{i + 1}$ which is a MLE solution, $Q_{\vtheta^1}(\vtheta^{i + 1})$ will be maximum. Therefore, we can say
+
+		\begin{align*}
+			\set{\vtheta^{i + 1}}											&\eq	\argmax_{\vtheta \in \Theta} \prob{X \pipe \vtheta} \\
+			\implies \argmax_{\vtheta \in \Theta} \prob{X \pipe \vtheta}	&\eq	\argmax_{\vtheta \in \Theta} Q_{\vtheta^1}(\vtheta)
+		\end{align*}
+
+		Since, $\vtheta^2$ is also a MLE solution, therefore we can say that $\vtheta^2 \in \argmax_{\vtheta \in \Theta} Q_{\vtheta^1}(\vtheta)$
+
+		With a similar construction for $\vtheta^2$, we can say
+
+		\begin{align*}
+			\argmax_{\vtheta \in \Theta} \prob{X \pipe \vtheta}	&\eq	\argmax_{\vtheta \in \Theta} Q_{\vtheta^2}(\vtheta) \\
+			\vtheta^1											&\qin	\argmax_{\vtheta \in \Theta} Q_{\vtheta^2}(\vtheta)
+		\end{align*} \br%
+
+		Hence, proved
+
+	\end{addmargin}
+
+\end{mlsolution}
+
+\begin{mlsolution}
+
+	In order to prove that a function $f$ is piecewise linear, we need to prove that we can find a n-partition $\set{\Omega_i}_{i = 1}^{n}$ and a set $\set{\vw^i}_{i = 1}^n$ such that
+
+	\begin{align*}
+		f(\vx)	\eq	\sum_{i = 1}^{n} \is{\vx \in \Omega_i} \ip{\vw^i}{\vx}
+	\end{align*} \br%
+
+	We use this to prove the parts in the question.
+
+	\subsection*{Part 1}
+	\begin{addmargin}{1.5em}
+
+		Suppose we have a piecewise linear function $f$. Then we can write $g(\vx) = c \cdot f(\vx)$ as
+
+		\begin{align*}
+			g(\vx)	&\eq	c \cdot f(\vx) \\
+					&\eq	c \cdot \sum_{i = 1}^n \is{\vx \in \Omega_i} \ip{\vw^i}{\vx} \\
+					&\eq	\sum_{i = 1}^n \is{\vx \in \Omega_i} \ip{c \cdot \vw^i}{\vx}
+		\end{align*}
+
+		Hence, we have the set $\set{\Omega^g_i}_{i = 1}^n$ and $\set{\vw_g^i}_{i = 1}^n$ which defines the piecewise linear function, where $\forall\, i \in [n]$, $\Omega^g_i = \Omega_i$ and $\vw_g^i = c \cdot \vw^i$.
+
+		Hence, $g$ is also piecewise linear
+
+	\end{addmargin}
+
+	\subsection*{Part 2}
+	\begin{addmargin}{1.5em}
+
+		Suppose we have two piecewise linear functions $f_1$ and $f_2$. Then we can write $g(\vx) = f_1(\vx) + f_2(\vx)$ as
+
+		\begin{align*}
+			g(\vx)	&\eq	f_1(\vx) + f_2(\vx) \\
+					&\eq	\sum_{i = 1}^{n_1} \is{\vx \in \Omega_i^1} \ip{\vw_1^i}{\vx} + \sum_{i = 1}^{n_2} \is{\vx \in \Omega_i^2} \ip{\vw_2^i}{\vx}
+		\end{align*}
+
+		Now, for $g$ we need to consider all points in $\set{\Omega_i^1}_{i = 1}^{n_1} \cup \set{\Omega_i^2}_{i = 1}^{n_2}$ \br%
+
+		Since there can be instersections in these sets, we cannot directly add them. Hence we need to consider all the instersections. Therefore, we can write the complete set as
+
+		\begin{align*}
+			Q	\eq	\set{\Omega_i^1 \cap \Omega_j^2}_{i = 1, j = 1}^{n_1, n_2} \cup \set{\Omega_i}_{i = 1}^{n_1} \cup \set{\Omega_j}_{j = 1}^{n_2}
+		\end{align*}
+
+		However, these are not disjoint. In order to make these sets disjoint, we can remove all intersections, since we are already adding them to the complete set. For this, we define two set quantities
+
+		\begin{align*}
+			Q_1	&\eq	\sum_{i = 1}^{n_1} \bigcup\, \Omega_i^1 \\
+			Q_2	&\eq	\sum_{i = 1}^{n_2} \bigcup\, \Omega_i^2
+		\end{align*}
+
+		Then, we can transform the complete set as
+
+		\begin{align*}
+			Q	\eq	\set{\Omega_i^1 \cap \Omega_j^2}_{i = 1, j = 1}^{n_1, n_2} \cup \set{\Omega_i \setminus Q_2}_{i = 1}^{n_1} \cup \set{\Omega_j \setminus Q_1}_{j = 1}^{n_2}
+		\end{align*}
+
+		Since, we are including all intersections, we can say that $Q = \set{\Omega_i^1}_{i = 1}^{n_1} \cup \set{\Omega_j^2}_{j = 1}^{n_2}$ \br%
+
+		\note[\textwidth-1.3cm-0.5in]{I am using the concept that a n-partition is disjoint and not explicitly mentioning that. It is only becuase of that that the above term for $Q$ is of this form} \br%
+
+		We can define the above set $Q$ as our n-partion set for the function $g$. Since it is disjoint (from construction), it is a valid partion of sets. Now, we can define the mapping from $\Omega_i^g$ to $\vw_g^i$.
+
+		\begin{align*}
+			\vw_g^i	\eq \begin{cases}
+				\vw_1^j				&	\Omega_i^g = \Omega_j^1 \setminus Q_2 \\
+				\vw_2^j				&	\Omega_i^g = \Omega_j^2 \setminus Q_1 \\
+				\vw_1^j + \vw_2^k	&	\Omega_i^g = \Omega_j^1 \cap \Omega_k^2
+			\end{cases}
+		\end{align*}
+
+		To prove that this is valid, and represents the same function $g$, we can see that for any point $\vx$
+
+		\begin{align*}
+			g(x)	\eq	\begin{cases}
+				\ip{\vw_1^j}{\vx}			&	\mt{if}\quad \vx \in \Omega_j^1 \setminus Q_2 \\
+				\ip{\vw_2^j}{\vx}			&	\mt{if}\quad \vx \in \Omega_j^2 \setminus Q_1 \\
+				\ip{\vw_1^j + \vw_2^k}{\vx}	&	\mt{if}\quad \vx \in \Omega_j^1 \cap \Omega_k^2
+			\end{cases}
+		\end{align*}
+
+		This is clearly the same as the original defined function $g = f_1 + f_2$. Hence, we have found a representation which defines $g$ and hence it is a piecewise linear function. \br
+
+		Hence, proved
+
+	\end{addmargin}
+
+	\subsection*{Part 3}
+	\begin{addmargin}{1.5em}
+
+		Suppose we have a piecewise linear function $f$ and a function $g$ such that $g = f_{ReLU}(f)$. Then we can write
+
+		\begin{align*}
+			g(\vx)	&\eq	\func{f_{ReLU}}{f(\vx)} \\
+					&\eq	\func{f_{ReLU}}{\sum_{i = 1}^n \is{\vx \in \Omega_i} \ip{\vw}{\vx}} \\
+					&\eq	\max\para{\sum_{i = 1}^n \is{\vx \in \Omega_i} \ip{\vw^i}{\vx}, 0}
+		\end{align*}
+
+		We can also represent $g$ as follows
+
+		\begin{align*}
+			g(\vx)	\eq	\begin{cases}
+				\ip{\vw^i}{\vx}	&	\mt{if}\quad \vx \in \Omega_i \mt{and} \ip{\vw^i}{\vx} > 0 \quad \forall\, i \in [n] \\
+				0				&	\mt{else}
+			\end{cases}
+		\end{align*}
+
+		Therefore, we can define regions $R^i$ as
+
+		\begin{align*}
+			R^i	\eq	\Omega_i \cap \set{\vx \pipe \ip{\vw^i}{\vx} > 0}
+		\end{align*}
+
+		Then the function $g$ can be written as
+
+		\begin{align*}
+			g(\vx)	&\eq	\begin{cases}
+				\ip{\vw^i}{\vx}	&	\mt{if}\quad \vx \in \R^i \quad\forall\, i \in [n] \\
+				0				&	\mt{else}
+			\end{cases} \\
+			\implies g(\vx)	&\eq	\sum_{i = 1}^n \is{\vx \in R^i} \ip{\vw^i}{\vx}
+		\end{align*}
+
+		However, since $\sum_{i = 1}^n \bigcup R^i$ does not cover the whole of $\R^d$, we introduce another set $\overline{R}$ such that $\overline{R} = \R^d \setminus \sum_{i = 1}^n \bigcup R^i$ corresponding to $\overline{\vw} = \vzero$. Therefore $g$ becomes
+
+		\begin{align*}
+			g(\vx)	&\eq	\sum_{i = 1}^n \is{\vx \in R^i} \ip{\vw^i}{\vx} + \is{\vx \in \overline{R}} \ip{\vzero}{\vx}
+		\end{align*}
+
+		From the above expression, we can say that $g$ is a piecewise linear function. \br%
+
+		Hence, Proved
+
+	\end{addmargin}
+
+	\subsection*{Part 4}
+	\begin{addmargin}{1.5em}
+
+		We prove this using induction. Let us say that for the $r^{th}$ layer, this is true \textit{i.e.} we can represent the value at every node for the $r^{th}$ as a piecewise linear function. Then we prove that the value at every node in the $(r + 1)^{th}$ layer can also be represented as a piecewise linear function. \br%
+
+		\begin{base}
+
+			Consider a neural network with only an input layer and an ouptut layer. This case is trivial, as we only need to consider the one layer. \br%
+
+			Since for the $i^{th}$ node of the output layer, we can define the incoming input as $\ip{\vw^i}{\vx}$, we can say that the value at output node $i$ will be simply $\func{f_{ReLU}}{\ip{\vw^i}{\vx}}$ which is, from part 3 can be claimed as a piecewise linear function
+
+		\end{base}
+		\clearpage
+		\begin{hypoth}
+
+			We assume that the condition is satisfied for the $r^{th}$ layer \textit{i.e.} for every node in the $r^{th}$ layer, the value on that node is from a piecewise linear function \br%
+
+		\end{hypoth}
+
+		\begin{indctn}
+
+			Suppose that the input for the $i^{th}$ node in the $(r + 1)^{th}$ layer is coming from all the values in the previous layer \br%
+
+			For the previous layer, the value on the $j^{th}$ node is given by a piecewise linear function $f^j$. Therefore, the input on the $i^{th}$ node can be written as a weighted sum of the values of previous layer. Let these weights be defined by $\vw^j$
+
+			Since this will be not single value, we represent the input itself to be a function. And the value will be the activation function applied on the input. Hence the value on every node is actually a function, which will be computed on the value of the nodes in the input layer.
+
+			Assume that the number of nodes in the $r^{th}$ layer is $n$ and $(r + 1)^{th}$ layer is $m$
+
+		\end{indctn}
+
+		\begin{align*}
+			I^j	\eq	\sum_{i = 1}^{n} w^j_i f^i
+		\end{align*}
+
+		Since we proved in part 1, that multiplying a constant to a piecewise continuous function is also piecewise continuous, and in part 2 we proved that adding piecewise continuous functions also give piecewise continuous functions, we can say that $\forall\, j \in [m]$, $I^j$ is piecewise continuous. \br%
+
+		Also, in part 3 we proved that $\func{f_{ReLU}}{f}$ is piecewise continuous if $f$ is piecewise continuous. Hence, $\func{f_{ReLU}}{I^j}$ is piecewise continuous.
+
+		Therefore, for all nodes, the neural network computes a piecewise continous function. Using the base case, hence, the neural network will compute a piecewise continuous function acting upon the input.
+
+	\end{addmargin}
+
+	\subsubsection{Bonus Question}
+
+	Following the discussion from previous parts, we can say that every node in the hidden layer will have two sets or pieces, one consisting of points that ouptut something greater than zero, and the other being the complement of the first. \br%
+
+	Also, as we showed in the case of addition of piecewise linear functions, the number of sets upon adding them is just analysing the number of subsets (of sets) an element belongs to. Since there might be two or more sets which are contained in another set, we can only comment on the upper bound of the number of pieces. Since the number of sets in the previous (hidden) layer is $D$. \br%
+
+	We do not consider the rest complement sets, as they will be part of only those sets which the actual set is not of. We can also represent this as a subset of sets, and if a set does not belong to one set, we say it's complement belongs to that set. Hence, the number of subsets will simply be the powerset of these D subsets.
+
+	\[ \mt{Number of Pieces}	\qle	2^D \]
+
+\end{mlsolution}
+
+\begin{mlsolution}
+
+	For the following question, assume that $\vx \in \R^d$
+
+	\begin{mlalgorithm}[0.8\textwidth]{h!}{Kernel Perceptron --- Storing all Points}
+		\begin{enumerate}
+			\item Initialize a list structure, storing the head of the list
+			\item Add a single item $\vw^0 \in \R^d$ as an initialization of $\vw$ in the original space
+			\item While we recieve a point $t \longrightarrow \vz^t = \para{y^t, \vx^t}$
+				\begin{enumerate}[label= (\roman*) ]
+					\item Initialize $e = 0$
+					\item For all points $\vp$ in the list, update $e \gets e + \func{K}{\vp, \vx^t}$
+					\item If $y^t \cdot e < 0$, add $\eta_t \cdot y^t \cdot \vx^t$ to the head of the list
+				\end{enumerate}
+		\end{enumerate}
+	\end{mlalgorithm}
+
+	The list of points obtained are our support vectors, and can be used for predictions. \br%
+
+	We can also have a subset of the points, instead of saving all points, we save only a subset of the points. We can use a simple array for this, instead of using a list, although there a tonne of ways to do this.
+
+	\begin{mlalgorithm}[0.8\textwidth]{h!}{Kernel Perceptron --- Storing a subset of Points}
+		\begin{enumerate}
+			\item Initialize an array of $k$ elements, all NULL ($k$ is the number of support points required)
+			\item Add a single item $\vw^0 \in \R^d$ as an initialization of $\vw$ in the original space to the array
+			\item Initiliaze $head \gets 1$ (Indexing starting from 0)
+			\item While we recieve a point $t \longrightarrow \vz^t = \para{y^t, \vx^t}$
+				\begin{enumerate}[label= (\roman*) ]
+					\item Initialize $e = 0$
+					\item For all points $\vp$ in the array, update $e \gets e + \func{K}{\vp, \vx^t}$
+					\item If $y^t \cdot e < 0$,
+						\begin{enumerate}[label= ]
+							\item update array[$head$] $\gets \eta_t \cdot y^t \cdot \vx^t$
+							\item update $head \gets head + 1$
+						\end{enumerate}
+				\end{enumerate}
+		\end{enumerate}
+	\end{mlalgorithm}
+
+\end{mlsolution}
+
+\begin{mlsolution}
+
+	\subsection*{Part 1}
+	\begin{addmargin}{1.5em}
+
+		In order to show that the quadratic kernel is Mercel, we need to find a mapping $\phi: \R^2 \rightarrow \Hlb$, such that $K(\vz^1, \vz^2) = \ip{\vz^1}{\vz^2}$. \br%
+
+		In order to do this, we need to change the representation of the quadratic kernel. We can alternatively represent it in the following form
+
+		\begin{align*}
+			\para{\ip{\vz^1}{\vz^2} + 1}^2	&\eq	1 + 2 \cdot \ip{\vz^1}{\vz^2} + \para{\ip{\vz^1}{\vz^2}}^2 \\
+											&\eq	1 + \ip{\sqrt{2} \cdot \vz^1}{\sqrt{2} \cdot \vz^2} + \sum_{i = 1}^d \sum_{j = 1}^d z^1_i z^1_j z^2_i z^2_j \\
+											&\eq	1 + \sum_{i = 1}^d \para{\sqrt{2} \cdot z_i^1} \para{\sqrt{2} \cdot z_i^2} + \sum_{j = 1}^d \sum_{k = 1}^d \para{z_j^1 \cdot z_k^1} \para{z_j^2 \cdot z_k^2} \\
+											&\eq	\brac{\begin{matrix}
+															1					\\
+														\sqrt{2} \cdot z_1^1	\\
+														\sqrt{2} \cdot z_2^1	\\
+														\vdots					\\
+														\sqrt{2} \cdot z_d^1	\\
+														z_1^1 \cdot z_1^1		\\
+														z_1^1 \cdot z_2^1		\\
+														\vdots					\\
+														z_1^1 \cdot z_d^1		\\
+														z_2^1 \cdot z_1^1		\\
+														\vdots					\\
+														z_d^1 \cdot z_d^1
+													\end{matrix}}^{\mt{T}}
+													\brac{\begin{matrix}
+															1					\\
+														\sqrt{2} \cdot z_1^2	\\
+														\sqrt{2} \cdot z_2^2	\\
+														\vdots					\\
+														\sqrt{2} \cdot z_d^2	\\
+														z_1^2 \cdot z_1^2		\\
+														z_1^2 \cdot z_2^2		\\
+														\vdots					\\
+														z_1^2 \cdot z_d^2		\\
+														z_2^2 \cdot z_1^2		\\
+														\vdots					\\
+														z_d^2 \cdot z_d^2
+													\end{matrix}}
+		\end{align*}
+
+		\clearpage
+
+		The matrix representation is exactly the transformed Hilbert Space we require. Hence, we represent the Hilbert Space $\Hlb$ in $d^2 + d + 1 = 7$ dimensions, such that $\phi:\R^2 \rightarrow \Hlb$ is defined as
+
+		\begin{align*}
+			\phi(\vz)	&\eq	\brac{\,\begin{matrix}
+					\phi_0(\vz)	&	\phi_1(\vz)	&	\phi_2(\vz)
+			\end{matrix}\,} \\
+			&\quad\quad\quad\,\,\mt{such that} \\
+			\phi(\vz)	&\eq	\brac{1} \qin \R^1 \\
+			\phi(\vz)	&\eq	\sqrt{2} \cdot \vz \qin \R^d \\
+			\phi(\vz)	&\eq	\brac{\,\begin{matrix}
+					z_1 z_1	&	z_1 z_2	&	z_2 z_1 &	z_2 z_2
+			\end{matrix}\,} \qin \R^{d^2} \\
+		\end{align*}
+
+		If $\Hlb \equiv \R^D$ then $D = d^2 + d + 1$
+
+	\end{addmargin}
+
+	\subsection*{Part 2}
+	\begin{addmargin}{1.5em}
+
+		We have
+
+		\begin{align*}
+			f_{(A, \vb, c)}(\vx)	\eq	\ip{\vz, A \vz}	 + \ip{\vb, \vz} + c
+		\end{align*}
+
+		We can alternatively write this as
+
+		\begin{align*}
+			f_{(A, \vb, c)}(\vx)	&\eq	c + \ip{\vb}{\vz} + \ip{\vz}{A \vz}	\\
+								&\eq	c + \sum_{i = 1}^d b_i z_i + \sum_{j = 1}^d \sum_{k = 1}^d A_{jk} \, z_j \, z_k \\
+								&\eq	\brac{\begin{matrix}
+											c					\\
+											b_1 / \sqrt{2}		\\
+											b_2 / \sqrt{2}		\\
+											\vdots				\\
+											b_d / \sqrt{2}		\\
+											A_{11}				\\
+											A_{12}				\\
+											\vdots				\\
+											A_{1d}				\\
+											A_{21}				\\
+											\vdots				\\
+											A_{dd}
+										\end{matrix}}^{\mt{T}}
+										\brac{\begin{matrix}
+											1						\\
+											\sqrt{2} \cdot z_1^2	\\
+											\sqrt{2} \cdot z_2^2	\\
+											\vdots					\\
+											\sqrt{2} \cdot z_d^2	\\
+											z_1^2 \cdot z_1^2		\\
+											z_1^2 \cdot z_2^2		\\
+											\vdots					\\
+											z_1^2 \cdot z_d^2		\\
+											z_2^2 \cdot z_1^2		\\
+											\vdots					\\
+											z_d^2 \cdot z_d^2
+										\end{matrix}} \\
+								&\eq	\ip{\vw}{\func{\phi}{\vz}}
+		\end{align*} \br%
+
+		Hence, we can clearly write the function $f_{(A, \vb, c)}(\vx)$ in the form $\ip{\vw}{\vx}$ such that $\vw$ has the form as given below
+
+		\begin{align*}
+			\vw	\eq	\brac{\begin{matrix}
+					c	&	b_1 / \sqrt{2}	&	b_2 / \sqrt{2}	&	A_{11}	&	A_{12}	&	A_{21}	&	A_{22}
+			\end{matrix}}^{\mt{T}}
+		\end{align*}
+
+	\end{addmargin}
+
+	\subsection*{Part 3}
+	\begin{addmargin}{1.5em}
+
+		We can proceed similar to the previous part, but build build it backwards instead. Assume we have $\vw \in \Hlb$, then we can write $\ip{\vw}{\func{\phi}{\vz}}$ as
+
+		\begin{align*}
+			\ip{\vw}{\func{\phi}{\vz}}	&\eq	\sum_{i = 1}^D w_i \cdot \func{\phi}{\vz}_i \\
+			&\eq	w_1 + \sum_{i = 1}^d w_{\para{1 + i}} \cdot z_i + \sum_{j = 1}^d \sum_{k = 1}^d w_{\para{1 + j \cdot d + k}} \, z_j z_k
+		\end{align*}
+
+		This is of the same form as a quadratic function. We can further transform this as follows. For the following discussion, we substitute $d$ by 2. Firstly, assume
+
+		\begin{align*}
+			w_c		&\eq	w_1 \\
+			\vw_b	&\eq	\brac{\begin{matrix}
+						\sqrt{2} w_2 &	\sqrt{2} w_3
+							\end{matrix}}^{\mt{T}} \\
+			w_A		&\eq	\brac{\begin{matrix}
+								w_4	&	w_5 \\
+								w_6	&	w_7
+							\end{matrix}}
+		\end{align*}
+
+		Using these, we can write the dot product as
+
+		\begin{align*}
+			\ip{\vw}{\func{\phi}{\vz}}	&\eq	w_c + \ip{\vw_b}{\vz} + \ip{\vz}{w_A \vz}
+		\end{align*}
+
+		Since, this is exactly of the form of a quadratic function. We can say that we have the parameters $\para{A, \vb, c}$, where
+
+		\begin{align*}
+			A	&\eq	w_A \\
+			\vb	&\eq	\vw_b \\
+			c	&\eq	w_c
+		\end{align*}
+
+		such that
+
+		\begin{align*}
+			\ip{\vw}{\vz}	\eq	\ip{\vz}{A \vz} + \ip{\vb}{\vz} + c
+		\end{align*}
+
+	\end{addmargin}
+
+	\subsection*{Part 4}
+	\begin{addmargin}{1.5em}
+
+		We need to prove that if the function $\hat{f}$ offers the least squares error, then
+
+		\begin{align*}
+			\sum_{i = 1}^n \para{y^i - \hat{f}(\vz^i)}^2	\qle	\min_{A, \vb, c} \quad \sum_{i = 1}^n \para{y^i - f_{A, \vb, c}(\vz^i)}^2 + \eps
+		\end{align*} \br%
+
+		From part 2, we know that every quadratic function can be represented in the form of the dot product of a parameter $\vw$ in the Hilbert Space. Let $\hat{\vw}$ represent $\hat{f}$. Therefore, we can transform the above equation as
+
+		\begin{equation}
+			\sum_{i = 1}^n \para{y^i - \ip{\hat{\vw}}{\func{\phi}{\vz^i}}}^2	\qle	\min_{\vw \in \Hlb} \quad \sum_{i = 1}^n \para{y^i - \ip{\vw}{\func{\phi}{\vz^i}}}^2 + \eps
+			\label{eq:q4.1}
+		\end{equation} \br%
+
+		We can relate these to the concept of MLE and MAP solutions. From the case of linear regression, we already know the MLE and MAP solutions.
+
+		\begin{align*}
+			\vw^{MLE}	&\eq	\para{X^T X}^{-1} X^T \vy \\
+			\vw^{MAP}	&\eq	\para{X^T X + \lambda \iden}^{-1} X^T \vy
+		\end{align*} \br%
+
+		In the Hilbert Space, we can transform these as follows
+
+		\begin{align*}
+			\vw^{MLE}	&\eq	\para{\func{\phi}{X}^T \func{\phi}{X}}^{-1} \func{\phi}{X}^T \vy \\
+			\vw^{MAP}	&\eq	\para{\func{\phi}{X}^T \func{\phi}{X} + \lambda \iden}^{-1} \func{\phi}{X}^T \vy
+		\end{align*} \br%
+
+		\note{In the Hilbert Space, $\vw^{MAP} = \hat{\vw}$ (comes directly from the definition of $\hat{f}$)} \br%
+
+		Also, from the definition of the MLE estimate, which is a minimum of the least squares error, we can say
+
+		\begin{align*}
+			\sum_{i = 1}^n \para{y^i - \ip{\vw^{MLE}}{\func{\phi}{\vz^i}}}^2	\qle	\min_{\vw \in \Hlb} \quad \sum_{i = 1}^n \para{y^i - \ip{\vw}{\func{\phi}{\vz^i}}}^2
+		\end{align*} \br%
+
+		Therefore, if we prove that as $\lambda \longrightarrow 0^+$, $\hat{\vw} \longrightarrow \vw^{MLE}$, then we can say that $\eps \longrightarrow 0$, as the LHS in equation \ref{eq:4.1} will be a proper lower bound. \br%
+
+		\note{We can write $\func{\phi}{X}^T \func{\phi}{X}$ as the Gram's Matrix $G$}
+
+		Consider the forms of $\vw^{MLE}$ and $\hat{\vw} = \vw^{MAP}$, we can write
+
+		\begin{align*}
+			\hat{\vw}	&\eq	\para{G + \lambda \iden}^{-1} \func{\phi}{X}^T \vy \\
+						&\eq	G^{-1} \para{\iden - \frac{\lambda G^{-1}}{1 + \func{\trace}{G^{-1}}}} \func{\phi}{X}^T \vy \\
+						&\quad\longrightarrow\,	G^{-1} \func{\phi}{X}^T \vy \quad \mt{as} \quad \lambda \longrightarrow 0 \\
+						&\eq	\vw^{MLE}
+		\end{align*}
+
+		Hence, as $\lambda \longrightarrow 0$, $\hat{\vw} \longrightarrow \vw^{MLE}$, hence we can say $\eps \longrightarrow 0$
+
+	\end{addmargin}
+
+\end{mlsolution}
+
+\begin{mlsolution}
+
+	\subsection*{Part 1}
+	\begin{addmargin}{1.5em}
+
+		We know that Gaussian-Gaussian has the conjugacy property, and hence, we can say that the marginal probability of $\vx$ \textit{i.e.} $\prob{\vx}$ \br%
+
+		Therefore, we can write the marginal probability of $\vx$ as a gaussian distribution with mean $\pr{\vmu}$ and covariance matrix $\Lambda$.
+
+		\begin{align*}
+			\prob{\vx \pipe \vmu, W, \sigma}	\eq&	\int_{\vz} \prob{\vx \pipe \vz, \vmu, W, \sigma} \prob{\vz \pipe 0, \iden} d\vz \\
+												\eq&	\ND{\vx \pipe \pr{\vmu}, \Lambda}
+		\end{align*}
+
+		Also, we know that $\vx = W\vz + \vmu + \eps$, and from the properties of Gaussian, we know $\pr{\vmu} = \E{\vx}$ and $\Lambda = \func{cov}{\vx}$. Hence
+
+		\begin{align*}
+			\pr{\vmu}		\eq&	\E{\vx} \\
+							\eq&	\E{W\vz + \vmu + \eps} \\
+							\eq&	W\para{\E{\vz} = 0} + \para{\E{\vmu} = \vmu} + \para{\E{\eps} = 0} \\
+							\eq&	\vmu \\
+			\\
+			\pr{\Lambda}	\eq&	\E{\para{\vx - \E{\vx}} \para{\vx - \E{\vx}}^T} \\
+							\eq&	\E{\para{W \vz + \eps} \para{W \vz + \eps}^T} \\
+							\eq&	\E{W \vz \vz^T W^T + W \vz \eps^T + \eps W \vz^T + \eps \eps^T} \\
+							\eq&	W \E{\vz \vz^T} W^T + 0 + 0 + \E{\eps \eps^T} \\
+							\eq&	W \iden \, \iden^T W^T + \sigma^2 \iden \\
+							\eq&	W W^T + \sigma^2 \iden
+		\end{align*}
+
+		Hence, we can write $\prob{\vx} = \ND{\vmu, C}$ where $C = W W^T + \sigma^2 \iden$
+
+	\end{addmargin}
+
+	\subsection*{Part 2}
+	\begin{addmargin}{1.5em}
+
+		\textbf{Note:} I will use $C = W W^T + \sigma^2 \iden$ for the rest of the question
+
+		Since all the sample points are independent, we can write $\prob{X} = \prod_{i = 1}^{n} \prob{\vx^i}$. Therefore
+
+		\begin{align*}
+			\prob{X \pipe \vmu, W, \sigma}			\eq&	\prod_{i = 1}^{n} \prob{\vx^i \pipe \vmu, W, \sigma} \\
+													\eq&	\prod_{i = 1}^{n} \ND{\vx^i \pipe \vmu, C} \\
+			\implies \prob{X \pipe \vmu, W, \sigma}	\eq&	\prod_{i = 1}^{n} \frac{1}{\sqrt{\para{2 \pi}^d \abs{C}}} \exp{\frac{-1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T} \\
+			\implies \log{\prob{X \pipe \vmu, W, \sigma}}	\eq&	- \sum_{i = 1}^{n} \para{\frac{1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T + \frac{1}{2} \log{\para{2 \pi}^d \abs{C}}} \\
+		\end{align*}
+
+	\end{addmargin}
+
+	\subsection*{Part 3}
+	\begin{addmargin}{1.5em}
+
+		We can write the MLE estimate of $\vmu$ as
+
+		\begin{align*}
+			\vmu^{MLE}	\eq&	\argmax_{\vmu \in \R^d} \prob{X \pipe \vmu, W, \sigma} \\
+						\eq&	\argmax_{\vmu \in \R^d} \log{\prob{X \pipe \vmu, W, \sigma}} \\
+						\eq&	\argmax_{\vmu \in \R^d} \log{\prod_{i = 1}^{n} \prob{\vx^i \pipe \vmu, W, \sigma}} \\
+						\eq&	\argmax_{\vmu \in \R^d} \sum_{i = 1}^{n} \log{\prob{\vx^i \pipe \vmu, W, \sigma}} \\
+					\eq&	\argmin_{\vmu \in \R^d} \sum_{i = 1}^{n} \para{\frac{1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T + \frac{1}{2} \log{\para{2 \pi}^d \abs{C}}} \\
+						\eq&	\argmin_{\vmu \in \R^d}	\sum_{i = 1}^{n} \frac{1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T
+		\end{align*}
+
+		We can simply differentiate the RHS term, and using differentials of matrices, we get
+
+		\begin{align*}
+			\derp{RHS}{\vmu}	\eq&	\derp{\sum_{i = 1}^{n} \frac{1}{2} \para{\vx^i - \vmu} C^{-1} \para{\vx^i - \vmu}^T}{\vmu}	\eq	0 \\
+								\qimpl&	\sum_{i = 1}^{n} C^{-1} \para{\vx^i - \vmu}	\eq	0 \\
+								\qimpl&	\vmu^{MLE}	\eq	\frac{1}{n} \sum_{i = 1}^{n} \vx^i
+		\end{align*}
+
+		Therefore, the MLE estimate of $\vmu$ is, as expected, the emperical mean of all the data points. Hence we use this to centralize for the PCA algorithm.
+
+	\end{addmargin}
+
+\end{mlsolution}
+
+\end{document}
