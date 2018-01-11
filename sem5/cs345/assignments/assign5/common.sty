@@ -156,10 +156,6 @@
 \newcommand{\lbr}{\vspace{3mm}\xspace}
 \newcommand{\nbr}{\vspace{5mm}\xspace}
 
-\newcommand{\E}[2][]{%
-	\, \bE\ifthenelse{\equal{#1}{}}{}{_{#1}}\brac{#2}
-}
-
 
 %% Math Functions
 \newcommand{\func}[3][]{%
@@ -201,6 +197,13 @@
 
 \newcommand{\is}[1]{\bI \brac{#1}}
 \newcommand{\trace}[1]{\func{\mt{Tr}}{#1}}
+
+\newcommand{\E}[2][]{%
+	\, \bE\ifthenelse{\equal{#1}{}}{}{_{#1}}\brac{#2}
+}
+\newcommand{\var}[2][]{%
+	\tfunc{Var\ifthenelse{\equal{#1}{}}{}{_{#1}}}{#2}
+}
 
 
 %% Arrows
@@ -248,6 +251,11 @@
 {%
 	\end{addmargin}
 }
+
+\newcommand{\tth}[1][]{\ifthenelse{\equal{#1}{}}{$^\tiny{\text{th}}$}{$^\tiny{\text{#1}}$}\,}
+\newcommand{\apstr}{$^'$}
+\newcommand{\sups}[1]{$^\mt{#1}$}
+\newcommand{\supst}[1]{$^\tiny{\mt{#1}}$}
 
 
 %% Environments
