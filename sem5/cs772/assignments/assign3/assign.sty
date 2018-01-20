@@ -61,10 +61,12 @@
 
 
 \newcounter{question}
-\newenvironment{question}
+\newenvironment{question}[0]
     {%
 		\refstepcounter{question}
-		\section*{Question \thequestion}
+		\vspace{4.5mm}
+		{\fontsize{17.5}{12}\fontfamily{qag}\selectfont Question \thequestion}
+		\vspace{4mm}
 		\begin{addmargin}{1.5em}
 	}
 	{%
@@ -74,7 +76,10 @@
 
 \newenvironment{qsection}[1]
 	{%
-		\subsection*{#1}
+		%\textbf{\Large #1}
+		\vspace{4mm}
+		{\fontsize{15}{12}\fontfamily{qag}\selectfont #1}
+		\vspace{2.5mm}
 		\begin{addmargin}{1.5em}
 	}
 	{%
@@ -85,7 +90,9 @@
 
 \newenvironment{qpart}[1]
 	{%
-		\subsection*{Part #1}
+		\vspace{3mm}
+		{\fontsize{15}{12}\fontfamily{qaq}\selectfont Part #1}
+		\vspace{3.5mm}
 		\begin{addmargin}{1.5em}
 	}
 	{%
@@ -98,25 +105,27 @@
         \bt{\st{Case #1 }} \textit{#2}
 		\sbr\
 		\begin{addmargin}{1em}
-		\begin{siderule}
+			\begin{siderule}
 	}
 	{%
-		\end{siderule}
+			\end{siderule}
 		\end{addmargin}
 		\sbr\
 	}
 
 \newenvironment{qproof}[1]
 	{%
-        \bt{\st{Claim }} {\em #1\/}
+		\begin{tabular}[h!]{@{}p{1.3cm} L{\textwidth-1.3cm-0.7in}}
+			\bt{\st{Claim } }	&	\et{#1}
+		\end{tabular}
 
         \bt{\st{Proof}}
 		\sbr\
 		\begin{addmargin}{1em}
-		\begin{siderule}
+			\begin{siderule}
 	}
 	{%
-		\end{siderule}
+			\end{siderule}
 		\end{addmargin}
 		\sbr\
 	}
@@ -124,9 +133,9 @@
 \newenvironment{qsubsection}[1]
     {%
 		\br%
-
-		\textbf{#1}
-
+		\vspace{1mm}
+		{\fontsize{13}{12}\fontfamily{qag}\selectfont #1}
+		\vspace{3mm}
 		\sbr%
     }
     {%
