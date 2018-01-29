@@ -1,6 +1,5 @@
 import re
 import sys
-import textwrap
 
 
 def main():
@@ -8,38 +7,31 @@ def main():
         print "Invalid argument ... File name missing"
         return
 
-    wrapper = textwrap.TextWrapper()
-
     with open(sys.argv[1], "r") as f:
-        text = [line.strip(" \t\n\r") for line in f.readlines()]
+        text = f.read().replace('"', "'")
 
-    paragraphs = [""]
-    for line in text:
-        if line == "":
-            paragraphs.append("")
-        else:
-            paragraphs[-1] += " " + line
+    # ASSUMPTIONS
+    #   1. There should be either a whitespace before the start of a quote, or it should be the start of a new paragraph
+    #   2. There should be a punctuation before the quote of the main dialogue (not necessary for nested dialogues)
+    #   3. There should be a whitespace (or EOF) after the end of a quote
 
     conversation_regex_i = re.compile(
-        r"((^|[,.?!;]|--)[ \t]*)\'(((([ \t]+\'.*?\')|.)+?)([.,?!;]|--))(\'|([ \t]*)\'$|\'$)")
+        r"(?P<prefix>^|\s|--)\'(?P<main>((((\s+\'(\w\'|[^\']|\s)+?(\'|\w\'))+(\s|[,.;:!?-]))|.|\s)+?)[,;:.!?-])\'(?P<suffix>\s|[,;:.!?-])"
+    )
 
-    index = 0
-    while index < len(paragraphs):
-        paragraphs[index] = conversation_regex_i.sub(
-            r'\1"\3"', paragraphs[index])
-        index += 1
+    # REGEX EXPLANATION
+    #   1. The prefix part defines the requirements before the start of the main dialogue (Assumption 1)
+    #   2. The main part defines the requirements for the main dialogue, and for ignoring nested dialogues (Assumption 2)
+    #   3. The suffix part defines the requirements for the text after the end of a quote (Assumption 3
 
-    conversation_regex_e = re.compile(
-        r"^(([^\"]|(\"[^\"]*\"))*?)\'([^\'\"]*?[,.!;?][ \t]*)\'((([^\"])|(\"[^\"]*\"))*)")
+    text = text + "\n\n''''"
+    text = re.sub(r"([,;:.!?]\s)\'(\s)", r"\1 <MARKER>.'\2", text)
+    text = text.replace("''", "\' <MARKER>.\'")
+    text = conversation_regex_i.sub(r'\g<prefix>"\g<main>"\g<suffix>', text)
+    text = text.replace(" <MARKER>.", "")
 
-    with open("t", "w") as f:
-        index = 0
-        while index < len(paragraphs):
-            # while conversation_regex_e.findall(paragraphs[index]) != []:
-            #     paragraphs[index] = conversation_regex_e.sub(
-            #         r'\1"\4"\5', paragraphs[index])
-            f.write(paragraphs[index] + "\n\n\n")
-            index += 1
+    with open("generated.txt", "w") as f:
+        f.write(text[:-6])
 
 
 if __name__ == "__main__":

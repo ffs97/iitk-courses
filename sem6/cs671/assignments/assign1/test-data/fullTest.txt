@@ -1184,7 +1184,7 @@ it from Syme's bleak blue eyes. He merely began--
 
 Then the spell was snapped, and one anarchist called out to Gregory--
 
-'Who are you? You are not Sunday'; and another anarchist added in a
+'Who are you? You are not Sunday;' and another anarchist added in a
 heavier voice, 'And you are not Thursday.'
 
 'Comrades,' cried Gregory, in a voice like that of a martyr who in
@@ -1382,7 +1382,7 @@ I make myself clear.'
 'If you mean that you make your opinion clear,' said Syme, 'I
 suppose you do. But as for making yourself clear, it is the last
 thing you do. How comes a man like you to be talking philosophy
-in a blue helmet on the Thames embankment?
+in a blue helmet on the Thames embankment?'
 
 'You have evidently not heard of the latest development in our
 police system,' replied the other. 'I am not surprised at it. We
@@ -6790,4 +6790,3 @@ hopped and sang, and found himself outside a fenced garden. There
 he saw the sister of Gregory, the girl with the gold-red hair,
 cutting lilac before breakfast, with the great unconscious gravity
 of a girl.
-
