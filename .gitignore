@@ -4,3 +4,4 @@
 *.out
 *.zip
 *.gz
+*.vscode*
