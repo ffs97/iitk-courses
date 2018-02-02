@@ -1,155 +1,174 @@
-\documentclass[12pt]{article}
+\documentclass[11pt]{article}
 
 \usepackage{common}
 
-\newcommand{\makeheader}{
-	{\fontfamily{lmss}\fontsize{16}{16}\selectfont SOC481: Paper Notes}
+\usepackage{titlesec}
+\titlespacing*{\section}{0pt}{9pt}{3pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
 
-	\vspace{6mm}
+\newcommand{\makeheader}[3]{
+	\bt{\fontfamily{qag}\fontsize{20}{20}\selectfont #1}
 
-	\bt{\fontfamily{qag}\fontsize{20}{20}\selectfont Rise of the `Dalit Millionaire'}
+	\ifthenelse{\equal{#2}{}}{}{
+		\vspace{1mm}
 
-	\vspace{1mm}
+		{\fontfamily{qag}\fontsize{20}{20}\selectfont #2}
+	}
 
-	{\fontfamily{qag}\fontsize{20}{20}\selectfont A Low Intensity Spectacle}
+	\vspace{7mm}
 
-	\vspace{10mm}
+	\parbox{\textwidth}{
+		{\fontfamily{cmss}\fontsize{11}{10}\selectfont #3}
+		\hfill
+		{\fontfamily{phv}\fontsize{12}{16}\selectfont \st{Gurpreet Singh} $\cdot$ \tt{150259}}
+	}
 
-	{\fontfamily{phv}\fontsize{10}{10}\selectfont GOPAL GURU}
+	\def\bottomtitlebar{\vskip .1in\vskip-\parskip\hrule width\linewidth height0.5pt\vskip.1in}
 
-	\def\bottomtitlebar{\vskip .1in\vskip-\parskip\hrule width0.8\linewidth height0.5pt\vskip.1in}
-
-    \vbox{%
-        \hsize\textwidth\linewidth\hsize
-        \phantom{\hspace{\textwidth}}
-        \bottomtitlebar%
-    }
+	\vbox{%
+		\hsize\textwidth\linewidth\hsize
+		\phantom{\hspace{\textwidth}}
+		\bottomtitlebar%
+	}
 }
 
 \sectionfont{\normalfont\fontsize{14}{12}\fontfamily{qag}\selectfont}
 \subsectionfont{\normalfont\fontsize{12}{12}\fontfamily{qag}\selectfont \bfseries}
 \subsubsectionfont{\normalfont\fontsize{12.5}{12}\sffamily\selectfont}
 
-\newcounter{heading}
-\setcounter{heading}{0}
-\newcounter{subheading}
-\setcounter{subheading}{0}
-
-\newenvironment{heading}[1]{
-	\vspace{5mm}
-	\stepcounter{heading}
-	{\fontfamily{lmss}\fontsize{15}{12}\selectfont \theheading.} \; {\normalfont\fontsize{15}{12}\fontfamily{qag}\selectfont #1}
-	\setcounter{subheading}{0}
-}{}
-
-\newenvironment{subheading}[1]{
-	\vspace{3mm}
-	\stepcounter{subheading}
-	{\fontfamily{lmss}\selectfont \bfseries \theheading.\thesubheading.} \; {\normalfont\fontsize{12}{12}\fontfamily{qag}\selectfont \bfseries #1}
-}{}
-
 \begin{document}
-\makeheader
 
-Since a long time, it has been exclaimed “Capitalism from below is a wonder“ or asked “Can the outcastes unite”. Although seemingly different, both essentially uplift the ideology on neoliberalism. The example of the rise on a few dalits as millionaires is a proof of the triumph of this ideology. Within the society as well as the dalit community, this is seen as a spectacular achievement. However Gopal Guru critiques this argument and questions whether this sudden rise of the Dalits is a spectacle. But what really is the spectacle and how is the rise of the dalit millionaires a spectacle are some questions we pick for today’s discussion.
+\makeheader{The Dalit Category and its Differentiation}{}{A.M. SHAH}
 
-\begin{heading}{The Spectacle}
+In this paper, A.M. Shah claims that many statements made on dalits are in variance from the ground reality. The belief that dalits are undifferentiated is indeed false, and one can find a hierarchical division among them. The term dalit is often used in a facile manner, which could be attributed to a superficial view of society on the community of dalits.
 
-	Guy Debord, in his work “The Society of the Spectacle”, came up with concept of the Spectacle. As argued in his work, the spectacle is an ideology, which, as false consciousness, forges a fake association between a person or a social collectivity, and an ideology or commodity. It is a false reality in which commodities rule the workers when it should have been the other way around. The spectacle is the hegemonic or primary driving force of the modern society scaled by capitalism.
+The constitution has formulated a list of castes for various states under the common umbrella of Scheduled Castes. However, as A.M. Shah argues, even a small state such as Gujarat, has a schedule of around 30 castes. There is distribution of these castes across regions. Generalising the laws and positive affirmation for all theses castes equally can be questioned.
 
-	\begin{subheading}{Rise of the Dalit Millionaire as a Spectacle}
+\unheading{Marriage as Caste Boundaries}
 
-		Gopal Guru argues in detail that the Rise of the Dalit Millionaires is a buffer for creating an ideological impact on the society. The corporate magnates that have historically supported the rise of the dalits tend to use this enrichment of a caste as a sense of advertising their efforts in the betterment of the dalit community to create a spectacle.
+Every dalit caste in Gujarat is an endogamous unit. According to Manubhai Makwana, the three major dalit castes in Gujarat are divided into \et{parganas} (taluka), which are separate constituencies with a council of leaders (panch), administrating over 50-100 villages. These parganas are divided further into sub-parganas. A.M. Shah compares this structure with that of the \et{ekta-gol-bandho} division.
 
-		But this betterment of the community, as was discussed by Vishal and Rohan, is a high level view of the society. We never delve into the reality, and thus accept the rise of a few dalits as the representation of the community, and thus fall into the pit created by the spectacle. In this sense, one can claim that the rise of the dalits is in reality, a spectacle.
+Lancy Lobo mentions that the hypergamy prevails within the three major parganas among the \et{vankars} of Gujarat, following the idea of \et{anuloma} marriage. Intercaste marriages are considered abominable, however there is no descent without marriage. This primacy of marriage over descent confers critical significance to defining the boundaries between castes and sub-castes.
 
-	\end{subheading}
+\unheading{Differentiation within Dalits}
 
-	\begin{subheading}{Intensity of the Spectacle}
+According to A.M. Shah, the interactions between castes is based mostly on professional interactions only. For example, there is negligible interaction between the \et{chamars} (leather workers) and the \et{senwas} (rope makers).
 
-		Gopal Guru also differentiates the spectacle based on the intensity of the salience of the spectacle. He argues that one could also define spectacle in its hegemonic form, which, while generating ideological impact with high intensity, also accommodates within it a low intensity spectacle. The corporate endorsement being a high intensity spectacle, and dalit millionaires representing the low intensity spectacle.
+The dalits have reproduced among themselves a hierarchy on the model of the caste hierarchy in general. In fact, it has been observed that there is even untouchability among the dalits. There is even a small caste of \et{garodas} who consider themselves as priests of the dalits, claiming to be \et{gaud brahmins}.
 
-	\end{subheading}
-
-\end{heading}
+It is also well known that there is similar differentiation amongst dalits in other regions as well. With this much differentiation and discrimination, A.M. Shah argues that there should be considerable caution exercised by social scientists while making general statements about discrimination and oppression of dalits, since vague statements in the law and jurisdiction, as well as in welfare schemes provide a false picture on the status of dalits in the country, and also harms the welfare of the most deprived and marginalised among the dalits.
 
 \newpage
 
-\begin{heading}{Dalit Millionaires a Low Intensity Spectacle}
+\makeheader{Rise of the `Dalit Millionaire'}{A Low Intensity Spectacle}{GOPAL GURU}
+
+There has been a recent rise of dalits' status as millionaires. Within the society as well as the dalit community, this is seen as a spectacular achievement. However Gopal Guru, in his paper, critiques this argument and questions whether this sudden rise of the Dalits is a spectacle.
+
+\begin{heading}{True}{}{The Spectacle}
+
+	Guy Debord came up with concept of the Spectacle. The spectacle, as Guy defines, is an ideology, which, as false consciousness, forges a fake association between a person or a social collectivity, and an ideology or commodity. It is a false reality in which commodities rule the workers. The spectacle is the hegemonic or primary driving force of the modern society scaled by capitalism.
+
+	Gopal Guru argues in detail that the Rise of the Dalit Millionaires is a buffer for creating an ideological impact on the society. The corporate magnates that have historically supported the rise of the dalits tend to use this enrichment of a caste as a sense of advertising their efforts in the betterment of the dalit community to create a spectacle.
+
+	But this betterment of the community, is a high level view of the real society. We never delve into the reality and accept the rise of a few dalits as the representation of the community, thus falling into the pit created by the spectacle.
+
+	Gopal Guru also differentiates the spectacle based on the intensity of the salience of the spectacle. He argues that one could also define spectacle in its hegemonic form, which, while generating ideological impact with high intensity, also accommodates within it a low intensity spectacle. The corporate endorsement being a high intensity spectacle, and dalit millionaires representing the low intensity spectacle.
+
+\end{heading}
+
+\begin{heading}{True}{}{Dalit Millionaires a Low Intensity Spectacle}
 
 	The rise of dalits can be seen as a low intensity spectacle for various reasons.
 
-	\begin{subheading}{Ruling by Cash}
+	\begin{enumerate}[label=\bt{\theenumi.}]
 
-		Dalits do not have a known history of capital accumulation, and in spite of the rise of a few dalits, the community has not yet acquired the enormous material and cultural power that would help them to rise to recognition in the world.
+		\ditem[Ruling by Cash]
 
-		Dalit millionaires are showcased by the corporate class to represent as ideals or role models for the common dalit masses. This has been motivated by the ideological need to induce in common dalits a feeling of pacification, which in effect will neutralise their anti-corporate stance. This is propagated through public investment in government devised national welfare schemes and even dalit non-government organisations.
+		Dalit millionaires are showcased by the corporate class to represent as role models for the common dalit masses. This has been motivated by the ideological need to neutralise within common dalits their anti-corporate stance. This is propagated through cash flow down the economic hierarchy, through public investment in government devised national welfare schemes and even dalit non-government organisations.
 
-		The corporate class, though claiming to reinforce the horizontalization of the vertical social order by attempting to uplifting the dalits, still strategise within the framework of caste.
+		The corporate class, though claiming to reinforce the horizontalization of the vertical social order by attempting to uplifting the dalits, still strategize within the framework of caste, thus preventing the norms of the free market to prevail over the notions of caste.
 
-	\end{subheading}
+	\ditem[Limiting Individuality]
 
-	\begin{subheading}{Limiting Individuality}
-
-		With the limited power of dispersion, the dalit class are believed to have a lower relation with the idea of individuality. In contrast, the non-dalit millionaires are projected as strong individuals rather than part of the structure or the industry.
+		With the limited power of dispersion, the dalit class do not have a strong relationship with the idea of individuality. In contrast, the non-dalit millionaires are projected as strong individuals rather than part of the structure or the industry.
 
 		The essence and the weight of the word `Dalit’ denies them individuality. The word \et{Dalit} means more than the word \et{Millionaire} means. This is a major reason that limits the cultural power of dalits to disperse into individuality, and hence remain in the spectrum of the low intensity spectacle.
 
-	\end{subheading}
+	\ditem[Distasteful for Society]
 
-	\begin{subheading}{Distasteful for Society}
+		The relationship between the \et{spectacle} and the \et{non-spectacle} is not just of quantity, but also of quality. Corporates define the spectacle to be \et{glassy corporate offices} whereas the slums represent the non-spectacle. The former often avoids the latter, whereas the latter aims to be the former. However, the spectacle needs the non-spectacle to indeed be a spectacle.
 
-		During the 2010 Commonwealth Games in Delhi, the slums around the Nehru stadium, where the ceremonies were held, were covered with oversized hoardings carrying the message of globality. The corporates this try to put up a false fiction for the slums, avoiding them to see what in reality is out there. And ironically, the motto of the 2010 Games was ``Baahaar ao aur khelo''.
+		The Dalit Millionaires are the non-spectacle displayed by the Corporate Patronage, but still a spectacle for the common dalit masses, although a low-intensity one.
 
-		The corporate classes, thus define the spectacle as glassy corporate offices and the \et{marker of beauty} and the non-spectacle, \ie the slums, as a sign of \et{dirt} and \et{stigma}
+	\ditem[Holding Back]
 
-		The relationship between the \et{spectacle} and the \et{non-spectacle} is therefore not just of quantity, but also of quality. The former often avoids the latter, whereas the latter aims to be the former. However, the spectacle needs the non-spectacle to indeed be a spectacle.
+		Guru Gopal also argues that dalit millionaires intentionally operate on a low-scale, in order to avoid frequent appearance in the publicity sector.
 
-		The Dalit Millionaires are the non-spectacle of the spectacle displayed by the Corporate Patronage, but a spectacle for the common dalit masses, although a low-intensity one.
+		From the arguments of AM Shah, the positive affirmation much like unfair trade is determined by the top of the hierarchy, which in the modern capitalist society is, decided by the economic factors of an individual, and the cultural identity of the community.
 
-	\end{subheading}
+		Therefore, most dalit millionaires tend to stick to their identity, even in the public domain, as their identity allows them to inherit some positive affirmation from the corporate and the state patronage.
 
-	\begin{subheading}{Holding Back}
-
-		Guru Gopal also argues that dalit millionaires intentionally operate on a low-scale, in order to avoid frequent appearance in the publicity sector, thus bounding themselves to be a low intensity spectacle. Most dalit millionaires tend to stick to their identity, even in the public domain. This is due to their realization that their identity does allow them to inherit some positive affirmation from the corporate and the state patronage.
-
-		This also makes sense from the arguments of AM Shah, that the positive affirmation much like unfair trade is determined by the top of the hierarchy, which in the modern capitalist society is, decided by the economic factors of an individual, and the cultural identity of the community.
-
-		Gopal Guru also compared the community of dalits to that of a mud pond, with the few dalit millionaires to rise as lotus. The lotus need the mud to grow, just as dalit millionaires need the common dalits to be a spectacle. For this reason, the dalits tend to hold on to their identity.
-
-	\end{subheading}
-
-	\begin{subheading}{Dominance from the Patronage}
+	\ditem[Dominance from the Patronage]
 
 		The mobility in the condition of the dalits was made possible by the positive affirmation provided to the community by the state and the corporate patronage, rather than the free market. This caused a sense of hierarchy in the status of the dalits and the corporate class.
 
-		Since the caste system limited the amount of resources available to the dalits, the path to the struggle of survival were carved differently for the dalits. The capitalist mindset was not withheld by the dalits for a long time and they were late to the competition of the free market.
+		The dalits are believed to be subdued by the state, and therefore their sudden rise does cast itself as a spectacular achievement. It is in this sense that the rise of dalits is a spectacle, however the limitations to their freedom brought on by the corporate and the state class prevents them to represent a high intensity spectacle.
 
-		There is a significant amount of the dalit population involved in the politics. As pointed out yesterday, there were significant amounts of efforts made by the BSP political party to uplift the status of the dalits, and help them rise in power. However, arguments by AM Shah and Gopal Guru tend to state this upliftment as a false reality. It seems to be a high level view of the real picture. The horizontalisation of the so called vertical social order can be claimed to be a spectacle. The amount of population of dalits to be affected by such a change is limited, as the political patronage ignores the inbuilt hierarchy within the dalits itself.
+		There is however, significant presence of dalits in politics. In fact, formal electoral politics was an option that some of them used effectively to achieve “phenomenal” individual progress. It was political freedom that helped dalits gain economic freedom.
 
- 		Nonetheless, formal electoral politics was an option that some of them used effectively to achieve “phenomenal” individual progress. It was political freedom that helped dalits gain economic freedom.
+	\ditem[Lack of Dynamism]
 
-		Although the positive affirmation by the patronage was what allowed the dalits to rise, there never really was real freedom for them. The dalits are believed to be subdued by the state, and therefore their sudden rise does cast itself as a spectacular achievement. It is in this sense that the rise of dalits is a spectacle, however the limitations to their freedom brought on by the corporate and the state class prevents them to represent a high intensity spectacle.
+		Gopal Guru states that dalit millionaires do not have a close relationship with the world of advertising. There is a lack of dynamism, in the sense that there is negligible of interest in the dalit community to multiply accumulation of capital.
 
-	\end{subheading}
+		The dalit market relies on support from the corporate and state magnates, which has its presence in all parts of the society, thus suppressing the dalits.
 
-	\begin{subheading}{Lack of Dynamism}
+	\ditem[Exploitation at Various Fronts]
 
-		Gopal Guru states that dalit millionaires do not have a close relationship with the world of advertising. The lack of dynamism in the sense that there is negligible of interest in the dalit community to multiply accumulation of capital. This could perhaps be contributed to the late arrival of capitalism in the outcastes of the society.
+		The strategies of the corporate class and the vulnerability of the dalits caused by the caste system helped in leading the dalits to a series of exploitations. Even with the rise of a few dalits in power, the exploitation never ceased.
 
-		The dalit market relies on support from the corporate and state magnates. The high intensity spectacle piques the interest of people through extensive advertising and presence in many parts of the society. In this sense, can one argue that the rise of dalits as millionaires is a low intensity spectacle.
+		The corporate class tends to exploit the dalits higher in the capitalism chain, and those dalits tend to exploit the common dalits. This sort of exploitation brings down the status of the dalit community in the society. For this reason, the dalits are stuck in a loop of self-depreciation in order to escape towards individual identity, however only depressing their own cultural identity.
 
-	\end{subheading}
-
-	\begin{subheading}{Exploitation at Various Fronts}
-
-		The strategies of the corporate class and the vulnerability of the dalits caused by the caste system helped in leading the dalits to a series of exploitations. Even with the rise of a few dalits in power, the exploitation never ceases.
-
-		The corporate class tends to exploit the dalits higher in the capitalism chain, and those dalits tend to exploit the common dalits. This sort of exploitation brings down the status of the dalit community in the society. For this reason, the dalits are stuck in a loop of self-depreciation in order to escape towards individual identity, however only depression their own cultural identity.
-
-	\end{subheading}
+	\end{enumerate}
 
 	For these reasons, one can indeed say that the rise of dalit millionaires is a low intensity spectacle, in this society of spectacle.
+
+\end{heading}
+
+\begin{heading}{True}{}{View on the Rise of the Dalit Millionaire}
+
+	Is the rise of the Dalit Millionaires really a spectacle to cherish? The critique of Gopal Guru on this low intensity spectacle renders the spectacle as deeply problematic to the community on several counts.
+
+	\begin{enumerate}[label=\bt{\theenumi.}]
+
+		\ditem[Morality]
+
+			The common dalit is blind to the truth that the free market only allows a selective few to rise to the ranks of millionaires. Capitalism continuously misleads people into ignoring the inconsistencies between the spectacle (rise of the dalit millionaires) and the perpetuation of wretchedness among the common dalits.
+
+			The idea of individual mobility is what is the community truth, however advertising capitalism as the liberator leads people into false hopes. The moral commitment to remain truthful to the community does not depend on the sociological identification of that community.
+
+		\ditem[Perpetuating Casteism]
+
+			As Guru argues, capitalism has perpetuated casteism, making dalits participate in celebrating the hierarchy structured as a result of the caste system, such as the exploitation of dalits as ragpickers.
+
+			The Dalit millionaires need this wretchedness of the common dalits as a reference point for their individual promotion, however keep the common dalits in a false fiction. Therefore the loop of self-depreciation again follows through.
+
+		\ditem[Variance from the True Goals]
+
+			The idea of individual mobility deviates from the concept of success defined by the historical ambition. For example, Babasaheb Ambedkar never wished the rise of the dalit community as a rise of a selected few as millionaires. The accumulation of wealth was never seen as a part of the dalit dreams.
+
+			This deviation from the early ambitions is a part of the capitalistic mindset, and the result of the free market.
+
+	\end{enumerate}
+
+	Therefore, claims Gopal Guru, the rise of the dalit millionaire, although looks miraculous, does not remain as a spectacular event at the social level, as it fails to alter the social relation between dirty jobs and destitute dalits. This low intensity spectacle creates a false picture of the rise of the Indian society, while concealing the community truth.
+
+\end{heading}
+
+\begin{heading}{True}{}{Corporates and the Dalits}
+
+	The free market and capitalism has allowed a few dalits to enjoy an experience of freedom, and rise to cleaner jobs. However, Guru claims that their sphere of freedom is truncated.
+
+	Even though some dalits have risen to be millionaires, they are not yet part of the universal truth, which is expressed through competition of individuals. Dalit millionaires strive on patronage, and have to be full of gratitude to the corporates. There is never a real transition from being a \et{dalit} to being a \et{millionaire}.
 
 \end{heading}
 
