@@ -1,0 +1,556 @@
+\documentclass{article}
+
+\usepackage{assign}
+\setcoursetitle{CS698X: Topics in Probabilistic Modelling and Inference}
+\setassigncode{1}
+
+\begin{document}
+\makeheader
+
+\begin{question}
+
+	Here, I state the notations, terms given to us and some observations.
+
+	\begin{enumerate}[label=\bt{\theenumi.}]
+			\ditem[Likelihood]
+			\begin{align*}
+				\prob{\vy \pipe X, \vw, \beta}	\eq	\prod_{n = 1}^N \ND{y_n \pipe \tr{\vw} \vx_n, \beta^{-1}}
+			\end{align*}
+		\item Let $\vlambda$ represent $\tr{\brac{\lambda_1, \lambda_2 \dots \lambda_d}}$ and $\Lambda$ represent the $D \times D$ diagonal matrix with element at $d, d$ be equal to $\lambda_d$
+			\ditem[Prior]
+			\begin{align*}
+				\prob{\vw \pipe \vlambda}	\eq	\prod_{d = 1}^D \ND{w_d \pipe 0, \lambda_d^{-1}}
+			\end{align*}
+	\end{enumerate}
+
+	\begin{qpart}{A}
+
+		I have shown that the marginal likelihood is in closed form for both the cases, however am showing the working for only the second case, and then simplify for the first case by putting $\qforall d \in \brac{D}, \lambda_d = \lambda$.
+
+		In order to compute the marginal likelihood, we can compute the posterior of our parameter \ie $\vw$, and then use Bayes Rule to compute the marginal likelihood.
+		\begin{equation}
+			\prob{\vy \pipe X, \beta, \vlambda}	\eq	\frac{\prob{\vy \pipe X, \vw, \beta} \prob{\vw \pipe \vlambda}}{\prob{\vw \pipe \vy, X, \beta, \vlambda}}
+			\label{eq:q1-bayes}
+		\end{equation}
+
+		We start by computing the posterior over $\vw$.
+		\begin{align*}
+			\prob{\vw \pipe \vy, X, \beta, \vlambda}	&\qprop	\prob{\vy \pipe X, \vw, \beta} \prob{\vw \pipe \vlambda} \\
+			&\qprop	\prod_{n = 1}^N \ND{\tr{\vw} \vx_n, \beta^{-1}} \prod_{d = 1}^D \ND{0, \lambda_d^{-1}} \\
+			&\qprop \prod_{n = 1}^N \texp{\frac{-\beta}{2} \para{y_n - \tr{\vw} \vx_n}^2} \prod_{d = 1}^D \texp{\frac{-\lambda_d}{2} \para{w_d}^2} \\
+			&\qprop \texp{\frac{-1}{2} \para{ \beta \sum_{n = 1}^N \para{y_n - \tr{\vw} \vx_n}^2 + \sum_{d = 1}^D \lambda_d w_d^2}} \\
+			&\qprop	\texp{\frac{-1}{2} \para{\beta \tr{\vw} \tr{X} X \vw - 2 \tr{\vw} \tr{X} \vy + \tr{\vw} \Lambda \vw}}
+		\end{align*}
+
+		\note{I have ignored all terms independent of $\vw$ during the above computations}
+
+		The last term looks like a Gaussian distribution, and hence, we can use the Completing the Squares trick to find out the exact distribution. Therefore, we get
+		\begin{equation}
+			\prob{\vw \pipe \vy, X, \beta, \vlambda}	\eq \ND{\vw \pipe \vmu_w, \Sigma_w}
+			\label{eq:q1-posterior}
+		\end{equation}
+
+		where
+		\begin{align*}
+			\Sigma_w	&\eq	\para{\beta \tr{X} X + \Lambda}^{-1} \\
+			\vmu_w		&\eq	\para{\tr{X} X + \frac{1}{\beta} \Lambda}^{-1} \tr{X} \vy
+		\end{align*}
+
+		Therefore, we have the posterior. Now we can put this in Equation \ref{eq:q1-bayes}.
+		\begin{align*}
+			\prob{\vy \pipe X, \beta, \vlambda}	&\eq	\frac{\prob{\vy \pipe X, \vw, \beta} \prob{\vw \pipe \vlambda}}{\prob{\vw \pipe \vy, X, \beta, \vlambda}} \\
+			&\qprop	\texp{\frac{-1}{2} \para{\beta \sum_{n = 1}^N y_n^2 + \beta \tr{\vw} \tr{X} X \vw - 2 \beta \tr{\vw} \tr{X} \vy + \tr{\vw} \Lambda \vw} + \frac{1}{2} \para{\tr{\para{\vw - \vmu_w}} \Sigma_w^{-1} \para{\vw - \vmu}}} \\
+			&\qprop	\texp{\frac{-1}{2} \para{\beta \sum_{n = 1}^N y_n^2 - \tr{\vmu_w} \Sigma_w^{-1} \vmu_w }}
+		\end{align*}
+		Putting $\vmu_w = \beta \cdot \Sigma_w \tr{X} \vy$,
+		\begin{align*}
+			\prob{\vy \pipe X, \beta, \vlambda}	&\qprop	\texp{\frac{-1}{2} \para{\beta \sum_{n = 1}^N y_n^2 - \tr{\para{\beta \cdot \Sigma_w \tr{X} \vy}} \Sigma_w^{-1} \beta \cdot \Sigma_w \tr{X} \vy}} \\
+			&\qprop	\texp{\frac{-1}{2} \para{\tr{\vy} \para{\beta \vI - \beta^2 X \tr{\Sigma_w} \tr{X}} \vy}}
+		\end{align*}
+
+		This again is a gaussian distribution. Therefore, we can write the final form of this distribution as follows
+		\begin{equation}
+			\prob{\vy \pipe X, \beta, \vlambda}	\eq	\ND{\vy \pipe \vzero, \Sigma}
+		\end{equation}
+		where $\Sigma = \para{\beta\, \vI - \beta^2\, X\, \Sigma_w\, \tr{X}}^{-1}$
+
+		We can further simplify the term of the gaussian using a property of matrix inverses. Consider the inverse property given in Equation 166 in \cite{matrix-cookbook}, which states
+		\begin{equation}
+			\para{\vI + AB}^{-1}	\eq	\vI - A \para{\vI + BA}^{-1} B
+			\label{eq:q1-matrix-inverse}
+		\end{equation}
+
+		First let us rewrite $\Sigma$
+		\begin{align*}
+			\Sigma	&\eq	\frac{1}{\beta} \para{\vI - \beta X \para{\beta \tr{X} X + \Lambda}^{-1} \tr{X}} \\
+			\implies \beta\ \Sigma	&\eq	\para{\vI + \para{- X \para{\tr{X} X + \frac{1}{\beta} \Lambda}^{-1}} \tr{X}}
+		\end{align*}
+
+		We want to represent this in the form of the term given in the LHS of Equation \ref{eq:q1-matrix-inverse}.
+
+		Therefore, let $A = \para{- X \para{\tr{X} X + \frac{1}{\beta} \Lambda}^{-1}}$ and $B = \tr{X}$. Then
+
+		\begin{align*}
+			\beta\ \Sigma	&\eq	\para{\vI + AB}^{-1} \\
+			&\eq	\vI - A \para{\vI + BA}^{-1} B \\
+			&\eq	\vI - A \para{\vI - \tr{X} X \para{\tr{X} X + \frac{\Lambda}{\beta}}^{-1}}^{-1} B \\
+			&\eq	\vI - A \para{\vI - \para{\tr{X} X + \frac{\Lambda}{\beta} - \frac{\Lambda}{\beta}} \para{\tr{X} X + \frac{\Lambda}{\beta}}^{-1}}^{-1} B \\
+			&\eq	\vI - A \para{\frac{\Lambda}{\beta} \para{\tr{X} X + \frac{\Lambda}{\beta}}^{-1}}^{-1} B \\
+			&\eq	\vI - \para{- X \para{\tr{X} X + \frac{\Lambda}{\beta}}^{-1} \para{\tr{X} X + \frac{\Lambda}{\beta}} \para{\frac{\Lambda}{\beta}}^{-1}} \tr{X} \\
+			&\eq	\vI + \beta X \Lambda^{-1} \tr{X} \\
+			\implies \Sigma	&\eq	\frac{1}{\beta} \vI + X \Lambda^{-1} \tr{X}
+		\end{align*}
+
+		Hence, we can now rewrite our answer,
+		\answer[0.5\textwidth]{
+			\begin{equation}
+				\prob{\vy \pipe X, \beta, \vlambda}	\eq	\ND{\vy \pipe, \vzero, \Sigma}
+				\label{eq:q1-marginal}
+			\end{equation}
+		}
+		where $\Sigma = \beta^{-1} \vI + X \Lambda^{-1} \tr{X}$
+
+		If for all $d = 1 \dots D$, $\lambda_d = \lambda$, we can simply put this in the result obtained in Equation \ref{eq:q1-marginal}
+
+	\end{qpart}
+
+	\begin{qpart}{B}
+
+		As discussed in class, we do MLE-II inference by performing MLE on the marginal likelihood $\prob{\vy \pipe X, \beta, \vlambda}$, and then approximate the posterior using the conditional posterior of $\vw$ $\para{\prob{\vw \pipe \vy, X, \wbeta, \widehat{\vlambda}}}$. \br
+
+		\note{We define $\vlambda$ and $\Lambda$ the same as in part A}
+
+		Taking a cue from the MLE-II derivation given in PRML 3.5 \cite{prml}, we represent the marginal in a different manner, and then try to maximize it for the purpose of MLE.
+		\begin{align*}
+			\prob{\vy \pipe X, \beta, \vlambda}	&\eq	\int_{\vw} \prob{\vy \pipe X, \vw, \beta} \prob{\vw \pipe X, \beta, \vlambda} \id \vw \\
+			&\eq	\para{\frac{\beta}{2\pi}}^{\frac{N}{2}} \sqrt{\frac{\abs{\Lambda}}{\para{2 \pi}^D}} \int_{\vw} \texp{- E(\vw)} \id \vw
+		\end{align*}
+		where $E : \vw \mapsto \bR$ is the evidence function \cite{prml} and is defined as
+		\begin{align*}
+			E(\vw)	\eq	\frac{\beta}{2} \tr{\para{\vy - X \vw}} \para{\vy - X \vw} + \frac{1}{2} \tr{\vw} \Lambda \vw
+		\end{align*}
+
+		We can also represent $E(\vw)$ using $\vmu_w$ which is the mean of the posterior as derived in part A.
+		\begin{align*}
+			2 E(\vw)	&\eq	\beta \tr{\para{\vy - X \vmu_w - X (\vw - \vmu_w)}} \para{\vy - X \vmu_w - X (\vw - \vmu_w)} + \tr{\vw} \Lambda \vw \\
+			&\eq	\beta \tr{\para{\vy - X \vmu_w}} \para{\vy - X \vmu_w}  + \tr{\para{\vw - \vmu_w}} \beta \tr{X} X \para{\vw - \vmu_w} - 2 \tr{\para{w - \vmu_w}} \beta \tr{X} \para{y - X \vmu_w}
+		\end{align*}
+		We can write $\beta \tr{X} \para{y - X \vmu}$ as $\Lambda \vmu_w$ by expanding $\vmu_w$ as shown below.
+\begin{align*}
+	\vmu_w	&\eq	\beta \para{\beta \tr{X} X + \Lambda}^{-1} \tr{X} \vy \\
+	\implies \beta \tr{X} \para{\vy - X \vmu_w}	&\eq	\beta \para{\vI - \beta \tr{X} X \para{\beta \tr{X} X + \Lambda}^{-1}} \tr{X} \vy
+	&\eq	\beta \Lambda \para{\beta \tr{X} X + \Lambda}^{-1} \tr{X} \vy
+	&\eq	\Lambda \vmu_w
+\end{align*}<++>
+		Therefore
+		\begin{align*}
+			E(\vw)	&\eq	\beta \tr{\para{\vy - X \vmu_w}} \para{\vy - X \vmu_w}  + \tr{\para{\vw - \vmu_w}} \beta \tr{X} X \para{\vw - \vmu_w} - 2 \tr{\para{w - \vmu_w}} \Lambda \vmu_w + \tr{\vw} \Lambda \vw \\
+			&\eq	\beta \tr{\para{\vy - X \vmu_w}} \para{\vy - X \vmu_w} + \tr{\para{\vw - \vmu_w}} \beta \tr{X} X \para{\vw - \vmu_w} - 2 \tr{\vw} \Lambda \vmu_w + 2 \tr{\vmu_w} \Lambda \vmu_w + \tr{\vw} \Lambda \vw \\
+			&\eq	\beta \tr{\para{\vy - X \vmu_w}} \para{\vy - X \vmu_w} + \tr{\para{\vw - \vmu_w}} \para{\beta \tr{X} X + \Lambda} \para{\vw - \vmu_w} + \tr{\vmu_w} \Lambda \vmu_w \\
+			&\eq	2 E(\vmu_w) + \tr{\para{\vw - \vmu_w}} \Sigma^{-1} \para{\vw - \vmu_w}
+		\end{align*}
+
+		Therefore,
+		\begin{equation}
+			E(\vw)	\eq	E(\vmu_w) + \frac{1}{2} \tr{\para{\vw - \vmu_w}} \Sigma^{-1} \para{\vw - \vmu_w}
+			\label{eq:q1-evidence-mean}
+		\end{equation}
+
+		Therefore, we can now write the Marginal Likelihood in this form
+		\begin{align*}
+			\int_{\vw} \texp{- E(w)}	\eq	 \texp{- E(\vmu_w)} \int_{\vw} \texp{- \frac{1}{2} \tr{\para{\vw - \vmu_w}} \Sigma^{-1} \para{\vw - \vmu_w}}
+		\end{align*}
+		Since the integral is just over the exponent part of the posterior distribution of $\vw$, we can write
+		\begin{align*}
+			\int_{\vw} \texp{- E(w)}	\eq	\texp{- E(\vmu_w)} \sqrt{\para{2 \pi}^D \abs{\Sigma}}
+		\end{align*}
+
+		Hence, the negative log marginal can be written as
+		\begin{equation}
+			- \log{\prob{\vy \pipe X, \beta, \vlambda}}	\eq	\frac{1}{2}  E(\vmu_w) - \frac{1}{2} \log{\abs{\Sigma}}- \log{\abs{\Lambda}} - \frac{N}{2} \log{\beta} + \mt{constants}
+			\label{eq:q1-marginal-alt}
+		\end{equation}
+
+		Now, we can use iterative MLE-II scheme to solve for the hyperparamters.
+
+		Suppose we have estimates of $\beta$ and $\vlambda$ as $\beta^t$ and $\vlambda^t$ from the t\tth iteration of the MLE-II scheme, then we can compute the conditional posterior of $\vw$ given these estimates. Note, we have already computed this posterior, as given in Equation \ref{eq:q1-posterior}. Therefore, we can write
+		\begin{align*}
+			\prob{\vw^{t + 1} \pipe \vy, X, \beta^t, \vlambda^t}	\eq	\ND{\vw^{t + 1} \pipe \vmu_w^t, \Sigma_w^t}
+		\end{align*}
+		where
+		\begin{align*}
+			\Sigma_w^t	&\eq	\para{\beta^t \tr{X} X + \Lambda^t}^{-1} \\
+			\vmu_w^t	&\eq	\para{\tr{X} X + \frac{1}{\beta^t} \Lambda^t}^{-1} \tr{X} \vy
+		\end{align*}
+
+		Now, we can continue with the point estimation step of the MLE-II method, \ie estimating the update values of $\beta$ and $\vlambda$.
+		\begin{align*}
+			\beta^{t + 1}, \vlambda^{t + 1}	\eq	\argmin{\beta, \vlambda} - \log{\prob{\vy \pipe X, \beta, \vlambda}}
+		\end{align*}
+
+		Note, we do not directly estimate the MLE updates, instead use an iterative method (like Jacobi method). Therefore, instead of solving for the equations (partial derivates equated to zero), we will try to find an equation which allows for easy updates of the hyperparamters.
+
+		Again, taking a cue from PRML \cite{prml}, we will consider the estimation of $\vlambda$ (particulary $\lambda_d$ for some $d$) first.
+
+		From the properties of Determinants and Eigenvalues, we know $\abs{A} = \prod_{k = 1}^K \alpha_k$ where $\alpha_k$ is the $k$\tth eigenvalue of $A$.
+
+		Let the eigenvalues of $\para{\beta \tr{X} X + \Lambda^t - \lambda_d^{t + 1}}$ be represented by the set $\set{\gamma_{d'}}_{d' = 1}^D$, then we can say that the eigen values of $\para{\beta \tr{X} X + \Lambda^t}$ will be $\set{\gamma_{d'} + \lambda_d^{t + 1}}_{d' = 1}^D$. Therefore, we can now put this in Equation \ref{eq:q1-marginal-alt}
+
+		\note{$\abs{\Lambda} = \prod_{d' = 1}^{D} \lambda_{d'}$ as $\Lambda$ is just a diagonal matrix}
+
+		\begin{align*}
+			- \log{\prob{\vy \pipe X, \beta, \vlambda}}	&\eq	\frac{1}{2} E(\vmu_w^t) - \frac{1}{2} \sum_{d' = 1}^D \log{\gamma_{d'} + \lambda_d^{t + 1}} - \frac{1}{2} \sum_{d' = 1}^D \log{\lambda_{d'}^{t + 1}} - \frac{N}{2} \log{\beta}
+		\end{align*}
+
+		Although we cannot compute $\gamma_{d'}$ as we do not yet know the value of $\lambda_d^{t + 1}$, however, using the idea of the Jacobi method, we can estimate it by putting $\lambda_d^{t}$ instead of $\lambda_d^{t + 1}$. Now, differentiating with respect to $\lambda_d^{t + 1}$, and equating to 0, we get
+		\begin{align*}
+			0	\eq	\frac{1}{2 \lambda_d^{t + 1}} - \frac{1}{2} \set{\mu_{d, w}^t}^2 - \frac{1}{2} \sum_{d' = 1}^D \frac{1}{\gamma_{d'} + \lambda_d^{t + 1}}
+		\end{align*}
+
+		\note{We are putting in the value of $\lambda_d^{t + 1}$ instead of $\lambda_d^t$ in the term for $\Lambda$ and hence we get the derivative of $E(\vmu_w)$ as what is shown.}
+
+		\begin{align*}
+			\lambda_d^{t + 1}	\eq	\frac{1}{\set{\mu_{d, w}^t}^2} \para{1 - \sum_{d' = 1}^D \frac{\lambda_d^{t + 1}}{\gamma_{d'} + \lambda_d^{t + 1}}}
+		\end{align*}
+		In the fraction part, again using the idea from Jacobi method, we can estimate $\lambda_d^{t + 1}$ by $\lambda_d^t$, and therefore we can write
+		\begin{align*}
+			\lambda_d^{t + 1}	\eq	\frac{1}{\set{\mu_{d, w}^t}^2} \para{1 - \sum_{d' = 1}^D \frac{\lambda_d^t}{\gamma_{d'} + \lambda_d^t}}	\qdeq	\frac{\alpha_d}{\set{\mu_{d, w}^t}^2}
+		\end{align*}
+
+		If for all $d = 1 \dots D$, $\lambda_d = \lambda$, we cannot directly write this, since all $\lambda_{d'}$ are not independent. The only change in that case will be the derivatives with respect to $\lambda$. Now,
+		\begin{align*}
+			0	&\eq	\frac{D}{2}{\lambda^{t + 1}} - \frac{1}{2} \tr{\set{\vmu_w^t}} \vmu_w^t - \frac{1}{2} \sum_{d' = 1}^D \frac{1}{\gamma_{d'} + \lambda^{t + 1}} \\
+			\implies \lambda^{t + 1}	&\eq	\frac{\alpha}{\tr{\set{\vmu_w^t}} \vmu_w^t}
+		\end{align*}
+
+		We now give the MLE update for $\beta^{t + 1}$. Since in this case we can use all the estimates $\set{\lambda_{d}^t}_{d = 1}^D$, we can simply define $\gamma'_{d}$ to be the eigenvalues of $\beta \tr{X} X$.
+
+		Since for some eigenvector $\vu_d$, $\beta \tr{X} X \vu_d = \gamma_d'$, we can say
+		\begin{align*}
+			\der{\gamma_d'}{\beta} \vu_d	&\eq	\tr{X} X \vu_d \\
+			\implies \der{\gamma_d'}{\beta}	\beta \vu_d	&\eq	\beta \tr{X} X \vu_d	\eq	\gamma_d' \vu_d \\
+			\implies \der{\gamma_d'}{\beta}	\eq	\frac{\gamma_d'}{\beta}
+		\end{align*}
+
+		Therefore, we can write
+		\begin{align*}
+			0	\eq	\frac{N}{2 \beta} - \frac{1}{2} \tr{\para{\vy - X \vmu_w^t}} \para{\vy - X \vmu_w^t} - \sum_{d = 1}^{D} \frac{\beta}{}<++>
+		\end{align*}<++>
+
+		Therefore, we can give an iterative algorithm for this (as discussed in class)
+
+		\begin{algo}[0.9\textwidth]{h!}{MLE-II for Hyperparameter Estimation}
+
+			\begin{enumerate}
+				\item Assume some initial estimates for the hyperparamters, $\beta^0$ and $\vlambda^0$
+				\item Repeat until convergence for t = $1, 2 \dots$
+					\begin{enumerate}
+						\item Estimate the posterior over $\vw^t$ as
+							\begin{align*}
+								\prob{\vw^t \pipe \vy, X, \vbeta^{t - 1}, \vlambda^{t - 1}}	\eq	\ND{\vw^t \pipe \vmu_w^{t - 1}, \Sigma_2^{t - 1}}
+							\end{align*}
+							where
+							\begin{align*}
+								\Sigma_w^t	&\eq	\para{\beta^t \tr{X} X + \Lambda^t}^{-1} \\
+								\vmu_w^t	&\eq	\para{\tr{X} X + \frac{1}{\beta^t} \Lambda^t}^{-1} \tr{X} \vy
+							\end{align*}
+						\item Re-esimate the hyperparameters as
+							\begin{align*}
+								\vlambda^t	&\eq \\
+								\beta^t		&\eq
+							\end{align*}
+					\end{enumerate}
+			\end{enumerate}
+
+		\end{algo}
+
+	\end{qpart}
+
+\end{question}
+
+%\begin{question}
+
+	%We have the likelihood and the prior, and we want to find out the marginal likelihood. Given
+	%\begin{align*}
+		%\prob{x \pipe \lambda}				&\eq	\exp{-\lambda} \frac{\lambda^x}{\fact{x}} \\
+		%\prob{\lambda \pipe \alpha, \beta}	&\eq	\frac{\beta^\alpha}{\Gamma(\alpha)} \lambda^{\alpha - 1} \exp{- \beta \lambda}
+	%\end{align*}
+
+	%Therefore, the marginal likelihood can be written as
+	%\begin{align*}
+		%\prob{x \pipe \alpha, \beta}		&\eq	\int_{\lambda} \exp{-\lambda} \frac{\lambda^x}{\fact{x}} \cdot \frac{\beta^\alpha}{\Gamma(\alpha)} \lambda^{\alpha - 1} \exp{- \beta \lambda} \\
+		%&\eq	\frac{\beta^\alpha}{\fact{x} \, \Gamma(\alpha)} \int_{\lambda} \lambda^{x + \alpha - 1} \exp{-(1 + \beta) \lambda} \;\text{d}\lambda
+	%\end{align*}
+
+	%Since the term inside the integral is a form of the gamma distribution, we can try to normalize it.
+	%\begin{align*}
+		%\prob{x \pipe \alpha, \beta}	&\eq	\frac{\beta^\alpha \, \Gamma(\alpha + x)}{\fact{x} \, \Gamma(\alpha) \, (1 + \beta)^{\alpha + x}} \int_{\lambda} \frac{(1 + \beta)^{\alpha + x}}{\Gamma(\alpha + x)} \lambda^{x + \alpha - 1} \exp{-(1 + \beta) \lambda} \;\text{d}\lambda
+	%\end{align*}
+
+	%As we know, the integral of a probability distribution is always 1, hence we can write
+	%\begin{align*}
+		%\prob{x \pipe \alpha, \beta}	&\eq	\frac{\beta^{\alpha} \, \Gamma(\alpha + x)}{\fact{x} \, \Gamma(\alpha) \, (1 + \beta)^{\alpha + x}}
+	%\end{align*}
+
+	%Putting in $\alpha = r$ and $\beta = \frac{1 - p}{p}$, we get
+	%\answer{
+		%\begin{align*}
+			%\prob{x \pipe r, p}	\eq	\frac{\Gamma(r + x) \, p^x (1 - p)^r}{\Gamma(r) \, \fact{x}}
+		%\end{align*}
+	%}
+
+	%Given $r \in \bN$, the above distribution would be \et{Negative Binomial Distribution}.
+
+%\end{question}
+
+%\begin{question}
+
+	%We have the likelihood and the the prior.
+	%\begin{align*}
+		%\mdef{Likelihood}	\prob{x \pipe \sigma^2}	&\eq	\ND{x \pipe 0, \sigma^2} & \\
+		%\mdef{Prior}	\prob{\sigma^2 \pipe \gamma}	&\eq	\texp{\sigma^2 \pipe \gamma^2 / 2} &
+	%\end{align*}
+
+	%We need to compute the marginal likelihood \ie $\prob{x \pipe \gamma}$.
+	%\begin{align*}
+		%\prob{x \pipe \gamma}	&\eq	\int_{\sigma^2} \prob{x \pipe \sigma^2} \prob{\sigma^2 \pipe \gamma} \; \text{d}\sigma^2 \\
+		%&\eq	\frac{\gamma^2}{2 \sqrt{2 \pi}} \int_{\sigma^2} \frac{1}{\sigma} \texp{- \frac{x^2}{2 \sigma^2}} \texp{- \frac{\gamma^2 \sigma^2}{2}} \; \text{d}\sigma^2
+	%\end{align*}
+
+	%As hinted in the assignment, let us consider the MGF of the probability distribution $\prob{x \pipe \gamma}$,
+	%\begin{align*}
+		%\E[x \,|\, \gamma]{\exp{sx}}	&\eq	\int_{x} \exp{sx}\, \prob{x \pipe \gamma} \id x \\
+		%&\eq	\int_{x} \exp{sx} \brac{\int_{\sigma^2} \frac{1}{\sigma} \texp{- \frac{x^2}{2 \sigma^2}} \texp{- \frac{\gamma^2 \sigma^2}{2}} \; \text{d}\sigma^2} \id x
+	%\end{align*}
+
+	%Since we can change the order of the integrals \cite{wiki-order-of-integration}, we will try to integrate $x$ first
+	%\begin{align*}
+		%\E[x \,|\, \gamma]{\exp{sx}}	&\eq \frac{\gamma^2}{2 \sqrt{2 \pi}} \int_{\sigma^2} \int_{x} \exp{sx} \frac{1}{\sigma} \texp{- \frac{x}{2 \sigma^2}} \texp{- \frac{\gamma^2 \sigma^2}{2}} \id x \cdot \id \sigma^2 \\
+		%&\eq	\frac{\gamma^2}{2 \sqrt{2 \pi}} \int_{\sigma^2} \frac{1}{\sigma} \texp{- \frac{\gamma^2 \sigma^2}{2}} \int_{x} \texp{- \frac{1}{2 \sigma^2} \para{x^2 - 2sx \sigma^2}} \id x \cdot \id \sigma^2
+	%\end{align*}
+
+	%We can manipulate the exponent part in the inner integral to represent a gaussian. Therefore
+	%\begin{align*}
+		%\E[x \,|\, \gamma]{\exp{sx}}	&\eq	\frac{\gamma^2}{2} \int_{\sigma^2} \texp{- \frac{\gamma^2 \sigma^2}{2} + \frac{s^2 \sigma^2}{2}} \int_{x} \frac{1}{\sqrt{2 \pi \sigma^2}} \texp{- \frac{1}{2 \sigma^2} \para{x^2 - 2sx \sigma^2 + s^2 \sigma^4}} \id x \cdot \id \sigma^2 \\
+		%&\eq	\frac{\gamma^2}{2} \int_{\sigma^2} \texp{- \frac{\gamma^2 \sigma^2}{2} + \frac{s^2 \sigma^2}{2}} \int_{x} \frac{1}{\sqrt{2 \pi \sigma^2}} \texp{- \frac{1}{2 \sigma^2} \para{x - s \sigma^2}^2} \id x \cdot \id \sigma^2\
+	%\end{align*}
+
+	%Since we are integrating a gaussian distribution over x, we will get 1 as the answer of the inner integration, hence, we can write
+	%\begin{align*}
+		%\E[x \,|\, \gamma]{\exp{sx}}	&\eq	\frac{\gamma^2}{2} \int_{\sigma^2} \texp{\frac{\sigma^2}{2} \para{s^2 - \gamma^2}} \id \sigma^2 \\
+		%&\eq	\frac{\gamma^2}{2} \frac{2}{s^2 - \gamma^2} \brac{\texp{\frac{\sigma^2}{2} \para{s^2 - \gamma^2}}}_0^\infty
+	%\end{align*}
+
+	%Clearly this will exist if and only if $s^2 \le \gamma^2$. Suppose this is true, \ie $\abs{s} \le \abs{\gamma}$, then
+	%\begin{align*}
+		%\text{MGF}	\eq	\E[x \,|\, \gamma]{\exp{sx}}	\eq	\frac{1}{1 - \frac{s^2}{\gamma^2}}
+	%\end{align*}
+
+	%Comparing with the various MGF in the list from \cite{wiki-mgf}, we can say that this is the MGF of a Laplace Distribution where $\mu = 0$ and $b = 1 / \gamma$. Therefore
+	%\answer[0.5\textwidth]{
+		%\begin{align*}
+			%x \pipe y	\eq	\tfunc{Laplace}{0, \gamma^{-1}}
+		%\end{align*}
+	%}
+
+	%The plots of both the distributions $\prob{x \pipe \sigma^2}$ and $\prob{x \pipe \gamma}$ is given in Figure \ref{fig:q3-plot}
+
+	%\begin{figure}[h!]
+		%\centering
+		%\includegraphics{includes/plots/q3/q3-plot.png}
+		%\caption{Comparasion of the Gaussian and Laplacian distributions for Question 3}
+		%\label{fig:q3-plot}
+	%\end{figure}
+
+%\end{question}
+
+%\begin{question}
+
+	%\begin{qsection}{Means and Covariances Observed}
+
+		%\begin{enumerate}
+				%\ditem[N = 1]
+				%\begin{align*}
+					%\mu_w		&\eq	\brac{
+						%\begin{matrix}
+							%-0.429 \\
+							%0.0226
+						%\end{matrix}
+					%} \\\\
+					%\Sigma_w	&\eq	\brac{
+						%\begin{matrix}
+							%0.0382 &	0.0243	\\
+							%0.0243 &	0.4987	\\
+						%\end{matrix}
+					%}
+				%\end{align*}
+				%\ditem[N = 2]
+				%\begin{align*}
+					%\mu_w		&\eq	\brac{
+						%\begin{matrix}
+							%-0.336 \\
+							%0.6969
+						%\end{matrix}
+					%} \\\\
+					%\Sigma_w	&\eq	\brac{
+						%\begin{matrix}
+							%0.0305 &	-0.032	\\
+							%-0.032 &	0.0899	\\
+						%\end{matrix}
+					%}
+				%\end{align*}
+				%\ditem[N = 5]
+				%\begin{align*}
+					%\mu_w		&\eq	\brac{
+						%\begin{matrix}
+							%-0.403 \\
+							%0.6885
+						%\end{matrix}
+					%} \\\\
+					%\Sigma_w	&\eq	\brac{
+						%\begin{matrix}
+							%0.0239 &	-0.027	\\
+							%-0.027 &	0.0459	\\
+						%\end{matrix}
+					%}
+				%\end{align*}
+				%\ditem[N = 10]
+				%\begin{align*}
+					%\mu_w		&\eq	\brac{
+						%\begin{matrix}
+							%-0.275 \\
+							%0.4244
+						%\end{matrix}
+					%} \\\\
+					%\Sigma_w	&\eq	\brac{
+						%\begin{matrix}
+							%0.0043 &	-0.002	\\
+							%0-.002 &	0.0102	\\
+						%\end{matrix}
+					%}
+				%\end{align*}
+				%\ditem[N = 20]
+				%\begin{align*}
+					%\mu_w		&\eq	\brac{
+						%\begin{matrix}
+							%-0.239 \\
+							%0.3688
+						%\end{matrix}
+					%} \\\\
+					%\Sigma_w	&\eq	\brac{
+						%\begin{matrix}
+							%0.0020 &	-0.000	\\
+							%-0.000 &	0.0054	\\
+						%\end{matrix}
+					%}
+				%\end{align*}
+		%\end{enumerate}
+
+	%\end{qsection}
+
+	%\begin{qsection}{Plots for Values of $\vw$ Sampled from Posterior}
+
+		%The plots are shown in Figures 2 to 6
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4b/posterior-samples-1.png}
+			%\caption{Sampling of $w$ for N = $1$}
+		%\end{figure}
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4b/posterior-samples-2.png}
+			%\caption{Sampling of $w$ for N = $2$}
+		%\end{figure}
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4b/posterior-samples-3.png}
+			%\caption{Sampling of $w$ for N = $5$}
+		%\end{figure}
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4b/posterior-samples-4.png}
+			%\caption{Sampling of $w$ for N = $10$}
+		%\end{figure}
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4b/posterior-samples-5.png}
+			%\caption{Sampling of $w$ for N = $20$}
+		%\end{figure}
+
+	%\end{qsection}
+
+	%\begin{qsection}{Plots for Prediction Lines for Sampled Values of $\vw$}
+
+		%The plots are shown in Figures 7 to 11
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4c/predictive-models-1.png}
+			%\caption{Sampling of $w$ for N = $1$}
+		%\end{figure}
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4c/predictive-models-2.png}
+			%\caption{Sampling of $w$ for N = $2$}
+		%\end{figure}
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4c/predictive-models-3.png}
+			%\caption{Sampling of $w$ for N = $5$}
+		%\end{figure}
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4c/predictive-models-4.png}
+			%\caption{Sampling of $w$ for N = $10$}
+		%\end{figure}
+
+		%\begin{figure}[h!]
+			%\centering
+			%\includegraphics[height=275px]{includes/plots/q4c/predictive-models-5.png}
+			%\caption{Sampling of $w$ for N = $20$}
+		%\end{figure}
+
+	%\end{qsection}
+
+	%\clearpage
+
+	%\begin{qsection}{Observations}
+
+		%It can be very clearly seen from both the data in the first section, as well as from the figures that the absolute values of the covariance matrix are going down as the number of points are increasing. This is what is expected, as as the number of points increase, there is more surety about the fit (assuming the assumed model is a good fit, and there is no overfitting for small number of points), and therefore the variance in the inferred parameters will reduce.
+
+		%Another observation that can be made is that the mean of the posterior is converging, which makes sense from the computed value of the mean, that converges as the covariance matrix converges.
+
+	%\end{qsection}
+
+%\end{question}
+
+\begin{thebibliography}{10}
+	\bibitem{matrix-cookbook}
+		Matrix Cookbook. \quad
+		\et{Kaare Brandt Petersen, Michael Syskind Pedersen} \\
+		\href{http://www.matrixcookbook.com}{\url{http://www.matrixcookbook.com}}
+
+	\bibitem{prml}
+		Pattern Recongnition and Machine Learning. \; 2006. \quad
+		\et{Christopher M. Bishop}
+
+	\bibitem{wiki-order-of-integration}
+		Order of Integration (n.d.)
+		\et{Wikipedia} \\
+		\href{https://en.wikipedia.org/wiki/Order_of_integration_(calculus)}{\url{https://en.wikipedia.org/wiki/Order_of_integration_(calculus)}}
+
+	\bibitem{wiki-mgf}
+		Moment Generating Function
+		\et{Wikipedia} \\
+		\href{https://en.wikipedia.org/wiki/Moment-generating_function}{\url{https://en.wikipedia.org/wiki/Moment-generating_function}}
+\end{thebibliography}
+
+\end{document}
