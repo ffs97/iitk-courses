@@ -80,11 +80,11 @@ def main():
         pts = np.random.multivariate_normal(mu, var, 10000)
 
         plt.scatter(pts[:, 0], pts[:, 1], s=1, c="blue", marker=".")
-        plt.scatter(mu[0], mu[1], s=100, c="red", marker="+", label="mean")
+        plt.scatter(mu[0], mu[1], s=200, linewidth=3, c="red", marker="+", label="mean")
         plt.title("Sampling $w$ from posterior $w | y, X$")
         plt.legend()
         plt.savefig(
-            "../includes/plots/q4b/posterior-samples-%s.png" % str(i + 1), pad_inches=0.1
+            "../includes/plots/q4b/posterior-samples-%s.png" % str(i + 1), bbox_inches='tight'
         )
         plt.clf()
 
@@ -94,7 +94,7 @@ def main():
             plt.plot(x_linspace[:, 1], x_linspace.dot(w))
         plt.legend()
         plt.savefig(
-            "../includes/plots/q4c/predictive-models-%s.png" % str(i + 1), pad_inches=0.1
+            "../includes/plots/q4c/predictive-models-%s.png" % str(i + 1), bbox_inches='tight'
         )
         plt.clf()
 

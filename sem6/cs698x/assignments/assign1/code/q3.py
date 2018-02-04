@@ -9,6 +9,8 @@ sigma = math.sqrt(variance)
 x = np.linspace(- 3, 3, 100)
 plt.plot(x, mlab.normpdf(x, mu, sigma), label="x | $\sigma^2$ (Gaussian)")
 plt.plot(x, np.exp(-np.abs(x)) / 2, label="x | $\gamma$ (Laplace)")
-ax = plt.gca()
-ax.legend()
-plt.show()
+plt.legend()
+plt.savefig(
+    "../includes/plots/q3/q3-plot.png", pad_inches=0.1
+)
+plt.clf()
