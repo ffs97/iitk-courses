@@ -1,0 +1,414 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{puru}
+
+\setcoursetitle{CS777 Topics in Learning Theory}
+\setassigncode{1}
+\setauthname{Gurpreet Singh}
+\setauthroll{150259}
+
+\begin{document}
+
+\begin{question}
+
+	We can have a naive sampling algorithm similar to the idea of Rejection sampling discussed in \mbox{Lecture 3}.
+	This is based on the idea that we flip each coin twice, and invert the outcome of the second coin, \ie if the second flip gives Heads, count it as Tails and vice versa.
+
+	Since there are $K$ coins, there will be $2K$ coin flips in total.
+	If the number of Heads is greater than $K$, then we say the outcome is Heads, if it is less than $K$, we predict Tails, otherwise, we reject.
+	The algorithm is given more formally in \hyperlink{algo:1.1}{Algorithm 1}
+
+	\begin{algo}[0.9\textwidth]{SAMPLE (A Naive Approach)}
+
+		Iterate until a sample is accepted.
+		\begin{enumerate}
+			\item For each $k = 1 \dots K$, flip the coin $C_k$ twice and invert the second outcome.
+			\item Count the total number of heads, say $n$, and do the following
+				\begin{enumerate}
+					\item If $n > K$, accept and report the outcome as Heads
+					\item If $n < K$, accept and report the outcome as Tails
+					\item If $n = K$, reject
+				\end{enumerate}
+		\end{enumerate}
+
+	\end{algo}
+
+	\begin{claim}
+		\hyperlink{algo:1.2}{Algorithm 1} returns Heads or Tails, each with probability exactly 1/2.
+
+		\begin{proof}
+			Since we have $K$ coins, \ie $C_1, C_2 \dots C_K$, and we are flipping each coin twice, we can alternately say that we have $2K$ coins, with the additional $K$ coins being $C_1', C_2' \dots C_K'$.
+			However, since we are inverting the outcome of the second flip, we can say that the bias of the coin $C_k'$ is actually $1 - p_k$.
+
+			Therefore, effectively, we have $2K$ coins with biases $p_1, \para{1 - p_1} \dots p_K, \para{1 - p_K}$.
+			The claim holds true because the resulting distribution for the number of heads obtained from flipping these $2K$ coins is symmetric.
+			To show this, consider probability of getting the number of heads equal to $r$.
+
+			\note{I have denoted the number of heads as $N_H$ and number of tails as $N_T$}
+			\begin{align*}
+				\prob{N_H = r}	&\eq	\prob{N_T = 2K - r}
+			\end{align*}
+			The probability of getting $2K - r$ Tails is the same as getting the same number of heads if the outcome of each coin (consider $C_k'$ coin as not inverted, but an entirely new coin) is inverted.
+			This is equal to saying that the bias of each coin is now inverted.
+			Let us denote these new coins as $\xC_1, \xC_1' \dots \xC_K, \xC_K'$, and the probability of getting $r$ heads as $\aprob{N_H = r}$.
+
+			As stated earlier, we can write
+			\begin{align*}
+				\prob{N_H = r}	&\eq	\prob{N_T = 2K - r}		\\
+				&\eq	\aprob{N_H = 2K - r}	\\
+				&\eq	\aprob{N_T = r}
+			\end{align*}
+			The bias of the coins $\xC_1, \xC_1' \dots \xC_K, \xC_K'$ are simply the inverse of the bias of the original coins, \ie \\ $\para{1 - p_1}, p_1 \dots \para{1 - p_K}, p_K$, which is the same as that of the original coins, with only the sequence being different.
+			Hence there will be no effect on the number of Heads.
+			Therefore, we can say $\prob{N_H = r} = \aprob{N_H = r}$ or equivalently $\prob{N_T = r} = \aprob{N_T = r}$.
+			Hence,
+			\begin{align*}
+				\implies \prob{N_H = r}	&\eq	\aprob{N_T = r} \\
+				&\eq	\prob{N_T = r}
+			\end{align*}
+			Therefore, the probability of getting $r$ Heads is the same as the probability of getting $2K - r$ Heads.
+			Hence, the probability $\prob{N_H < K} = \prob{N_H > K}$.
+
+			Using this, we can say that given the number of Heads will never be equal to $K$ (since we are rejecting that case), the probability of getting the outcome Heads is the same as the probability of getting the outcome Tails, and therefore is equal to 1/2.
+		\end{proof}
+	\end{claim}
+
+	Therefore I have stated that we have a Naive algorithm which will give the outcome Heads with probability 1/2.
+	However, this algorithm is not necessarily desired as we do not want to flip all the coins ($2K$ flips) in each iteration.
+	Therefore, our aim is to optimize the number of coins we actually want to use.
+
+	Before that, let us see the optimal bias we require if there is only one coin.
+	This is, in fact, very easy to see as the probability of getting one Heads and one Tails is if the both the flips give either Heads or Tails (since second flip's outcome will be reversed).
+	This is equal to $p^2 + \para{1 - p}^2$.
+	This is clearly minimized for $p = 1/2$.
+
+	Hence, if we are choosing just one coin, we wish the bias of that coin to be close to 1/2.
+	In fact, this holds even if the number of coins is more than one, as given in the following claim.
+
+	\begin{claim}
+		The minimum probability of rejection will be obtained when $\qforall k = 1 \dots K' \;\ p_k \approx 1/2$ ($K'$ is the number of coins we have chosen).
+		\begin{proof}
+			Let us denote the probability of obtaining $N_H$ number of heads considering only the first $k$ coins as $p(N_H, k)$. Therefore, if we take all $K'$ coins, we can write the probability of getting $N_H$ heads as follows
+			\begin{align*}
+				\prob{N = N_H}	&\eq	p(N_H, K') \\
+				&\eq	p_{K'} \para{1 - p_{K'}} \para{p(N_H - 2, K' - 1) + p(N_H, K' - 1)} \\ &\quad\quad\quad + \quad \para{p_{K'}^2 + \para{1 - p_{K'}}^2} p(N_H - 1, K' - 1)
+			\end{align*}
+			If we put $N_H = K'$, we get the rejection probability (as discussed before Algorithm 1). Since we want to minimize the probability of rejection, we can differentiate (partial) with respect to $p_{k}$ and compute the optimal value of the biases. Consider the partial derivative w.r.t. to $p_{K'}$
+			\begin{align*}
+			\derp{\prob{N = K'}}{p_{K'}}	&\eq	\para{1 - 2 p_{K'}} \para{p(N_H, K' - 1) - 2 p(N_H - 1, K' - 1) + p(N_H - 2, K' - 1))}
+			\end{align*}
+
+			Hence, in order to minimize the gradient (get close to minima), we need to set $p_{K'} \approx 1/2$.
+			Also, since all the coins are exchangeable, we can say that this will in fact hold for all the coins we have chosen (by replacing coin $K'$ with some other coin $k$).
+		\end{proof}
+	\end{claim}
+
+	Hence, for all $K'$ coins we choose, we wish the bias of each coin to be close to 1/2. Since we might not actually have $K'$ coins such that each chosen coin will have bias $1/2$, we need to optimize the value of $K'$ as well.
+
+	This leads us to the problem of finding the correct trade off between a higher value of $K'$ and the bias of each chosen coin. The intuitive sense is that if use more number of coins, the probability of rejecting one sample decreases, and hence we might converge faster. However, it comes with the added number of flips per sample (equal to $2 K'$). We, in fact, can say that the optimal value of $K' = 1$, given we choose the coin with bias close to 1/2 (this is possible since we have at least one coin with bias equal to 1/2).
+
+	In order to show this, consider the minimum probability of convergence which is obtained when the bias of each coin is equal to 1/2. Suppose if the bias of the coin which is closest to 1/2 is $p$. Therefore, the probability of rejection if we choose $K'$ coins is at least $p^{K'}$. Considering the case of only one coin, we choose the coin with the bias closest to 1/2, and therefore the probability of rejection for $2 K'$ flips (same as the case of one sampling iteration for $K'$ coins) is equal to $p^{K'}$. This is the case of minimum probability of rejection in case of $K'$ coins.
+
+	Therefore, it is optimal to have only one coin which has a bias closest to 1/2, instead of having $K'$ coins.
+	Since we know that at least one of the coins has bias equal to $1/2$.
+	Our goal is now to try and find out the coin with bias equal to 1/2.
+
+	Taking our cue from the idea of point-wise convergence (and Alice and Bob's example, Lec 3), we can say that the most (asymptotically) optimal strategy to find this coin is to estimate the bias of each coin (by flipping them $n$ times, and estimating bias as ratio of number of heads and number of flips, as discussed in class), and to consider the coin with the estimated bias closest to 1/2.
+
+	This strategy works since if we flip a coin (say $C_k$) $n$ times, we can be sure with probability greater than $1 - \delta$ that our estimation is at least $\eps$-correct.
+	More formally
+	\begin{align*}
+		\prob{\abs{\widehat{p}_k - p_k} > \eps}	&\qle	\delta	\eq	2\texp{- \frac{n \eps^2}{2}} \mcmnt{Chernoff's Bound}
+	\end{align*}
+
+	The probability that we have estimated all the biases of all the coins at least $\eps$-correct, \ie we have uniform convergence,we have
+	\begin{align*}
+		\prob{\sup_k \abs{\widehat{p} - p_k} > \eps}	&\qle	\delta	\eq	2K \texp{- \frac{n \eps^2}{2}}	\mcmnt{Uniform Convergence}
+	\end{align*}
+
+	Therefore, if we keep $\eps$ to a small value, with sufficient number of flips ($n$), we can ensure with a high probability that the biases we have estimated are approximately correct.
+	Therefore, we can now simply choose the coin with the estimated bias closest to 1/2.
+	Therefore, we have our preprocessing algorithm, given in \hyperlink{algo:1.2}{Algorithm 2}, and then the sample algorithm in \hyperlink{algo:1.3}{Algorithm 3}.
+
+	\begin{algo}[0.9\textwidth]{PRE-PROCESS}
+
+		For all $k = 1 \dots K$
+		\begin{enumerate}
+			\item Flip the coin $C_k$ $N$ times, given
+				\begin{align*}
+					N	\eq	- \frac{2}{\eps^2}\log{\frac{2k}{\delta}}
+				\end{align*}
+				where $\delta$ is the confidence parameter.
+			\item Estimate the bias $\widehat{p}_k$ as
+				\begin{align*}
+					\widehat{p}_k	\eq	\frac{N_H}{N}
+				\end{align*}
+		\end{enumerate}
+
+		Choose the coin $C_k'$ such that
+		\begin{align*}
+			C_k' = \argmin{C_k} \abs{\widehat{p}_k - 0.5}
+		\end{align*}
+
+		Return $C_k'$
+
+	\end{algo}
+
+	We can, now, also formalise the bound on the number of flips we require to probably find a coin with the bias closest to 1/2. Since we know that there is at least one coin with bias 1/2. Therefore, if we find the bias estimates $\eps$-correctly, we can say that there will be at least one coin such that the estimate of the bias of that coin will be in the range $\para{0.5 - \eps, 0.5 + \eps}$.
+
+	Let us say the coin satisfying the above property and having the estimated bias closest to 0.5 is $C_r$. Then, from the arguments of uniform convergence, we know $p_r \in \para{\widehat{p}_r - \eps, \widehat{p}_r + \eps}$ with probability at least ($1 - \delta$). Hence, we can write
+	\answer{
+		\begin{align*}
+			\prob{\abs{\widehat{p}_r - 0.5} > 2 \eps}	\qle	2 K \texp{- \frac{n \eps^2}{2}}
+		\end{align*}
+	}
+
+	Hence, with high probability, we can say that the coin we have predicted to be the fairest coin has a bias close to $0.5$. We can therefore use this coin with a high confidence that for the sampling algorithm (Rejection Sampling) in order to create a fair coin.
+
+	\begin{algo}[0.9\textwidth]{SAMPLE}
+
+		Let $C_r$ be the coin from the pre-processing step.
+		Until we have an accepted sample, iterate
+		\begin{enumerate}
+			\item Flip the coin $C_r$ two times, and return as follows
+				\begin{center}
+					\begin{tabular}[h!]{ccc}
+						\bt{Flip 1}	&	\bt{Flip 2}	&	\bt{Outcome}	\\
+						H			&	H			&	H				\\
+						H			&	T			&	\bot			\\
+						T			&	H			&	\bot			\\
+						T			&	T			&	T
+					\end{tabular}
+				\end{center}
+			\item If Outcome is H or T, accept and return, otherwise reject and continue
+		\end{enumerate}
+	\end{algo}
+
+	In case Alice knew that this is in fact the fair coin, she could directly output the outcome of the coin, however, this is not the case, and hence she needs to sample using the above algorithm only.
+
+	We can also say that the probability of getting a valid sample in $n$ iterations of the SAMPLE algorithm is equal to $\para{p_r^2 + (1 - p_r)^2}^{n - 1}$, where $p_r$ is the bias of the coin we use to do the sampling.
+
+	\note{The only case where SAMPLE will fail is when the bias of the coin we have taken is equal to 0 or 1. However, the probability for this to occur will be very small, given $eps$ is small, and $n$ (the number of preprocessing flips) is large.}
+
+	As stated earlier, we can now also formally prove that the probability of getting Heads (or Tails) is exactly 1/2. This is same as the getting a heads for any number of flips, \ie
+	\begin{align*}
+		\prob{\text{SAMPLE} = H}	&\eq	\sum_{n = 1}^{\infty} \para{p_r^2 + (1 - p_r)^2}^{n - 1} p_r (1 - p_r) \\
+		&\eq	\frac{p_r (1 - p_r)}{1 - \para{p_r^2 + \para{1 - p_r}^2}} \\
+		&\eq	\frac{1}{2}
+	\end{align*}
+	If we were to find the number of tosses ($m$) required to say with at least $1 - \Delta$ confidence, the SAMPLE will end, we can say that
+	\begin{align*}
+		1 - \Delta	&\qle	\sum_{n = 1}^{m} \para{p_r^2 + (1 - p_r)^2}^{n - 1} 2 p_r (1 - p_r) \\
+		&\eq	1 - \para{p_r^2 + \para{1 - p_r}^2}^m
+	\end{align*}
+	For ease of notation, say $P_r = p_r^2 + (1 - p_r)^2$, then
+		\begin{align*}
+			\implies m	&\qge	\frac{\log{\Delta}}{\log{p_r^2 + \para{1 - p_r}^2}} \\
+		\end{align*}
+	\answer{
+		\begin{align*}
+			\implies m_H	&\eq	\ceil{\frac{\log{\Delta}}{\log{p_r^2 + \para{1 - p_r}^2}}}
+		\end{align*}
+	}
+	Hence, if we want the SAMPLE algorithm to end with confidence $1 - \Delta$, we need to iterate at least $m_H$ times.
+
+\end{question}
+
+\begin{question}
+
+	Suppose the set of random variables over the probability space $\para{\Omega, \cF, \bP}$ is denoted by $\cV$.
+	We need to prove that $\cV$ is a vector space (over $\bR$).
+	In order to prove this, we need the addition and scalar multiplication operators to be well defined in the vector space.
+	\begin{align}
+		\mdef{Vector Addition}			\vv_1 + \vv_2	&\qin	\cV &\\
+		\mdef{Scalar Multiplication}	c \cdot \vv_1	&\qin	\cV &
+	\end{align}
+
+	\note{$\vv_i$ denote elements of the vector space we are concerned with}
+
+	$\cV$ is said to be a vector space if it follows all the following properties
+	\begin{align}
+		\vv_1 + \para{\vv_2 + \vv_3}				&\eq	\para{\vv_1 + \vv_2} + \vv_3	\\
+		\vv_1 + \vv_2								&\eq	\vv_2 + \vv_1					\\
+		\vzero \in \cV,\; \mt{s.t.}\; \vv + \vzero	&\eq	\vv								\\
+		\vv + \para{- \vv}							&\eq	\vzero							\\
+		c \cdot \para{\vv_1 + \vv_2}				&\eq	c \cdot \vv_1 + c \cdot \vv_2	\\
+		\para{c + d} \vv							&\eq	c \cdot \vv + d \cdot vv		\\
+		c \para{d \vv}								&\eq	\para{c d} \vv					\\
+		\vone \in \cV,\; \mt{s.t.}\; \vone (\vv)	&\eq	\vv
+	\end{align}
+
+	We first show the properties that for a space $\cV$ over random variables defined over the probability space $\para{\Omega, \cF, \bP}$, the properties (1) and (2) hold true.
+	Consider two random variables $X_1, X_2 \in \cV$, then, we need to show
+	\begin{align*}
+		X	\eq	X_1 + X_2	&\qin	\cV \\
+		X	\eq	c \cdot X_1	&\qin	\cV
+	\end{align*}
+	where $c \in \bR$ is a constant.
+	In order to show that these quantities are in the vector space, \ie $X$ is indeed a random variable over the probability space $\para{\Omega, \cF, \bP}$, we need to show that the events defined by $\set{w \in \Omega : X(w) \le t} \in \cF$.
+
+	Consider the case of multiplication first.
+	Since $X_1$ is a random variable, we know that
+	\begin{align*}
+		\set{w \in \Omega: X_1(w) \le t}			&\qin	\cF \\
+		\implies \set{w \in \Omega: c \cdot X_1(w) \le c \cdot t}	&\qin	\cF \\
+	\end{align*}
+	Since $t' = c \cdot t \in \bR$ (properties of the real space), we can write this as
+	\begin{align*}
+		\set{w \in \Omega: c \cdot X_1(w) \le t'}	&\qin	\cF \\
+		\implies \set{w \in \Omega: X(w) \le t'}	&\qin	\cF
+	\end{align*}
+	Hence scalar multiplication holds for the space $\cV$.
+	For the case of addition, I have referred to the scribes for \href{http://nptel.ac.in/courses/108106083/lecture15_Sums_of_RVs.pdf}{EE510, Dr. Krishna Jagannathan}.
+
+	Firstly, when we are adding two random variables, say $X_1, X_2 \in \cV$, since both $X_1$ and $X_2$ take finite values, their sum (addition operation), if measurable will also take finite values. Therefore, we only need to prove that $X = X_1 + X_2$ is measurable at all $w \in \Omega$ and is defined over the probability space $\para{\Omega, \cF, \bP}$<++>. An alternate approach to this, as stated earlier is to prove that for all $t \in \bR$, the set $\set{w \in \Omega: X(w) \le t} \in \cF$. We can write
+	\begin{align*}
+		\set{w \in \Omega: X(w) \le t}	&\eq	\set{w \in \Omega: X_1(w) + X_2(w) \le t} \\
+		&\eq	\bigcup_{r \in \bR} \set{w \in \Omega: X_1(w) \le r \qmt{and} X_2(w) \le t - r}
+	\end{align*}
+
+	However, this is an $\bR$ uncountably infinite set, and hence, we cannot take the union over this. However, from the realization that rationals are dense in the real space, \ie for all $r \in \bR$, we can find a sequence of rationals $q_1, q_2 \dots \in \bQ$, such that $\lim_{n \ra \infty} q_n = r$. Hence, we can transform the union as follows
+	\begin{align*}
+		\set{w \in \Omega: X(w) \le t}	&\eq	\bigcup_{q \in \bQ} \para{\set{w \in \Omega: X_1(w) \le q} \cap \set{w \in \Omega: X_2(w) \le t - q}}
+	\end{align*}
+
+	Since $\bQ$ is countably infinite (from arguments from Abstract Algebra), we can say that the above union exists. Also, since $\cF$ is closed under both intersection and union, and for all $r \in \bR$, both the sets $\set{w \in \Omega: X_1(w) \le r}$ and $\set{w \in \Omega: X_2(w) \le r}$ are in $\cF$, the intersection and union over such sets will result in a set which also belongs in $\cF$.
+
+	Hence, we can claim $X$ is measurable and therefore a bounded (finitely) random variable defined over the probability space $\para{\Omega, \cF, \bP}$, and therefore by definition $X \in \cV$. This proves property of Vector Addition (1).
+
+	Since we have proved properties (1) and (2), we can move on to show the properties from (3) - (10).
+	Before that, consider property (5).
+	We can easily find a random variable (say $X_0$), such that the property holds true.
+
+	Consider $X_0 : \Omega \ra \bR$ such that for all $w \in \Omega$, $X_0(w) = 0$.
+	It is easy to see that this satisfies the property (5).
+	Consider $X = X_1 + X_0$.
+	From property (1), we have that $X \in \cV$.
+	We can therefore write
+	\begin{align*}
+		\qforall t \in \bR,\ \set{w \in \Omega: X(w) \le t}	&\eq	\set{w \in \Omega: (X_0 + X_1)(w) \le t} \\
+										&\eq	\set{w \in \Omega: X_1(w) \le t}
+	\end{align*}
+	Therefore, we can say $X \equiv X_1$. Hence $X_0 \equiv 0$ is the ``zero vector'' for the vector space $\cV$. Also, the same variable is the ``zero vector'' for the real space.
+	This suggests that the vector space is indeed a linear subspace of the real space.
+	Hence, all the properties (3) - (10) follow from the properties of the real space \citep{}
+
+	Therefore, the vector space $\cV$ is in fact a vector space.
+	Hence, the set of random variables over a probability space $\para{\Omega, \cF, \bP}$ form a vector space (over $\bR$).
+
+\end{question}
+
+\begin{question}
+
+	For an event $A \in \cF$, the $\sigma$-sub algebra generated by that event would simply be the set $\sigma(A) = \set{\phi, A, \comp{A}, \Omega}$, since this satisfies all the properties of a $\sigma$-sub algebra, \ie closed under complement, and contains both the null event and the sure event.
+
+	Therefore, we need to prove $A_1, A_2 \in \cF$ are independent iff $\sigma(A_1)$ and $\sigma(A_2)$ are independent. Let us consider the forward implication, \ie $A_1 \independent A_2 \implies \sigma(A_1) \independent \sigma(A_2)$.
+
+	\begin{claim}
+		\label{claim:1.2}
+		For any two events $A_1, A_2 \in \cF$, if $A_1 \independent A_2 \implies \sigma(A_1) \indenpendent \sigma(A_2)$.
+		\begin{proof}
+			In order to prove two sigma algebras are independents, we need to prove for any events $E_1 \in \sigma(A_1)$ and $E_2 \in \sigma(A_2)$, $E_1 \independent E_2$.
+
+			Let us prove an identity of complement and independent events first. Consider two events $A_1, A_2 \in \cF$ such that $A_1 \independent A_2$, then
+			\begin{align*}
+				A_1 \land \comp{A_2}	&\eq	A_1 \land \para{\Omega \setminus A_2} \\
+				&\eq	A_1 \setminus \para{A_1 \land A_2} \\
+				\implies \prob{A_1 \land \comp{A_2}}	&\eq	\prob{A_1 \setminus \para{A_1 \land A_2}}
+			\end{align*}
+			Since $A_1 \land A_2 \subseteq A_1$, therefore
+			\begin{align*}
+				\prob{A_1 \land \comp{A_2}}	&\eq	\prob{A_1 \setminus \para{A_1 \land A_2}} \\
+				&\eq	\prob{A_1} - \prob{\para{A_1 \land A_2}} \\
+				&\eq	\prob{A_1} \para{1 - \prob{A_2}} \mcmnt{as $A_1 \independent A_2$}
+			\end{align*}
+			Hence
+			\begin{align}
+				\prob{A_1 \land \comp{A_2}}	\eq	\prob{A_1} \cdot \prob{\comp{A_2}}
+			\end{align}
+			Therefore, $A_1 \independent A_2 \implies A_1 \independent \comp{A_2}$. From the same steps, we can get $\comp{A_1} \independent A_2$. Further applying (11) to this, we get $\comp{A_1} \independent \comp{A_2}$.
+
+			Since we have $\sigma(A) = \set{\phi, A, \comp{A}, \Omega}$, and we already know $A_1 \independent A_2$, therefore, from the properties mentioned above, we have $\comp{A_1} \independent \comp{A_2}$,  $\comp{A_1} \independent A_2$ and  $A_1 \independent \comp{A_2}$.
+
+			Also, for any event $A$, $\Omega \cap A = A \implies \prob{\Omega \cap A} = 1 \cdot \prob{A} = \prob{\Omega} \cdot \prob{A}$.
+
+			Similarly $\phi \cap A = \phi \implies \prob{\phi \cap A} = 0 \cdot \prob{A} = \prob{\phi} \cdot \prob{A}$.
+
+			Hence, we have proved that for all pairs over the $\sigma$-sub algebras of $A_1$ and $A_2$ and hence the $\sigma$-sub algebras themselves are independent.
+		\end{proof}
+	\end{claim}
+
+	\begin{claim}
+		\label{claim:1.3}
+		For any two events $A_1, A_2 \in \cF$, if $\sigma(A_1) \indenpendent \sigma(A_2) \implies A_1 \independent A_2$.
+
+		\begin{proof}
+			For the backward implication, we directly have that all pairs of the $\sigma$-sub algebras are independent of each other. Since $A_1, A_2$ is one such pair, we directly have their independence. Therefore $A_1 \independent A_2$.
+		\end{proof}
+	\end{claim}
+
+	From Claims \ref{claim:1.2} and \ref{claim:1.3}, we can say for any two events $A_1, A_2 \in \cF$, $A_1 \independent A_2 \iff \sigma(A_1) \independent \sigma(A_2)$.
+
+\end{question}
+
+\begin{question}
+
+	\begin{qpart}{1}
+
+		If we sample $S$ without replacement, the events user $i$ is sampled and user $j$ is sampled won't be independent. More formally, consider $E_i$ to be the event that user $i$ is sampled out of the the $n$ sampled users. Then the probabilty
+		\begin{align*}
+			\prob{E_i}	\eq	\frac{\binom{N - 1}{n - 1}}{\binom{N}{n}}	\eq	\frac{n}{N}
+		\end{align*}
+		Now consider the probability of both $E_i$ and $E_j$ being sampled together.
+		\begin{align*}
+			\prob{E_i \land E_j}	\eq	\frac{\binom{N - 2}{n - 2}}{\binom{N}{n}}	\eq	\frac{n (n - 1)}{N (N - 1)}
+		\end{align*}
+		Therefore, $\prob{E_i \land E_j} \ne \prob{E_i} \cdot \prob{E_j}$, and hence the events $E_i$ and $E_j$ are not independent. This suggests that we cannot sample without replacement, even though there is a chance that the number of distinct users we get if we sample with replacement is lesser than $n$ which in fact wastes our samples.
+
+	\end{qpart}
+
+	\begin{qpart}{2}
+
+		As given in the question, the random variables we are considering, \ie $c_{I_i I_j}$ and $c_{I_j I_k}$ are independent since we have a common user among them. This suggests that we cannot directly apply any tail bound we know of.
+
+		Therefore, we need $\widehat{\mu}_S$ to be a sum of random variables such that they are independent. Hence, we tweak $\wmu_S$, in such a way, that for each user, there is only one term containing the dependence of that user.
+
+		In order to present this more formally, we can imagine the user-user matrix to be a perfect graph, with the number of messages between each user pair to be the weight of the edge between them. Therefore, we need to sample the edges such that there are no two edges with a common vertex.
+
+		\note{The user-user matrix is only between users who have been sampled in the first step}
+
+		Considering only edges that do not share a vertex, we are ensuring that no edge weight is dependent on any other edge weight.
+
+		Suppose using the edge sampling method described above, we have $\floor{\frac{k}{2}}$ (where $k$ is the number of distinct users sampled in Step 1) edges (or edge weights). Let us represent these edge weights as $\overline{c}_1 \dots \overline{c}_{\floor{k/ 2}}$. Then we can write the new term for $\wmu_S$ as
+		\begin{align*}
+			\wmu_S	\eq	\frac{1}{\floor{k / 2}} \sum_{i = 1}^{\floor{k / 2}} \overline{c}_i
+		\end{align*}
+
+	\end{qpart}
+
+	\begin{qpart}{3}
+
+		We can show that with high probability, $\wmu_S \approx \mu$. For this, we consider Hoeffding's Inequality.
+
+		\note{For the further portion of the solution, let $k' = \floor{k / 2}$}
+
+		Since we have $k'$ independent random variables $\overline{c}_1 \dots \overline{c}_{k'}$, where each is considered to be identical (as a-priori, we do not distinguish between the number of messages, and since the users are sampled randomly, we do not know anything about the characteristics of the user, and hence about the number of messages he might send). Also, since each $\overline{c}_i \in \brac{0, K}$, we can apply Hoeffding's Inequality on $\wmu_S$.
+
+		Therefore, we get
+		\begin{align*}
+		\prob{\abs{\frac{1}{k'} \sum_{i}^{k'} \overline{c}_i - \E{\overline{c}}} > \eps}	\qle	2 \texp{- \frac{2 k' \eps^2}{K^2}}
+		\end{align*}
+
+		Since we have already stated that all the random variables $\overline{c}_{i}$ are independent and identical, we can say that the expectation of each of these terms, and hence $\E{\overline{c}} = \mu$. Hence, we can write
+		\begin{align*}
+			\prob{\abs{\wmu_S - \mu} > \eps}	\qle	2 \texp{- \frac{2 k' \eps^2}{K^2}}	\qle	2 \texp{- \frac{(k - 1) \eps^2}{K^2}}	\eq	\delta
+		\end{align*}
+
+		Hence, we can say with probability at least $1 - \delta$, where $\delta$ is as given above, that the estimated $\wmu_S$ is $\eps$-close to the actual mean $\mu$.
+
+	\end{qpart}
+
+\end{question}
+
+\end{document}
+

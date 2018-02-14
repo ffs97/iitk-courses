@@ -8,6 +8,8 @@
 \begin{document}
 \makeheader
 
+Please note that I have attempted all the questions, with each subsequent question starting from a new page.
+
 \begin{question}
 
 	Below, I state the notations, terms given to us and some observations.
@@ -217,7 +219,7 @@
 		If for all $d \in \brac{D}$, $\lambda_d = \lambda$, we cannot write the above, since the derivatives in that case would be different.
 		In that case, we follow the same procedure, but will obtain the following update equation
 		\begin{align*}
-			\set{\lambda^{t + 1}}^{-1}	\eq	\tr{\set{\vmu_w^t}} \set{\vmu_w^t} + \trace{\Sigma_w^t}
+			\set{\lambda^{t + 1}}^{-1}	\eq	\frac{1}{D} \brac{\tr{\set{\vmu_w^t}} \set{\vmu_w^t} + \trace{\Sigma_w^t}}
 		\end{align*}
 
 		Now, we can also give an update equation for $\beta$, following the same steps.
@@ -257,7 +259,7 @@
 							\end{align*}
 							\bt{Case 2}
 							\begin{align*}
-								\set{\lambda^{t + 1}}^{-1}	\eq	\tr{\set{\vmu_w^t}} \set{\vmu_w^t} + \trace{\Sigma_w^t}
+								\set{\lambda^{t + 1}}^{-1}	\eq	\frac{1}{D} \brac{\tr{\set{\vmu_w^t}} \set{\vmu_w^t} + \trace{\Sigma_w^t}}
 							\end{align*}
 					\end{enumerate}
 			\end{enumerate}
@@ -353,7 +355,7 @@
 	Therefore
 	\answer[0.5\textwidth]{
 		\begin{align*}
-			x \pipe y	\eq	\tfunc{Laplace}{0, \gamma^{-1}}
+			x \pipe y	\qsim	\tfunc{Laplace}{0, \gamma^{-1}}
 		\end{align*}
 	}
 
@@ -380,7 +382,7 @@
 							-0.429 \\
 							0.0226
 						\end{matrix}
-					} \\\\
+					} &
 					\Sigma_w	&\eq	\brac{
 						\begin{matrix}
 							0.0382 &	0.0243	\\
@@ -395,7 +397,7 @@
 							-0.336 \\
 							0.6969
 						\end{matrix}
-					} \\\\
+					} &
 					\Sigma_w	&\eq	\brac{
 						\begin{matrix}
 							0.0305 &	-0.032	\\
@@ -410,7 +412,7 @@
 							-0.403 \\
 							0.6885
 						\end{matrix}
-					} \\\\
+					} &
 					\Sigma_w	&\eq	\brac{
 						\begin{matrix}
 							0.0239 &	-0.027	\\
@@ -425,7 +427,7 @@
 							-0.275 \\
 							0.4244
 						\end{matrix}
-					} \\\\
+					} &
 					\Sigma_w	&\eq	\brac{
 						\begin{matrix}
 							0.0043 &	-0.002	\\
@@ -440,7 +442,7 @@
 							-0.239 \\
 							0.3688
 						\end{matrix}
-					} \\\\
+					} &
 					\Sigma_w	&\eq	\brac{
 						\begin{matrix}
 							0.0020 &	-0.000	\\
