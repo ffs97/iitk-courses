@@ -5,3 +5,4 @@
 *.zip
 *.gz
 *.vscode*
+*data*
