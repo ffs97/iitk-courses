@@ -1,0 +1,217 @@
+\documentclass[a4paper,10pt]{article}
+
+\usepackage{puru}
+
+\setcoursetitle{CS777 Topics in Learning Theory}
+\setassigncode{2}
+\setauthname{Gurpreet Singh}
+\setauthroll{150259}
+
+
+\begin{document}
+
+\begin{question}
+
+	\def\wy{\hat{y}}
+	\def\sgn{\text{sign}}
+
+	From the discussion in class, we know about the following inequality, which I have used to prove some identities in this question.
+
+	If $a, b \ge 0$ and $a + b \ge c$, then for all $\eta \in \brac{0, 1}$,
+	\begin{equation}
+		\eta \cdot a + (1 - \eta) \cdot b	\qge	c \cdot \tfunc{min}{\eta, 1 - \eta}
+		\label{eq:q1-inequality}
+	\end{equation}
+
+	\begin{qpart}{1}
+
+		\begin{align*}
+			L^{0-1}(\eta)	&\eq	\min_{\wy}\ \E[Y \sim \eta]{l^{0-1}(\wy, Y)} \\
+			&\eq	\min_{\wy}\ \E[Y \sim \eta]{\is{\wy \ne Y}} \\
+			&\eq	\min_{\wy}\ \E[Y \sim \eta]{\is{\wy = 1} \is{Y = -1} + \is{\wy = -1} \is{Y = 1}} \\
+			&\eq	\min_{\wy}\ (1 - \eta)\ \is{\wy = 1} + \eta\ \is{\wy = -1} \\
+			&\qge	\tfunc{min}{\eta, 1 - \eta}
+		\end{align*}
+
+		The last inequality is from the discussion in class. However, for an algorithm that predicts $\wy$ as follows,
+		\begin{align*}
+			\wy	\eq	\begin{cases}
+				+1	& \mt{if} \eta > 0.5 \\
+				-1	& \mt{else}
+			\end{cases}
+		\end{align*}
+		the equality is satisfied, that is $L^{0-1}(\eta) = \tfunc{min}{\eta, 1 - \eta}$.
+
+		Similarly for $L^{\sigma}(\eta)$,
+		\begin{align*}
+			L^{\sigma}(\eta)	&\eq	\min_{\wy}\ \E[Y \sim \eta]{l^{\sigma}(\wy, Y)} \\
+			&\eq	\min_{\wy}\ \E[Y \sim \eta]{\frac{1}{1 + \texp{Y \wy}}} \\
+			&\eq	\min_{\wy}\ (1 - \eta) \frac{\texp{\wy}}{1 + \texp{\wy}} + \eta \frac{1}{1 + \texp{\wy}}
+		\end{align*}
+
+		Again, from the discussion in class, we can say
+		\begin{align*}
+			L^{\sigma}(\eta)	\qge	\tfunc{min}{\eta, 1 - \eta}
+		\end{align*}
+
+		We can find a prediction function such that this is an equality. The said prediction would be as follows
+		\begin{align*}
+			\wy	\eq	\begin{cases}
+				+ \infty	& \mt{if} \eta > 0.5 \\
+				- \infty	& \mt{else}
+			\end{cases}
+		\end{align*}
+
+		Since for this predictor, the said inequality is indeed an equality, we can say that the minimum predictor gives $L^{\sigma}(\eta) = \tfunc{min}{\eta, 1 - \eta}$.
+
+		Hence, we have the result
+		\begin{equation}
+			L^{0-1}(\eta) = L^{\sigma}(\eta) = \tfunc{min}{\eta, 1 - \eta}
+			\label{eq:q1-p1}
+		\end{equation}
+
+	\end{qpart}
+
+	\begin{qpart}{2}
+
+		From the previous part, we have
+		\begin{align*}
+			L^{0-1}(\wy, \eta)	&\eq	(1 - \eta)\ \is{\wy = 1} + \eta\ \is{\wy = -1} \\
+			L^{0-1}(\eta)		&\eq	\tfunc{min}{\eta, 1 - \eta}
+		\end{align*}
+
+		Therefore, there are four cases for $L^{0-1}(\wy, \eta) - L^{0-1}(\eta)$, namely
+		\begin{align*}
+			L^{0-1}(\wy, \eta) - L^{0-1}(\eta)	\eq	\begin{cases}
+				\ 1 - 2 \eta	& \mt{if} \eta \le 0.5, \wy = +1 \\
+				\ 0				& \mt{if} \eta \le 0.5, \wy = -1 \\
+				\ 0				& \mt{if} \eta  >  0.5, \wy = +1 \\
+				\ 2 \eta - 1	& \mt{if} \eta  >  0.5, \wy = -1 \\
+			\end{cases}
+		\end{align*}
+
+		From this, we can directly represent this in the form given in the question, \ie
+		\begin{align*}
+			L^{0-1}(\wy, \eta) - L^{0-1}(\eta)	\eq	\abs{2 \eta - 1} \cdot \is{\wy \para{2 \eta - 1} < 0}
+		\end{align*}
+
+	\end{qpart}
+
+	\begin{qpart}{3}
+
+		From Part 1, we know
+		\begin{align*}
+			L^{0-1}(\sgn(\wy), \eta)	&\eq	(1 - \eta)\ \is{\sgn(\wy) = +1} + \eta\ \is{\sgn(\wy) = -1} \\
+			&\eq	(1 - \eta)\ \is{\wy \ge 0} + \eta\ \is{\wy < 0}
+		\end{align*}
+
+		Now, consider the term $2L^{\sigma}(\wy, \eta) - L^{0-1}(\sgn(\wy), \eta)$.
+		\begin{align*}
+			2L^{\sigma}(\wy, \eta) - L^{0-1}(\sgn(\wy), \eta)	\eq	(1 - \eta) \brac{\frac{2 \texp{\wy}}{1 + \texp{\wy}} - \is{\wy \ge 0}} + \eta \brac{\frac{2}{1 + \texp{\wy}} - \is{\wy < 0}} \\
+		\end{align*}
+
+		Since for $x \ge 0$, $\frac{2 \texp{x}}{1 + \texp{x}} \ge 1$, we have $\frac{2 \texp{\wy}}{1 + \texp{\wy}} - \is{\wy \ge 0} \ge 0$. Similary, if $x < 0$, $\frac{2}{1 + \texp{x}} > 1$. Therefore, we also have $\frac{2}{1 + \texp{\wy}} - \is{\wy < 0} \ge 0$.
+
+		Hence, from Equation \ref{eq:q1-inequality}, we can say
+		\begin{align*}
+			2L^{\sigma}(\wy, \eta) - L^{0-1}(\sgn(\wy), \eta)	&\qge	\brac{\frac{2 \texp{\wy} + 2}{1 + \texp{\wy}} - \is{\wy \ge 0} - \is{\wy < 0}} \cdot \tfunc{min}{\eta, 1 - \eta} \\
+			&\eq	\tfunc{min}{\eta, 1 - \eta} \\
+			&\eq	2 L^{\sigma}(\eta) - L^{0-1}(\eta)
+		\end{align*}
+
+		The last equality comes from Equation \ref{eq:q1-p1}. Therefore, we have the desired result, that is
+		\begin{equation}
+			L^{0-1}(\sgn(\wy), \eta) - L^{0-1}(\eta)	\qle	2 \para{L^{\sigma}(\wy, \eta) - L^{\sigma}(\eta)}
+			\label{eq:q1-p3}
+		\end{equation}
+
+	\end{qpart}
+
+	\begin{qpart}{4}
+
+		From part 3, equation \ref{eq:q1-p3}, we have the following result
+		\begin{align*}
+			L^{0-1}(\sgn(\wy), \eta) - L^{0-1}(\eta)	\qle	2 \para{L^{\sigma}(\wy, \eta) - L^{\sigma}(\eta)}
+		\end{align*}
+
+		Suppose for some $f : \cX \ra \bR$, we have $\wy = f(\vx)$. Therefore, we can write
+		\begin{align*}
+			L^{0-1}(\sgn(f(\vx)), \eta) - L^{0-1}(\eta)	\qle	2 \para{L^{\sigma}(f(\vx), \eta) - L^{\sigma}(\eta)}
+		\end{align*}
+
+		Since this inequality exists for all $\vx \in \cX$, we can take expectation on both sides over $\vX \sim \cD$ without disturbing the inequality. Therefore
+		\begin{align*}
+			\E[\vX \sim \cD]{L^{0-1}(\sgn(f(\vX)), \eta) - L^{0-1}(\eta)}	&\qle	\E[\vX \sim \cD]{2 \para{L^{\sigma}(f(\vX), \eta) - L^{\sigma}(\eta)}}
+		\end{align*}
+
+		Since both LHS and RHS are regret terms, we can replace them as follows,
+		\begin{equation}
+			\implies \rgrt[_\cD^{0-1}]{\text{sign} \circ f}					&\qle	2 \rgrt[_\cD^\sigma]{f}
+			\label{eq:q1-p4}
+		\end{equation}
+
+		Hence, we have shown the inequality required.
+
+	\end{qpart}
+
+	\begin{qpart}{5}
+
+		We have
+		\begin{align*}
+			l_\alpha^\sigma	\eq	\frac{1}{1 + \texp{\alpha \cdot \wy y}}	\hspace{2cm} l^\sigma \eq \frac{1}{1 + \texp{\wy y}}
+		\end{align*}
+
+		Therefore, we can write $l_\alpha^\sigma(\wy, y)$ as
+		\begin{align*}
+			l_\alpha^\sigma(\wy, y)	&\eq	l^\sigma(\alpha \cdot \wy, y)
+		\end{align*}
+
+		Therefore, we have
+		\begin{align*}
+			L_\alpha^\sigma(\wy, \eta)	&\eq	L^\sigma(\alpha \cdot \wy, \eta)
+		\end{align*}
+
+		Now, borrowing the results from part 1, we can write
+		\begin{align*}
+			L_\alpha^\sigma(\wy, \eta)	&\eq	L^\sigma(\alpha \cdot \wy, \eta)	\qge	\min\set{\eta, 1 - \eta}
+		\end{align*}
+
+		\note{We can write this as the RHS is independent of the value of $\vy$ and therefore always holds}
+
+		We can use the same predictor as we used in part 1 to show that there is in fact an optimal predictor which gives the lowest pointwise error ($\min\set{\eta, 1 - \eta}$). The optimal predictor being
+		\begin{align*}
+			\wy	\eq	\begin{cases}
+				+ \infty	& \mt{if} \eta > 0.5 \\
+				- \infty	& \mt{else}
+			\end{cases}
+		\end{align*}
+
+		Hence, we have
+		\begin{align*}
+			L_\alpha^\sigma(\eta)	\eq	\min\set{\eta, 1 - \eta}	\eq	L^\sigma(\eta)
+		\end{align*}
+
+		From equation \ref{eq:q1-p4}, we have
+		\begin{align*}
+			\E[\vX \sim \cD]{L^{0-1}(\sgn(f(\vX)), \eta) - L^{0-1}(\eta)}	&\qle	2 \E[\vX \sim \cD]{L^{\sigma}(f(\vX), \eta) - L^{\sigma}(\eta)} \\
+			\implies \E[\vX \sim \cD]{L^{0-1}(\sgn(f(\vX)), \eta) - L^{0-1}(\eta)}	&\qle	2 \E[\vX \sim \cD]{L^{\sigma}(f(\vX), \eta) - L_\alpha^{\sigma}(\eta)}
+		\end{align*}
+
+		Suppose we have some $g : \cX \ra \infty$ such that $f(\vx) = \alpha \cdot g(\vx)$. Clearly, such a $g$ will exist for all $f$. Therefore, we can replace $f$ by $\alpha \cdot g$ as follows,
+		\begin{align*}
+			\E[\vX \sim \cD]{L^{0-1}(\sgn(\alpha \cdot g(\vX)), \eta) - L^{0-1}(\eta)}	&\qle	2 \E[\vX \sim \cD]{L^{\sigma}(\alpha \cdot g(\vX), \eta) - L_\alpha^{\sigma}(\eta)}
+		\end{align*}
+
+		Also, since $\alpha > 0$, we have $\sgn{\alpha \cdot g(\vx)} = \sgn{g(\vx)}$, and $L^\sigma(\alpha \cdot g(\vx), \eta) = L_\alpha^\sigma(g(\vx), \eta)$ for all $\vx \in \cX$. Hence, we can write this as
+		\begin{align*}
+			\E[\vX \sim \cD]{L^{0-1}(\sgn(g(\vX)), \eta) - L^{0-1}(\eta)}	&\qle	2 \E[\vX \sim \cD]{L_\alpha^{\sigma}(g(\vX), \eta) - L_\alpha^{\sigma}(\eta)} \\
+			\implies \rgrt[_\cD^{0-1}]{\text{sign} \circ g}	&\qle	2 \rgrt[_\cD^{\sigma, \alpha}]{g}
+		\end{align*}
+
+		Therefore, we have the exact same regret transfer bound for $l_\alpha^\sigma$ as for $l^\sigma$ with respect to $l^{0-1}$.
+
+	\end{qpart}
+
+\end{question}
+
+\end{document}
