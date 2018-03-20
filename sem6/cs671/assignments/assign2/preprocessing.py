@@ -38,7 +38,6 @@ def extract_word2vec_vectors(vocab):
                 ) + "\n"
             )
 
-    wv_model.close()
     word2vec_filtered_file.close()
 
     print "Done"
@@ -49,9 +48,6 @@ def download_stopwords():
 
 
 def collect_data(dir):
-    data = list()
-    labels = list()
-
     for label in ["neg", "pos"]:
         files_list = os.listdir(dir + label + "/")
 
@@ -66,8 +62,21 @@ def collect_data(dir):
 def main():
     download_stopwords()
 
-    extract_glove_vectors()
-    extract_word2vec_vectors()
+    vocab = dict()
+
+    with open("data/imdb.vocab", "r") as f:
+        words = [line.strip() for line in f.read().split("\n")]
+
+    id = 0
+    stop_words = set(nltk.corpus.stopwords.words("english"))
+    for word in words:
+        word = word.lower()
+        if word not in stop_words:
+            vocab[word] = id
+            id += 1
+
+    extract_glove_vectors(vocab)
+    extract_word2vec_vectors(vocab)
 
     collect_data("data/train/")
     collect_data("data/test/")
