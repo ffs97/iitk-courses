@@ -34,7 +34,7 @@ def extract_word2vec_vectors(vocab):
         if word in vocab:
             word2vec_filtered_file.write(
                 word + " " + " ".join(
-                    [str(field) for field in wv_model.vw[word]]
+                    [str(field) for field in wv_model.wv[word]]
                 ) + "\n"
             )
 
