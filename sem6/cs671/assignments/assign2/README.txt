@@ -137,7 +137,7 @@ If running for the first time, download the IMDB dataset into a data folder  and
 download the glove-vectors as well as word2vec vectors	into  the  data  folder.
 Then run the preprocessing file as follows
 
-	$ python preprocessing
+	$ python preprocessing.py
 
 I have also added the pre-trained filtered word-vectors here:
 
