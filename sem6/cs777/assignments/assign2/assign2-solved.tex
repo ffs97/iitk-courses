@@ -33,28 +33,23 @@
 			&\qge	\tfunc{min}{\eta, 1 - \eta}
 		\end{align*}
 
-		The last inequality is from the discussion in class. However, for an algorithm that predicts $\wy$ as follows,
+		The last inequality is from Equation \ref{eq:q1-inequality}. However, for an algorithm that predicts $\wy$ as follows,
 		\begin{align*}
 			\wy	\eq	\begin{cases}
 				+1	& \mt{if} \eta > 0.5 \\
 				-1	& \mt{else}
 			\end{cases}
 		\end{align*}
-		the equality is satisfied, that is $L^{0-1}(\eta) = \tfunc{min}{\eta, 1 - \eta}$.
+		the equality is satisfied. Therefore, we have a predictor that gives an error $\func{\min}{\eta, 1 - \eta}$, \ie $L^{0-1}(\eta) = \tfunc{min}{\eta, 1 - \eta}$.
 
 		Similarly for $L^{\sigma}(\eta)$,
 		\begin{align*}
 			L^{\sigma}(\eta)	&\eq	\min_{\wy}\ \E[Y \sim \eta]{l^{\sigma}(\wy, Y)} \\
 			&\eq	\min_{\wy}\ \E[Y \sim \eta]{\frac{1}{1 + \texp{Y \wy}}} \\
 			&\eq	\min_{\wy}\ (1 - \eta) \frac{\texp{\wy}}{1 + \texp{\wy}} + \eta \frac{1}{1 + \texp{\wy}}
+			&\qge	\tfunc{min}{\eta, 1 - \eta}
 		\end{align*}
-
-		Again, from the discussion in class, we can say
-		\begin{align*}
-			L^{\sigma}(\eta)	\qge	\tfunc{min}{\eta, 1 - \eta}
-		\end{align*}
-
-		We can find a prediction function such that this is an equality. The said prediction would be as follows
+		Again, the last inequality is from Equation \ref{eq:q1-inequality}. We can find a prediction function such that this is becomes an equality. The said prediction would be as follows
 		\begin{align*}
 			\wy	\eq	\begin{cases}
 				+ \infty	& \mt{if} \eta > 0.5 \\
@@ -80,7 +75,7 @@
 			L^{0-1}(\eta)		&\eq	\tfunc{min}{\eta, 1 - \eta}
 		\end{align*}
 
-		Therefore, there are four cases for $L^{0-1}(\wy, \eta) - L^{0-1}(\eta)$, namely
+		Therefore, there are four cases for $L^{0-1}(\wy, \eta) - L^{0-1}(\eta)$,
 		\begin{align*}
 			L^{0-1}(\wy, \eta) - L^{0-1}(\eta)	\eq	\begin{cases}
 				\ 1 - 2 \eta	& \mt{if} \eta \le 0.5, \wy = +1 \\
@@ -158,7 +153,7 @@
 
 		We have
 		\begin{align*}
-			l_\alpha^\sigma	\eq	\frac{1}{1 + \texp{\alpha \cdot \wy y}}	\hspace{2cm} l^\sigma \eq \frac{1}{1 + \texp{\wy y}}
+			l_\alpha^\sigma	\eq	\frac{1}{1 + \texp{\alpha \cdot \wy y}}	\hspace{7mm} \text{and} \hspace{7mm} l^\sigma \eq \frac{1}{1 + \texp{\wy y}}
 		\end{align*}
 
 		Therefore, we can write $l_\alpha^\sigma(\wy, y)$ as
@@ -176,9 +171,11 @@
 			L_\alpha^\sigma(\wy, \eta)	&\eq	L^\sigma(\alpha \cdot \wy, \eta)	\qge	\min\set{\eta, 1 - \eta}
 		\end{align*}
 
-		\note{We can write this as the RHS is independent of the value of $\vy$ and therefore always holds}
+		\begin{note}
+			We can write this as the RHS is independent of the value of $\wy$ and therefore always holds.
+		\end{note}
 
-		We can use the same predictor as we used in part 1 to show that there is in fact an optimal predictor which gives the lowest pointwise error ($\min\set{\eta, 1 - \eta}$). The optimal predictor being
+		We can use the same predictor as we used in part 1 (since $\alpha > 0$) to show that there is in fact an optimal predictor which gives the lowest possible error ($\min\set{\eta, 1 - \eta}$). The optimal predictor being
 		\begin{align*}
 			\wy	\eq	\begin{cases}
 				+ \infty	& \mt{if} \eta > 0.5 \\
@@ -191,7 +188,7 @@
 			L_\alpha^\sigma(\eta)	\eq	\min\set{\eta, 1 - \eta}	\eq	L^\sigma(\eta)
 		\end{align*}
 
-		From equation \ref{eq:q1-p4}, we have
+		Now, from equation \ref{eq:q1-p4}, we have
 		\begin{align*}
 			\E[\vX \sim \cD]{L^{0-1}(\sgn(f(\vX)), \eta) - L^{0-1}(\eta)}	&\qle	2 \E[\vX \sim \cD]{L^{\sigma}(f(\vX), \eta) - L^{\sigma}(\eta)} \\
 			\implies \E[\vX \sim \cD]{L^{0-1}(\sgn(f(\vX)), \eta) - L^{0-1}(\eta)}	&\qle	2 \E[\vX \sim \cD]{L^{\sigma}(f(\vX), \eta) - L_\alpha^{\sigma}(\eta)}
@@ -212,6 +209,326 @@
 
 	\end{qpart}
 
+\end{question}
+
+\begin{question}
+
+	The hypothesis class we are working with is $\cV = \set{v \ge 0}$. Each $v \in \cV$ splits the set of people (expenditures) into two classes.
+
+	We first define $g: \cI^n \ra \bR$ as follows
+	\begin{align*}
+		g(\cS)	\eq	\sup_{v \in \cV}\ \frac{1}{n} \cdot \abs{\set{i \in \cS : E(i) \le v}} - \frac{1}{N} \cdot \abs{\set{i \in \cI : E(i) \le v}}
+	\end{align*}
+
+	It is clear that the desired quantity $\abs{\frac{1}{N} \cdot \abs{\set{i \in \cI : E(i) \le \hat{v}_\cS^\kappa}} - \kappa}$ is upper bounded by $g(\cS)$. Therefore, it is sufficient to upper bound (with high probability) $g(\cS)$ in order to get the derired concentration bound.
+
+	\begin{claim}
+		$g(\cS)$ is c-stable
+
+		\begin{proof}
+
+			Define $\cS_i = \cS \setminus \set{I_i} \bigcup \set{I'_i}$. Then, we want to prove $g(\cS) - g(\cS_i)$. Suppose we define $g_{v} : \cI^n \ra \bR$ as follows
+			\begin{align*}
+				g_v(\cS)	\eq	\abs{\frac{1}{n} \cdot \abs{\set{i \in \cS : E(i) \le v}} - \frac{1}{N} \cdot \abs{\set{i \in \cI : E(i) \le v}}}
+			\end{align*}
+
+			Then, we can write
+			\begin{align*}
+				\abs{g_v(\cS) - g_v(\cS_i)}	&\eq	\bigg| \abs{\frac{1}{n} \cdot \abs{\set{j \in \cS : E(j) \le v}} - \frac{1}{N} \cdot \abs{\set{j \in \cI : E(j) \le v}}}\ -\ \dots \\
+				& \hspace{3cm} \dots\ -\ \abs{\frac{1}{n} \cdot \abs{\set{j \in \cS_i : E(j) \le v}} - \frac{1}{N} \cdot \abs{\set{j \in \cI : E(j) \le v}}} \bigg| \\
+				&\qle	\abs{\frac{1}{n} \cdot \abs{\set{j \in \cS : E(j) \le v}} - \frac{1}{n} \cdot \abs{\set{j \in \cS_i: E(j) \le v}}} \\
+				&\eq	\abs{\frac{1}{n} \para{\is{E(I_i) \le v} - \is{E(I'_i) \le v}}}
+			\end{align*}
+			\begin{equation}
+				\implies \abs{g_v(\cS) - g_v(\cS_i)}	&\qle	\frac{1}{n}
+				\label{eq:q2-fcstable}
+			\end{equation}
+
+			Now, without loss of generality, assume $g(\cS) = g_{f_1}(\cS)$ and $g(\cS_i) = g_{f_2}(\cS_i)$. Hence, we can write
+			\begin{align*}
+				g(\cS) - g(\cS_i)	&\eq	g_{f_1}(\cS) - g_{f_2}(\cS_i) \\
+				&\eq	\underbrace{\para{g_{f_1}(\cS) - g_{f_1}(\cS_i)}}_{(1)} + \underbrace{\para{g_{f_1}(\cS_i) - g_{f_2}(\cS_i)}}_{(2)}
+			\end{align*}
+			The (1) term in the above expression is less than equal to $1 / n$ (using Equation \ref{eq:q2-fcstable}), and the (2) term is non-positive, since $g_f(\cS)$ is maximum at $f = f_2$. Also, the same inequalities will hold if we consider $g(\cS_i) - g(\cS)$. Therefore, we can write
+			\begin{equation}
+				\abs{g(\cS) - g(\cS_i)}	\qle	\frac{1}{n}
+				\label{eq:q2-cstable}
+			\end{equation}
+
+		\end{proof}
+	\end{claim}
+
+	Since the function $g(\cS)$ is $1 / n$-stable, we can use McDiarmid's inequality to write
+	\begin{equation}
+		\prob{g(\cS) > \E[\cS \sim \cD^n]{g(\cS)} + \eps}	\qle	\texp{- 2 n \eps^2}
+		\label{eq:q2-mcdiarmid}
+	\end{equation}
+
+	We now wish to bound $\E[\cS \sim \cD^n]{g(\cS)}$. If we rewrite $g(\cS)$ as follows
+	\begin{align*}
+		g(\cS)	\eq	\sup_{v \in \cV}\ \abs{\frac{1}{n} \sum_{i = 1}^N f_v(i) - \E[i]{f(i)}}
+	\end{align*}
+	where
+	\begin{align*}
+		f_v(i)	\eq	\is{E(i) \le v}
+	\end{align*}
+	then we can make use of Symmetrization (as discussed in class), and therefore find an upper bound on $\E{g(\cS)}$ (using Rademacher Variables). Hence, we have
+	\begin{equation}
+		\E[\cS \sim \cD^n]{g(\cS)}	\qle	2 R_n(\cF)
+		\label{eq:q2-rademacher}
+	\end{equation}
+	where $\cF = \set{f_v}_{v \in \cV}$ is our transformed function class. Although the size of this function class is infinite, we can still work with class as the VC dimension of this class is 2. This comes from the discussion in class on the simple binary classification problem with a random variable splitting the real line into two parts, which is exactly what the function class $\cF$ is achieving, although the labelling, in this case is $\set{0, 1}$ instead of $\set{1, -1}$.
+
+	Therefore, for a sample ($\cS$) of size $n$, we can easily find the size of the $\cS$-restriction of $\cF$ to be equal to $n + 1$. Also, the maximum norm is $c \le \sqrt{n}$. Hence, we can apply Massarts Finite Class Lemma to get
+	\begin{align*}
+		R_n(\cF)	&\qle	\frac{c \sqrt{2 \log{\abs{\cF|_\cS}}}}{n} \\
+		&\eq	\sqrt{\frac{2 \log{n + 1}}{n}}
+	\end{align*}
+
+	Therefore, using Equations \ref{eq:q2-mcdiarmid} and \ref{eq:q2-rademacher}, we have
+	\begin{align*}
+		\prob{g(\cS) > 2 \sqrt{\frac{2 \log{n + 1}}{n}} + \eps}	\qle	\texp{- 2 n \eps^2}
+	\end{align*}
+
+	Since $g_{\hat{v}_\cS^\kappa}(\cS) < g(\cS)$, we can say
+	\begin{align*}
+		\prob{\abs{\frac{1}{n} \cdot \abs{\set{i \in \cS : E(i) \le \hat{v}_{\cS}^\kappa}} - \frac{1}{N} \cdot \abs{\set{i \in \cI : E(i) \le \hat{v}_{\cS}^\kappa}}} > 2 \sqrt{\frac{2 \log{n + 1}}{n}} + \eps}	\qle	\texp{- 2 n \eps^2}
+	\end{align*}
+
+	Since the first term within the expression to bound is equal to $\kappa$ (by the design of the Algorithm), we have the desired bound
+	\answer{
+		\begin{align*}
+			\prob{\abs{\frac{1}{N} \cdot \abs{\set{i \in \cI : E(i) \le \hat{v}_{\cS}^\kappa}} - \kappa} > 2 \sqrt{\frac{2 \log{n + 1}}{n}} + \eps}	\qle	\texp{- 2 n \eps^2}
+		\end{align*}
+	}
+	\begin{tightcenter}
+		or alternatively
+	\end{tightcenter}
+	\answer{
+		\begin{align*}
+			\qforall \delta \in \para{0, 1}, \quad \prob{\abs{\frac{1}{N} \cdot \abs{\set{i \in \cI : E(i) \le \hat{v}_{\cS}^\kappa}} - \kappa} > 2 \sqrt{\frac{2 \log{n + 1}}{n}} + \sqrt{\frac{\log{1 / \delta}}{2 n}}}	\qle	\delta
+		\end{align*}
+	}
+
+\end{question}
+
+\begin{question}
+
+	\def\fair{\text{FAIR}(f)}
+	\def\fairs{\overline{\text{FAIR}}(f, \cS)}
+	\def\fairsn{\overline{\text{FAIR}}(f, \cS_n)}
+
+	It can help to rewrite the FAIR(.) using the following observation
+	\begin{align*}
+		\E[X, Y \sim \cD]{l(f(X), Y) \pipe X \in \cX}	&\eq	\sum_{\cD} l(f(X), Y) \cdot \prob{X, Y \pipe X \in \cX} \\
+		&\eq	\sum_{\cD} l(f(X), Y) \cdot \frac{\prob{X \in \cX \pipe X, Y} \prob{X, Y}}{\sum_{\cD} \prob{X \in \cX \pipe X, Y} \prob{X, Y}} \\
+		&\eq	\sum_{\cD} l(f(X), Y) \cdot \frac{\prob{X \in \cX \pipe X, Y} \prob{X, Y}}{\prob{X \in \cX}}
+	\end{align*}
+
+	\begin{note}
+		The summation in the above expressions could be an integral if $\cD$ is continuous, however it would only bring about notational changes, and no difference to the analysis.
+	\end{note}
+
+	The first equality is from the definition of expectation and the second equality is from rewriting the probability using Bayes Rule. Now given $X$, the probability of $X \in \cX$ is simply equal to $\is{X \in \cX}$. Hence, we can rewrite this as
+	\begin{align*}
+		\E[X, Y \sim \cD]{l(f(X), Y) \pipe X \in \cX}	&\eq	\sum_{\cD} l(f(X), Y) \cdot \is{X \in \cX} \cdot \frac{\prob{X, Y}}{\prob{X \in \cX}} \\
+		&\eq	\frac{1}{\prob{X \in \cX}} \cdot \E[X, Y \sim \cD]{l(f(X), Y) \cdot \is{X \in \cX}}
+	\end{align*}
+
+	\begin{note}
+		The denominator is an integral/summation over the complete distribution, and is therefore independent of the expectation. Hence, we can bring it out of the expectation.
+	\end{note}
+
+	Now substituting this in the FAIR(.) expression, we get
+	\begin{align*}
+		\fair	&\eq	\bigg| \frac{1}{\prob{X \in \cX_1}} \cdot \E[X, Y \sim \cD]{l(f(X), Y) \cdot \is{X \in \cX_1}}\ -\ \dots \\
+		& \hspace{4cm} \dots\ -\ \frac{1}{\prob{X \in \cX_2}} \cdot \E[X, Y \sim \cD]{l(f(X), Y) \cdot \is{X \in \cX_2}} \bigg|
+	\end{align*}
+
+	Since $\prob{X \in \cX_1} = 1 / 2 = \prob{X \in \cX_2}$, we can rewrite this as
+	\begin{equation}
+		\fair &\eq	2 \abs{\E[X, Y \sim \cD]{l(f(X), Y) \para{\is{X \in \cX_1} - \is{X \in \cX_2}}}}
+	\end{equation}
+
+	Suppose we ignore the constant 2 and the absolute function in the above expression, and temporarily redefine the notion of fairness as below
+	\begin{align*}
+		\fair &\eq	\E[X, Y \sim \cD]{l(f(X), Y) \para{\is{X \in \cX_1} - \is{X \in \cX_2}}}
+	\end{align*}
+
+	Now, we propose an estimator for this redifed notion of fairness, with respect to a function $f$, as follows
+	\begin{equation}
+		\fairs	&\eq	\frac{1}{N} \sum_{X, Y \in \cS} l(f(X), Y) \para{\is{X \in \cX_1} - \is{X \in \cX_2}}
+	\end{equation}
+	where $\cS$ is sample of size $N$, such that $\cS \sim \cD^{N}$
+
+	However, we need to show that this indeed is a good estimator for the notion of fairness we have defined. To see this, suppose we define $g_f(.)$ as follows
+	\begin{align*}
+		g_f(\cS)	&\eq	\abs{\fairs - \fair}
+	\end{align*}
+	and
+	\begin{align*}
+		g(\cS)	&\eq	\sup_{f \in \cF} \set{g_f(\cS)}
+	\end{align*}
+
+	\begin{claim}
+		$g(.)$ is a c-stable function
+
+		\begin{proof}
+			Suppose we have a sample $\cS = \set{\para{\vx_1, y_1}, \para{\vx_2, y_2} \dots \para{\vx_N, y_N}}$.
+
+			Define $\cS_n = \cS \setminus \set{\para{\vx_n, y_n}} \bigcup \set{\para{\vx_n', y_n'}}$, then we have
+			\begin{align*}
+				\abs{g_f(\cS) - g_f(\cS_n)}	&\eq	\abs{\abs{\fairs - \fair} - \abs{\fairsn - \fair}} \\
+				&\qle	\abs{\fairs - \fairsn} \\
+				&\eq	\frac{1}{N} \abs{l(f(\vx_n), y_n) - l(f(\vx_n'), y_n')}
+			\end{align*}
+
+			Since $l : \bR \times \cY \ra \brac{0, B}$, we have
+			\begin{equation}
+				g_f(\cS) - g_f(\cS_n)	&\qle	\frac{B}{N}
+				\label{eq:q3-fcstable}
+			\end{equation}
+
+			However, we need to bound the difference between $g(\cS)$ and $g(\cS_n)$. From the definition of $g(.)$, we have
+			\begin{align*}
+				g(\cS) - g(\cS_n)	&\eq	\sup_{f \in \cF} g_f(\cS) - \sup_{f' \in \cF} g_{f'}(\cS_n)
+			\end{align*}
+
+			Without loss of generality, we can say $g_f(\cS)$ is maximum for $f_1 \in \cF$ and $g_f(\cS_n)$ is maximum for $f_2 \in \cF$ as well. Therefore, we can say
+			\begin{align*}
+				g(\cS) - g(\cS_n)	&\eq	g_{f_1}(\cS) - g_{f_2}(\cS_n) \\
+				&\qle	\para{g_{f_1}(\cS) - g_{f_1}(\cS_n)} + \para{g_{f_1}(\cS_n) - g_{f_2}(\cS_n)}
+			\end{align*}
+
+			The second term is non-positive from the definition of $f_2$, which maximizes $g_f(\cS_n)$. The first term is smaller than $B / N$ (using Equation \ref{eq:q3-fcstable}). Hence, we have
+			\begin{align*}
+				g(\cS) - g(\cS_n)	&\qle	\frac{B}{N}
+			\end{align*}
+
+			Using symmetrization and the fact that $\cS$ and $\cS_n$ are similar, we have the above inequality for $g(\cS_n) - g(\cS)$. Therefore, we have
+			\begin{equation}
+				\abs{g(\cS) - g(\cS_n)}	&\qle	\frac{B}{N}
+				\label{eq:q3-cstable}
+			\end{equation}
+		\end{proof}
+	\end{claim}
+
+	Since we have the fact that $g(\cS)$ is $B / N$-stable, we can use McDiarmid's Inequality to say
+	\begin{equation}
+		\mt{if} N > - \frac{B^2}{2 \eps^2} \log{\delta}, \hspace{1cm} \prob{g(\cS) - \E[\cS]{g(\cS)} > \eps}	&\qle	\delta
+		\label{eq:q3-mcdiarmid}
+	\end{equation}
+	where $N = \abs{\cS}$
+
+	\begin{note}
+		We do not have $\delta / 2$ in the expression for the lower bound on the sample size simply because we are only considering right tail, and not the let tail at this time.
+	\end{note}
+
+	From the definition of $g(.)$, we have for a given training sample $\cS \sim \cD^{N}$, for all functions $f \in \cF$,
+	\begin{align*}
+		g_f(\cS)	\eq	\abs{\fairs - \fair}	\qle	g(\cS)
+	\end{align*}
+
+	Therefore, this also holds for $\hat{f}_{\cS'}$ for some sample $S' \sim \cD^{M}$, where $M \in \bN$. This suggests that the inequality we derived in Equation \ref{eq:q3-cstable} can be used to solve our original problem, \ie estimating $\text{FAIR}(f_{\cS})$.
+
+	However, we also need to bound the value of $\E{g(\cS)}$, in order to bound the estimate of fairness we have derived.
+	\begin{align*}
+		\E[\cS \sim \cD^N]{g(\cS)}	&\eq	\E[\cS \sim \cD^N]{\sup_{f \in \cF} \set{\fairs - \fair}}
+	\end{align*}
+
+	From the discussion in class (Symmetrization and Rademacher Complexity), we know that the above expectation will be lesser than 2 times the Rademacher Complexity of the Function Class transformed by the loss function. More formally,
+	\begin{equation}
+		\E{g(\cS)}	&\qle	2 \func{R_N}{l^d \circ \cF}
+		\label{eq:q3-expectation-bound}
+	\end{equation}
+	where
+	\begin{align*}
+		l^d(X, f(X), Y)	&\eq	l(f(X), Y) \para{\is{X \in \cX_1} - \is{X \in \cX_2}}
+	\end{align*}
+
+	Therefore, it suffices to bound the Rademacher complexity $\para{\func{R_N}{l^d \circ \cF}}$ for our problem.
+
+	\begin{claim}
+		$R_N(l^d \circ \cF) = R_N(l \circ \cF)$
+
+		\begin{proof}
+
+			\begin{align*}
+				R_N(l^d \circ \cF)	&\eq	\E[\eps_n, \vx_n, y_n]{\sup_{f \in \cF} \sum_{n = 1}^N \eps_i \cdot l^d(\vx_n, f(\vx_n), y_n)} \\
+				&\eq	\E[\eps_n, \vx_n, y_n]{\sup_{f \in \cF} \sum_{n = 1}^N \eps_i \cdot l(f(\vx_n), y_n) \para{\is{\vx_n \in \cX_1} - \is{\vx_n \in \cX_2}}}
+			\end{align*}
+
+			Suppose we separate the samples $\set{\vx_n, y_n}_{n = 1}^N$ into two sets $\cS^{+}$ and $\cS^{-}$ such that for all $i \in \cS^{+}$, $\is{\vx_i \in \cX_1} = 1$, and for all $j \in \cS^{-}$, $\is{\vx_j \in \cX_2} = 1$. Then, we can write
+			\begin{align*}
+				R_N(l^d \circ \cF)	&\eq	\E[\eps_n, \vx_n, y_n]{\sup_{f \in \cF} \set{\sum_{i \in \cS^{+}} \eps_i \cdot l(f(\vx_i), y_i) + \sum_{j \in \cS^{-}} (- \eps_j) \cdot l(f(\vx_j), y_j)}}
+			\end{align*}
+			Since $- \eps_j$ is also a Rademacher variable (discussed in class), we can alternatively write this as
+			\begin{align*}
+				R_N(l^d \circ \cF)	&\eq	\E[\eps'_n, \vx_n, y_n]{\sup_{f \in \cF} \sum_{n = 1}^N \eps'_n \cdot l(f(\vx_n), y_n)}
+			\end{align*}
+
+			The RHS is exactly the expression for $R_N(l \circ \cF)$. Hence
+			\begin{equation}
+				R_N(l^d \circ \cF) = R_N(l \circ \cF)
+				\label{eq:q3-rademacher}
+			\end{equation}
+
+		\end{proof}
+	\end{claim}
+
+	Also, since we know that the loss function $l(n)$ is $L$-Lipschitz, using Ledoux-Talagrand Contraction Inequality, we can write
+	\begin{equation}
+		R_N(l \circ \cF)	\qle	L \cdot R_N(\cF)
+		\label{eq:q3-ltci}
+	\end{equation}
+
+	Now, using Equations \ref{eq:q3-mcdiarmid}, \ref{eq:q3-expectation-bound}, \ref{eq:q3-rademacher} and \ref{eq:q3-ltci}, we can write
+	\begin{align*}
+		\E{g(\cS)}	\qle	2 \cdot \func{R_N}{l^d \circ \cF}	\eq	2 \cdot \func{R_N}{\cF}	\qle	2L \cdot \func{R_N}{\cF}
+	\end{align*}
+
+	Therefore, we can say
+	\begin{align*}
+		\mt{if} N > - \frac{B^2}{2 \eps^2} \log{\delta}, \hspace{1cm} \prob{g(\cS) > 2L \cdot \func{R_N}{\cF} + \eps}	\qle	\delta
+	\end{align*}
+
+	Also, from the definition of $g(.)$, we have for any function $f \in \cF$, $g_f(\cS) \le g(\cS)$. Therefore, we can further substitute the above equation to say
+	\begin{equation}
+		\mt{if} N > - \frac{B^2}{2 \eps^2} \log{\delta}, \hspace{1cm} \qforall f \in \cF, \quad \prob{g_f(\cS) > 2L \cdot \func{R_N}{\cF} + \eps}	\qle	\delta
+	\end{equation}
+
+	Since the above bound holds for all $f \in \cF$, we can put $f = \hat{f}_{\cS'}$ for some training sample $\cS' \sim \cD^M$. Substituting the expression of $g_f(\cS)$, we finally have
+	\begin{align*}
+		\mt{if} N > - \frac{B^2}{2 \eps^2} \log{\delta}, \hspace{1cm} \prob{\abs{\overline{\text{FAIR}}\para{\hat{f}_{\cS'}, \cS} - \text{FAIR}\para{\hat{f}_{\cS'}}} > 2L \cdot \func{R_N}{\cF} + \eps}	\qle	\delta
+	\end{align*}
+
+	Since $\abs{x - y} > \abs{\abs{x} - \abs{y}}$, we further have
+	\begin{equation}
+		\mt{if} N > - \frac{B^2}{2 \eps^2} \log{\delta}, \hspace{5mm} \prob{\abs{\abs{\overline{\text{FAIR}}\para{\hat{f}_{\cS'}, \cS}} - \abs{\text{FAIR}\para{\hat{f}_{\cS'}}}} > 2L \cdot \func{R_N}{\cF} + \eps}	\qle	\delta
+		\label{eq:q3-final-bound}
+	\end{equation}
+
+	The above bound suggests that $\fairs$ is, in fact, a good estimate for the desired quantity $\fair$. Also, it is possible to estimate $\text{FAIR}\para{\hat{f}_{\cS'}}$ using $\cS'$ itself, simply by setting $\cS = \cS'$.
+
+	Now, we can bring back the constant 2 and the absolute function we claimed to ignore earlier. However, this will not change the analysis as there is already and abolute over both the estimator and the actual assumed measure of fairness in Equation \ref{eq:q3-final-bound}. Therefore, to conclude, the proposed estimator for $\text{FAIR}\para{\hat{f}_\cS}$ is given as
+	\begin{align*}
+		\overline{\text{FAIR}}\para{\hat{f}_\cS, \cS}	\eq	\abs{\frac{2}{N} \sum_{X, Y \in \cS} l(\hat{f}_{\cS}(X), Y) \para{\is{X \in \cX_1} - \is{X \in \cX_2}}}
+	\end{align*}
+
+	The above estimator enjoys the concentration bound given in Equation \ref{eq:q3-final-bound}, as shown earlier. Also, if the function class $\cF$ has a small Rademacher Complexity (condition satisfied in the question), then we can claim that the estimator is indeed a good approximation of the measure of fairness, as defined in the question. We can finally say, for small Rademacher Complexity of $\cF$, we have
+	\answer{
+		\begin{align*}
+			\prob{\abs{\overline{\text{FAIR}}\para{\hat{f}_{\cS'}, \cS} - \text{FAIR}\para{\hat{f}_{\cS'}}} > 4L \cdot \func{R_N}{\cF} + \eps}	\qle	\texp{- \frac{N \eps^2}{2 B^2}}
+		\end{align*}
+	}
+	\begin{tightcenter}
+		or alternatively
+	\end{tightcenter}
+	\answer{
+		\begin{align*}
+			\qforall \delta \in \para{0, 1}, \quad \prob{\abs{\overline{\text{FAIR}}\para{\hat{f}_{\cS'}, \cS} - \text{FAIR}\para{\hat{f}_{\cS'}}} > 4L \cdot \func{R_N}{\cF} + B \sqrt{\frac{2 \log{1 / \delta}}{N}}}	\qle	\delta
+		\end{align*}
+	}
 \end{question}
 
 \end{document}

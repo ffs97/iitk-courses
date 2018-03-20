@@ -6,3 +6,6 @@
 *.gz
 *.vscode*
 *data*
+*.ipynb_checkpoint*
+*.pyc
+*.o
