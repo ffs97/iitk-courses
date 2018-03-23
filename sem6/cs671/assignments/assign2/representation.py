@@ -2,9 +2,9 @@ import numpy as np
 from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 
 
-vocab = None
-glove_vectors = None
-word2vec_vectors = None
+vocab = dict()
+glove_vectors = dict()
+word2vec_vectors = dict()
 
 vocab_size = 0
 
