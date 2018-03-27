@@ -1,0 +1,182 @@
+\documentclass{article}
+
+\usepackage{assign}
+
+\setcoursetitle{CS671: Natural Language Processing}
+\setassigncode{2}
+
+\renewcommand{\thesubsection}{\fontfamily{lmss}\selectfont \arabic{subsection}.}
+
+\begin{document}
+\makeheader
+
+\begin{qsection}{Problem Statement}
+
+	Classifying a set of  documents  to  predict  the  sentiment  of  the  document.
+
+	The task at hand is a binary classification problem on a set  of  movie  reviews provided in the Large  Movie  Review  Dataset.	 The  prediction  label  is  the positivity/negativity of the review.
+
+	The dataset has been obtained from \href{http://ai.stanford.edu/~amaas/data/sentiment/}{http://ai.stanford.edu/~amaas/data/sentiment/}
+
+\end{qsection}
+
+\begin{qsection}{Document Representation}
+
+	I tried five different document representations  for  the  classification  task:
+
+	\begin{enumerate}
+		\item Bag Of Words
+		\item Normalized Term Frequency Representation
+		\item Tf-Idf Representation
+		\item Unweighted average of Word2Vec word vectors (pretrained)
+		\item Unweighted average of GLoVE word vectors (pretrained)
+	\end{enumerate}
+
+	Instead of training, I have	obtained  pretrained  Word2Vec	vectors  from  the	GoogleNews	word2vec vectors, and pretrained GLoVE vectors from the	Common	Crawl  vectors	with 840B tokens, 2.2M vocab and 300 dimensional vectors.
+
+	For BOW, Tf-Idf and Normalized Tf, I have used default methods available in the Scikit-Learn library for python.
+
+
+\end{qsection}
+
+\begin{qsection}{Classification Algorithms}
+
+	I have implemented 5 classification  algorithms  as  suggested	in	the  problem
+	statement, namely:
+
+	\begin{enumerate}
+		\item NaiveBayes
+
+			\begin{enumerate}
+				\item For  Tf-Idf  and  Normalized-Tf   representations,	 I	 have	used Multinoulli Distribution, where as for the other representations,  I have  used	Bernoulli	Distribution   as  the	 Likelihood   Model.
+
+				\item This	is	  trained	 using	  Mini-Batch	Gradient	Descent.
+			\end{enumerate}
+
+		\item Logistic Regression
+
+			\begin{enumerate}
+				\item Performed simple Logistic regression using log-loss.
+
+				\item This	is	  trained	 using	  Mini-Batch	Gradient	Descent.
+			\end{enumerate}
+
+		\item Support Vector Machine
+
+			\begin{enumerate}
+				\item Performed	 simple    SVM	  Classification	using	 hinge-loss.
+
+				\item This	is	  trained	 using	  Mini-Batch	Gradient	Descent.
+			\end{enumerate}
+
+		\item Feedforward Neural Network
+
+			\begin{emumerate}
+			\item Performed classification using a Multi-Layer Perceptron with two
+				hidden layers of sizes 100 each, and a 'tanh' activation function.
+
+			\item This  is  trained  using  Mini-Batch  Gradient	Descent   as   well.
+			\end{emumerate}
+
+		\item Recurrent Neural Network (LSTM) (Two Variants)
+
+			\begin{enumerate}
+				\item The first variant (LSTM) uses the pre-trained word vectors, and  the
+					sequence of words is feeded into the LSTM for  classification.	 The
+					sequence size is taken to be 50.  For the second  variant  (E-LSTM),
+					the word vectors  are  feeded  into  an  Embedding	Layer,	and  the
+					Embedding Layer is set to be trainable to optimize the	word-vectors
+					in	order  to  perform	 better   for	the   classification   task.
+
+				\item The   second   variant,   as   expected   gives   better	results.
+			\end{enumerate}
+
+	\end{enumerate}
+
+	I have trained all the above classification algorithms using different	document representations, and computing the accuracy of each for the classification task.
+
+\end{qsection}
+
+
+\begin{qsection}{Accuracy Table}
+
+	For determining the accuracy of each combination, I have used  2500  entried  of
+	the test set, with the accuracy being 1 - (0-1 loss)  in  terms  of  percentage.
+	This helps us in comparing the different  classification  algorithms  and  which
+	representation suits that algorithm the best.
+
+
+	\begin{tabular}{| l | c | c | c | c | c |}
+		\hline
+		&		 &				&		&		   		&	    						\\
+		\bt{Model - Representation} 	& \bt{BoW}	& \bt{Normalized-TF} &	\bt{Tf-Idf} &  \bt{Word2Vec} & \bt{GLoVE}  \\
+		&		 &				&		&		   		&	    						\\
+		\hline
+		&		 &				&		&		   		&	    						\\
+		NaiveBayes			 	& 85.66	& 71.24			&	71.70  &   82.24   & 83.22  \\
+		&		 &				&		&				&	    						\\
+		Logistic				& 86.24 & 74.30			&	80.58  &   82.52   & 83.72  \\
+		&		 &				&		&		   		&	    						\\
+		SVM					 	& 85.62 & 68.94			&	50.88  &   82.58   & 83.88  \\
+		&		 &				&		&		   		&	    						\\
+		Feedforward NN		 	& 85.60 & 88.10			&	87.18  &   83.54   & 84.18  \\
+		&		 &				&		&				&	    						\\
+		LSTM					& ----- & -----	 		&	-----  &   77.76   & 81.80  \\
+		&		 &				&		&		   		&	    						\\
+		E-LSTM				 	& ----- & -----	 		&	-----  &   78.38   & 79.12  \\
+		&		 &				&		&		   		&	    						\\
+		\hline
+	\end{tabular}
+
+	From the table, it is evident that FeedForward Neural Network performs well  for Normalized-Tf and Tf-Idf representations, whereas BoW, GLoVE  and  Word2Vec  are well suited for all algorithms almost equally well.
+
+	For LSTM, there is lower accuracy for word2vec due to the lower overlap  between the pretrained vectors and the dataset vocabulary, and the fact that the vectors are trained for a different corpora.
+
+\end{qsection}
+
+
+\begin{qsection}{Files Description}
+
+	The main files in my assignment folder are described below:
+
+	\begin{tabular}{l | L{10cm}}
+		1. main.py				& Contains  the  main	wrapper  code  for	running  the various	 classification   algorithms  in   different combinations of the representations. \\ \hline
+		2. representation.py	& Contains the  code  for deriving  different	document representations. \\ \hline
+		3. model.py			 	& Contains  the  code	for   different   classification algorithms. \\
+	\end{tabular}
+
+\end{qsection}
+
+
+\begin{qsection}{Running the Code}
+
+	First change the directory into the assignment directory
+
+	\code{
+		cd /path/to/dir
+	}
+
+	If running for the first time, download the IMDB dataset into a data folder  and download the glove-vectors as well as word2vec vectors	into  the  data  folder.  Then run the preprocessing file as follows
+
+	\code{
+		python preprocessing.py
+	}
+
+	I have also added the pre-trained filtered word-vectors here:
+
+	\begin{tabular}{l c l}
+		GLoVE Vectors	 & : & https://cse.iitk.ac.in/users/guggu/glove.txt \\
+		Word2Vec Vectors & : & https://cse.iitk.ac.in/users/guggu/word2vec.txt
+	\end{tabular}
+
+	Now, we are ready to train and evaluate the  models.   In  order  to  start  the training, run the main.py file as follows
+
+	\code{
+		python main.py
+	}
+
+	The complete script will take ~ 4 hours to complete. The complete output will be recorded in the stdout itself.
+
+\end{qsection}
+
+\end{document}

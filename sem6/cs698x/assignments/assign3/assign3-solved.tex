@@ -1,0 +1,225 @@
+\documentclass{article}
+
+\usepackage{assign}
+
+\setcoursetitle{CS698X: Probabilistic Modelling and Inference}
+\setassigncode{3}
+\setauthname{Gurpreet Singh}
+\setauthroll{150259}
+\setheaddate{March 3, 2018}
+\setstartnewpage{TRUE}
+
+\newcommand{\cll}{\text{CLL}}
+\newcommand{\ecll}{\E{\text{CLL}}}
+
+\begin{document}
+\makeheader
+
+\begin{question}
+
+	\begin{qpart}{A}
+
+		The above prior facilitates sparse learning for the weight parameters.
+
+	\end{qpart}
+
+	\begin{qpart}{B}
+
+		\begin{qsubsection}{Posterior over Latent Variables}
+
+			We need to find the posterior over the latent variables, here $\vw$. Using Bayes rule, we know
+			\begin{align*}
+				\prob{\vw \pipe \vy, \vX, \sigma^2, \vgamma}	\qprop	\prob{\vy \pipe \vX, \vw, \sigma^2} \prob{\vw \pipe \sigma^2, \vgamma}
+			\end{align*}
+
+			Since the likelihood model and prior are both simply gaussians, we can write
+			\begin{align*}
+				\mdef{Likelihood}	\prob{\vy \pipe \vX, \vw, \sigma^2}	&\eq	\ND{\vy \pipe \vX \vw, \sigma^2 \vI_N} \\
+				\mdef{Prior}		\prob{\vw \pipe \sigma^2, \vgamma}	&\eq	\ND{\vw \pipe \vzero, \sigma^2 \vK}
+			\end{align*}
+			where $\vK = \tfunc{diag}{\kappa_{\gamma_1}, \kappa_{\gamma_2} \dots \kappa_{\gamma_D}}$ is a diagonal covariance matrix.
+
+			Since this is simply a linear regression setting, with different regularization weights or prior variance for different dimensions of the weight vector, we can use Completing the Squares trick to find the posterior, which will be as follows
+			\answer{
+				\begin{equation}
+					\prob{\vw \pipe \vy, \vX, \sigma^2, \vgamma}	\eq	\ND{\vw \pipe \vmu_w, \vSigma_w}
+					\label{eq:eq1-posterior}
+				\end{equation}
+			}
+			where
+			\begin{align*}
+				\vSigma_w	&\eq	\sigma^2 \para{\tr{\vX} \vX + \vK^{-1}}^{-1} \\
+				\vmu_w		&\eq	\frac{1}{\sigma^2}  \vSigma_w \tr{\vX} \vy
+			\end{align*}
+
+		\end{qsubsection}
+
+		\begin{qsubsection}{Expectation of CLL}
+
+			We can now write the Complete Data Log-Likelihood $\para{\logp{\prob{\vw, \vy \pipe \vX, \sigma^2, \vgamma}}}$ term as follows
+			\begin{align*}
+				\logp{\prob{\vw, \vy \pipe \vX, \sigma^2, \vgamma}}	&\eq	\logp{\prob{\vy \pipe \vX, \vw, \sigma^2}} + \logp{\prob{\vw \pipe \sigma^2, \vgamma}} \\
+				&\eq	- \frac{1}{2 \sigma^2} \tr{\para{\vy - \vX \vw}} \para{\vy - \vX \vw} - \frac{N + D}{2} \log{2 \pi \sigma^2} \ - \\
+				&\hspace{3cm} -\ \frac{1}{2 \sigma^2} \tr{\vw} \vK^{-1} \vw - \sum_{d = 1}^D \frac{1}{2} \log{\kappa_{\gamma_d}}
+			\end{align*}
+
+			Therefore, we can write the Expected CLL ($\E{\text{CLL}}$) as
+			\begin{align*}
+				\E{\text{CLL}}	&\eq	\E[\vw \spipe \vy]{\logp{\prob{\vw, \vy \pipe \vX, \sigma^2, \vgamma}}}
+			\end{align*}
+			\answer[0.9\textwidth]{
+				\begin{align}
+					\implies \E{\text{CLL}}	&\eq	- \frac{1}{2 \sigma^2} \para{\tr{\vy} \vy - 2 \tr{\vy} \vX \E{\vw} + \trace{\para{\tr{\vX} \vX + \vK^{-1}} \E{\tr{\vw} \vw}}} \ - \nonumber \\
+				&\hspace{3cm} - \ \frac{N + D}{2} \log{2 \pi \sigma^2} - \frac{1}{2} \sum_{d = 1}^D \log{\kappa_{\gamma_d}}
+				\end{align}
+			}
+
+			Now, we need to compute the expectations required in the above expression. However, we need to note that the expectation is with respect to known values of $\sigma^2$ and $\vgamma$. Since the posterior of $\vw$ is simply a Gaussian, we can directly write the expectation as follows
+			\begin{align*}
+				\E{\vw}	&\eq	\vmu_w \\
+				&\eq	\para{\tr{\vX} \vX + \vK^{-1}}^{-1} \tr{\vX} \vy \\
+				\E{\tr{\vw} \vw}	&\eq	\vSigma_w + \vmu_w \tr{\vmu_w} \\
+				&\eq	\sigma^2 \para{\tr{\vX} \vX + \vK^{-1}}^{-1} + \tr{\vy} \vX \para{\tr{\vX} \vX + \vK^{-1}}^{-2} \tr{\vX} \vy
+			\end{align*}
+
+		\end{qsubsection}
+
+		\begin{qsubsection}{Maximization Step}
+
+			In order to compute the MAP, we need to find the posterior with respect to $\E{CLL}$. Therefore, we can write the MAP estimates as follows
+			\begin{align*}
+				\map{\set{\sigma^2, \vgamma, \theta}}	&\eq	\argmax{\sigma^2, \vgamma, \theta} \E{\text{CLL}} + \logp{\prob{\sigma^2, \vgamma, \theta}}
+			\end{align*}
+
+			\note{We might want to compute the MAP by computing the expectation of the log-posterior over the parameters $\para{ \prob{\sigma^2, \vgamma, \theta \pipe \vy, \vw, \vX}}$, rather than computing the expectation over CLL, however since the prior term of the parameters is independent of $\vw$ and the denominator (of the posterior) is independent of the parameters, we will end up with the same expression as given above.}
+
+			The prior of the parameters is as follows
+			\begin{align*}
+				\prob{\sigma^2, \vgamma, \theta}	\eq	\prob{\sigma^2} \prod_{d = 1}^D \set{\prob{\gamma_d \pipe \theta}} \prob{\theta} \\
+				\implies \logp{\prob{\sigma^2, \vgamma, \theta}}	\eq	\logp{\prob{\sigma^2}} + \sum_{d = 1}^D \logp{\prob{\gamma_d \pipe \theta}} + \logp{\prob{\theta}}
+			\end{align*}
+
+			Now, we can use the standard MAP estimation to find the MAP estimates of the parameters.
+			\begin{align*}
+				0	&\eq	\derp{\ecll + \logp{\prob{\sigma^2, \vgamma, \theta}}}{\sigma^2} \\
+				&\eq	
+			\end{align*}<++>
+
+		\end{qsubsection}<++>
+
+	\end{qpart}<++>
+
+\end{question}
+
+\begin{question}
+
+	Using the Mean-Field Assumption, we have
+	\begin{align*}
+		\prob{\mu, \tau \pipe \vx}	\eq	q(\mu, \tau)	\eq	q(\mu) q(\tau)
+	\end{align*}
+
+	We can assume that $q(\mu)$ forms a Gaussian distribution and $q(\tau)$ forms a Gamma distribution. This is in fact what we would obtain from inspection. Therefore, we assume
+	\begin{align*}
+		q(\mu)	&\eq	\ND{\mu \pipe \mu_N, \lambda_N^{-1}} \\
+		q(\tau)	&\eq	\tfunc{Gamma}{\tau \pipe a_N, b_N}
+	\end{align*}
+
+	Now from definition, we can write the ELBO as follows
+	\begin{align*}
+		\cL(q)	&\eq	\int q(\mu, \tau)\ \para{\logp{\prob{\vx \pipe \mu, \tau}} + \logp{\prob{\mu, \tau}} - \logp{q(\mu, \tau)}} \id \mu \id \tau
+	\end{align*}
+
+	Since the likelihood is a Gaussian and we are assuming the prior to be a Normal-Gamma, we have
+	\begin{align*}
+		\prob{\vx \pipe \mu, \tau}	&\eq	\prod_{n = 1}^N \ND{x_n \pipe \mu, \tau^{-1}} \\
+		\prob{\mu, \tau}	&\eq	\ND{\mu \pipe \mu_0, \para{\lambda_0 \tau}^{-1}} \tfunc{Gamma}{\tau \pipe a_0, b_0}
+	\end{align*}
+
+	We can partially differentiate for every unknown parameter $\para{\set{\mu_N, \lambda_N, a_N, b_N}}$
+	\begin{align*}
+		\derp{\cL(q)}{\mu_N}	\eq	\int \derp{q(\mu)}{\mu_N} q(\tau) \para{\logp{\prob{\vx \pipe \mu, \tau}} + \logp{\prob{\mu, \tau}} - \logp{q(\mu, \tau)}} - \derp{q(\mu)}{\mu_N} q(\tau) \id \mu \id \tau
+	\end{align*}
+
+	\begin{align*}
+	\cL(q)	&\eq	\int q(\mu) q(\tau) \para{- \frac{\tau}{2} \sum_{n = 1}^N \para{x_n - \mu}^2 - \frac{N}{2} \log{2 \pi} + \frac{N}{2} \log{\tau}} \id \mu \id \tau \\
+	&\hspace{1cm} + \ \int q(\mu) q(\tau) \para{- \frac{\lambda_0 \tau}{2} \para{\mu - \mu_0}^2 - \frac{1}{2} \log{2 \pi} + \frac{1}{2} \log{\lambda_0 \tau}} \id \mu \id \tau \\
+	&\hspace{1cm} + \ \int q(\mu) q(\tau) \para{a_0 \log{b_0} - \log{\Gamma(a_0)} + (a_0 - 1) \log{\tau} - b_0 \tau} \id \mu \id \tau \\
+	&\hspace{1cm} - \ \int q(\mu) q(\tau) \para{- \frac{\lambda_N}{2} \para{\mu - \mu_N}^2 - \frac{1}{2} \log{2 \pi} + \frac{1}{2} \log{\lambda_N}} \id \mu \id \tau \\
+	&\hspace{1cm} - \ \int q(\mu) q(\tau) \para{a_N \log{b_N} - \log{\Gamma(a_N)} + (a_N - 1) \log{\tau} - b_N \tau} \id \mu \id \tau
+	\end{align*}
+
+	We can simplify this as follows
+	\begin{align*}
+		\cL(q)	&\eq	- \frac{\E{\tau}}{2} \sum_{n = 1}^N \E{\para{x_n - \mu}^2} - \frac{\lambda_0 \E{\tau} - \lambda_N}{2} \E{\para{\mu - \mu_0}^2} + \frac{N + 1 + 2 a_0 - 2 a_N}{2} \E{\log{\tau}} \\
+		&\hspace{3cm} - \ (b_0 - b_N) \E{\tau} - \frac{1}{2} \log{\lambda_N} - a_N \log{b_N} + \log{\Gamma(a_N)} + constants
+	\end{align*}
+
+	Therefore, we need to compute the expectations with respect to $q(\mu, \tau)$ in order to complete the ELBO.
+	\begin{enumerate}[label=\bt{\theenumi.}]
+		\item Computing $\E{\log{\tau}}$
+
+			\begin{note}
+				Proof taken from \hyperlink{https://math.stackexchange.com/questions/138252/expected-value-of-ln-x-if-x-is-gammaa-b-distributed}{here}
+			\end{note}
+
+			From the definition of expectation, we have
+			\begin{align*}
+				\E{\log{\tau}}	&\eq	\int q(\tau) \log{\tau} \id \tau \\
+				&\eq	\int \frac{(b_N)^{a_N}}{\Gamma(a_N)} \tau^{a_N - 1} \exp{- b_N \tau} \log{\tau} \id \tau \\
+				&\eq	\int \frac{(b_N)^{a_N}}{\Gamma(a_N)} \tau^{a_N - 1} \exp{- b_N \tau} \log{b_N \tau} \id \tau - \log{b_N} \\
+				&\eq	\int \frac{1}{\Gamma(a_N)} \tau^{a_N - 1} \exp{- \tau} \log{\tau} \id \tau - \log{b_N} \\
+				&\eq	\frac{1}{\Gamma(a_N)} \frac{\id}{\id a_N} \int \tau^{a_N - 1} \exp{\tau} \id \tau - \log{b_N} \\
+				&\eq	\frac{\Gamma'(a_N)}{\Gamma(a_N)} - \log{b_N} \\
+				&\eq	\psi(a_N) - \log{b_N}
+			\end{align*}
+			where $\psi(.)$ is the digamma function.
+
+		\item Computing $\E{\tau}$
+
+			Since this is simply the first moment for a random variable sampled from a Gamma distribution, we can directly write this expectation as
+			\begin{align*}
+				\E{\tau}	\eq	\frac{a_N}{b_N}
+			\end{align*}
+
+		\item Computing $\E{(\mu - \theta)^2}$
+
+			Using properties of Gaussian, we can write,
+			\begin{align*}
+				\E{(\mu - \theta)^2}	&\eq	\E{\mu^2 - 2 \theta \mu + \theta^2} \\
+				&\eq	\frac{1}{\lambda_N} +  \mu_N^2 - 2 \theta \mu_N + \theta^2 \\
+				&\eq	\frac{1}{\lambda_N} + \para{\mu_N - \theta}^2
+			\end{align*}
+
+	\end{enumerate}
+
+	Hence, we can now compute the ELBO in terms of $\set{\mu_N, \lambda_N, a_N, b_N}$ as follows
+	\begin{align*}
+		\cL(q)	&\eq	- \ \frac{a_N}{2 b_N} \para{N \frac{1}{\lambda_N} + \sum_{n = 1}^N \para{x_n - \mu_N}^2} \\
+		&\hspace{1.1cm} - \ \para{\frac{\lambda_0 a_N}{2 b_N} - \frac{\lambda_N}{2}} \para{\frac{1}{\lambda_N} + \para{\mu_N - \mu_0}^2} \\
+		&\hspace{1.1cm} + \ \frac{N + 1 + 2 a_0 - 2 a_N}{2} \para{\psi(a_N) - \log{b_N}} \\
+		&\hspace{1.1cm} - \ (b_0 - b_N) \frac{a_N}{b_N} - \frac{1}{2} \log{\lambda_N} - a_N \log{b_N} \\
+		&\hspace{1.1cm} + \ \log{\Gamma(a_N)} + constants
+	\end{align*}
+
+	We estimate the parameters iteratively, \ie we first assume some value of $\set{\mu_N, \lambda_N}$ and update $\set{a_N, b_N}$ and vice-versa.
+
+	\begin{qsubsection}{\boldmath Update of $q(\tau)$}
+
+		\begin{align*}
+			0	&\eq	\derp{\cL(a_N, b_N, \mu'_N, \lambda'_N)}{a_N} \\
+			&\eq	- \ \frac{1}{2 b_N} \para{\frac{N + \lambda_0}{\lambda_N} + \sum_{n = 1}^N \para{x_n - \mu_N}^2 + \lambda_0 \para{\mu_N - \mu_0} + 2 b_0} \\
+			&\hspace{1.1cm} + \frac{N + 1 + 2 a_0 - 2 a_N}{2} \psi'(a_N) + 1
+		\end{align*}
+		\begin{equation}
+			\implies	\psi'(a_N)	\eq	
+			\label{<+label+>}
+		\end{equation}<++>
+
+	\end{qsubsection}<++>
+
+\end{question}<++>
+
+\end{document}
+
+
+
