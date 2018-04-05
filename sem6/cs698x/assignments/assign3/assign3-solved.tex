@@ -17,13 +17,15 @@
 
 \begin{question}
 
-	\begin{qpart}{A}
+	\begin{qsection}{Effect of Prior}
 
-		The above prior facilitates sparse learning for the weight parameters.
+		The above prior facilitates sparse learning for the weight parameters, however the sparsity is only induced for some of the parameters, and the ``intensity'' of the sparsity is of two types, one for which the precision is high, and one for which it is lower.
 
-	\end{qpart}
+		The given prior somewhat classifies the parameters into two categories based on their importance, and contribution to the regression model.
 
-	\begin{qpart}{B}
+	\end{qsection}
+
+	\begin{qsection}{EM Algorithm}
 
 		\begin{qsubsection}{Posterior over Latent Variables}
 
@@ -49,7 +51,7 @@
 			where
 			\begin{align*}
 				\vSigma_w	&\eq	\sigma^2 \para{\tr{\vX} \vX + \vK^{-1}}^{-1} \\
-				\vmu_w		&\eq	\frac{1}{\sigma^2}  \vSigma_w \tr{\vX} \vy
+				\vmu_w		&\eq	\frac{1}{\sigma^2}	\vSigma_w \tr{\vX} \vy
 			\end{align*}
 
 		\end{qsubsection}
@@ -69,16 +71,16 @@
 			\end{align*}
 			\answer[0.9\textwidth]{
 				\begin{align}
-					\implies \E{\text{CLL}}	&\eq	- \frac{1}{2 \sigma^2} \para{\tr{\vy} \vy - 2 \tr{\vy} \vX \E{\vw} + \trace{\para{\tr{\vX} \vX + \vK^{-1}} \E{\tr{\vw} \vw}}} \ - \nonumber \\
-				&\hspace{3cm} - \ \frac{N + D}{2} \log{2 \pi \sigma^2} - \frac{1}{2} \sum_{d = 1}^D \log{\kappa_{\gamma_d}}
+					\implies \E{\text{CLL}}	&\eq	- \frac{1}{2 \sigma^2} \para{\tr{\vy} \vy - 2 \tr{\vy} \vX \E{\vw} + \trace{\para{\tr{\vX} \vX + \vK^{-1}} \E{\vw \tr{\vw}}}} \ - \nonumber \\
+					&\hspace{3cm} - \ \frac{N + D}{2} \log{2 \pi \sigma^2} - \frac{1}{2} \sum_{d = 1}^D \log{\kappa_{\gamma_d}}
 				\end{align}
 			}
 
 			Now, we need to compute the expectations required in the above expression. However, we need to note that the expectation is with respect to known values of $\sigma^2$ and $\vgamma$. Since the posterior of $\vw$ is simply a Gaussian, we can directly write the expectation as follows
 			\begin{align*}
-				\E{\vw}	&\eq	\vmu_w \\
+				\E{\vw}				&\eq	\vmu_w \\
 				&\eq	\para{\tr{\vX} \vX + \vK^{-1}}^{-1} \tr{\vX} \vy \\
-				\E{\tr{\vw} \vw}	&\eq	\vSigma_w + \vmu_w \tr{\vmu_w} \\
+				\E{\vw \tr{\vw}}	&\eq	\vSigma_w + \vmu_w \tr{\vmu_w} \\
 				&\eq	\sigma^2 \para{\tr{\vX} \vX + \vK^{-1}}^{-1} + \tr{\vy} \vX \para{\tr{\vX} \vX + \vK^{-1}}^{-2} \tr{\vX} \vy
 			\end{align*}
 
@@ -99,15 +101,89 @@
 				\implies \logp{\prob{\sigma^2, \vgamma, \theta}}	\eq	\logp{\prob{\sigma^2}} + \sum_{d = 1}^D \logp{\prob{\gamma_d \pipe \theta}} + \logp{\prob{\theta}}
 			\end{align*}
 
-			Now, we can use the standard MAP estimation to find the MAP estimates of the parameters.
+			From the question, we know
 			\begin{align*}
-				0	&\eq	\derp{\ecll + \logp{\prob{\sigma^2, \vgamma, \theta}}}{\sigma^2} \\
-				&\eq	
-			\end{align*}<++>
+				\logp{\prob{\sigma^2}}				&\eq	- \para{\frac{\nu}{2} + 1} \log{\sigma^2} - \frac{\nu \lambda}{2 \sigma^2} + constants \\
+				\logp{\prob{\gamma_d \pipe \theta}}	&\eq	\gamma_d \log{\theta} + (1 - \gamma_d) \log{1 - \theta} \\
+				\logp{\prob{\theta}}				&\eq	(a_0 - 1) \log{\theta} + (b_0 - 1) \log{1 - \theta}
+			\end{align*}
 
-		\end{qsubsection}<++>
+			Now, we can use the standard MAP estimation to find the MAP estimates of the parameters.
+			\begin{enumerate}[label=\bt{\theenumi.}]
+					\ditem[Update of $\sigma^2$]
+					\begin{align*}
+						0					&\eq	\derp{\ecll + \logp{\prob{\sigma^2, \vgamma, \theta}}}{\sigma^2} \\
+						&\eq	\frac{1}{2 \sigma^4} \para{\tr{\vy} \vy - 2 \tr{\vy} \vX \E{\vw} + \trace{\para{\tr{\vX} \vX + \vK^{-1}} \E{\vw \tr{\vw}}}} - \frac{N + D}{2 \sigma^2} \\
+						&\hspace{3cm} - \ \frac{1}{\sigma^2} \para{\frac{\nu}{2} + 1} + \frac{\nu \lambda}{2 \sigma^4} \\
+						\implies \sigma^2	&\eq	\frac{\tr{\vy} \vy - 2 \tr{\vy} \vX \E{\vw} + \trace{\para{\tr{\vX} \vX + \vK^{-1}} \E{\vw \tr{\vw}}} + \nu \lambda}{N + D + \nu + 2}
+					\end{align*}
 
-	\end{qpart}<++>
+					\ditem[Update of $\gamma_d \pipe \theta$]
+
+					Since $\gamma_d \in \set{0, 1}$, instead of differentiating, we can directly write (ignoring terms independent of $\gamma_d$, when known)
+					\begin{align*}
+						\gamma_d	&\eq	\argmax{\gamma'_d \in \set{0, 1}} \ecll + \logp{\prob{\sigma^2, \vgamma, \theta}} \\
+						&\eq	\argmax{\gamma'_d \in \set{0, 1}} - \frac{1}{2 \sigma^2 \kappa_{\gamma'_d}} \E{\vw \tr{\vw}}_{d, d} - \frac{1}{2} \log{\kappa_{\gamma'_d}} + \gamma'_d \log{\theta} + (1 - \gamma'_d) \log{1 - \theta}
+					\end{align*}
+
+					\ditem[Update of $\theta$]
+					\begin{align*}
+						0							&\eq	\derp{\ecll + \logp{\prob{\sigma^2, \vgamma, \theta}}}{\theta} \\
+						&\eq	\frac{1}{\theta} \para{\sum_{d = 1}^D \gamma_d + a_0 - 1} - \frac{1}{1 - \theta} \para{\sum_{d = 1}^D \set{1 - \gamma_d} + b_0 - 1} \\
+						\implies \theta				&\eq	\frac{\sum_{d = 1}^D \gamma_d + a_0 - 1}{D + a_0 + b_0 - 2}
+					\end{align*}
+			\end{enumerate}
+
+			We can now write the complete EM algorithm as given in Algorithm \hyperlink{algo:1}{1}
+
+		\end{qsubsection}
+
+		\begin{algo}[0.9\textwidth]{EM Algorithm}
+
+			\newcommand{\sss}[1]{{\sigma^2}^{(#1)}}
+			\newcommand{\sgd}[1]{{\gamma_d}^{(#1)}}
+			\newcommand{\svg}[1]{{\vgamma}^{(#1)}}
+
+			\bt{Input:} Input data $\vy$ and $\vX$ and hyper-paramters $a_0$, $b_0$, $\nu$, $\lambda$, $v_0$ and $v_1$ \sbr
+
+			\bt{Output:} Approximate Posterior $q(\vW, \vZ, \vpi)$ \sbr
+
+			\bt{Steps:}
+			\begin{enumerate}
+				\item Initialize $\set{\vgamma, \sigma^2, \theta}$ as $\set{\vgamma, \sigma^2, \theta}^{(0)}$
+				\item For $t = 0, 1 \dots T - 1$
+					\begin{enumerate}
+						\item Update the posterior of $\vw$ as
+							\begin{align*}
+								\prob{\vw^{(t + 1)} \pipe \vy, \vX, \sss{t}, \svg{t}}	\eq	\ND{\vw^{(t)} \pipe \vmu_{w}^{(t + 1)}, \vSigma_{w}^{(t + 1)}}
+							\end{align*}
+							where
+							\begin{align*}
+								\vSigma_w^{(t + 1)}	&\eq	\sss{t} \para{\tr{\vX} \vX + {\vK^{(t)}}^{-1}}^{-1} \\
+								\vmu_w^{(t + 1)}		&\eq	\frac{1}{\sss{t}}	\vSigma_w^{(t + 1)} \tr{\vX} \vy
+							\end{align*}
+
+						\item Update the expectations as
+							\begin{align*}
+								\E{\vw}^{(t + 1)}			&\eq	\vmu_w^{(t + 1)} \\
+								\E{\vw \tr{\vw}}^{(t + 1)}	&\eq	\vSigma_w^{(t + 1)} + \vmu_w^{(t + 1)} \tr{\vmu_w^{(t + 1)}}
+							\end{align*}
+
+						\item Upadate the parameters as
+							\begin{align*}
+								{\sigma^2}^{(t + 1)}	&\eq	\frac{\tr{\vy} \vy - 2 \tr{\vy} \vX \E{\vw}^{(t + 1)} + \trace{\para{\tr{\vX} \vX + {\vK^{(t)}}^{-1}} \E{\vw \tr{\vw}}^{(t + 1)}} + \nu \lambda}{N + D + \nu + 2} \\
+								\theta^{(t + 1)}		&\eq	\frac{\sum_{d = 1}^D \gamma_d^{(t)} + a_0 - 1}{D + a_0 + b_0 - 2} \\
+								\gamma_d^{(t + 1)}		&\eq	\argmax{\gamma_d \in \set{0, 1}}\ \gamma_d \log{\theta^{(t + 1)}} + (1 - \gamma_d) \log{1 - \theta^{(t + 1)}} \\
+								&\hspace{3.5cm} - \  \frac{1}{2 {\sigma^2}^{(t + 1)} \kappa_{\gamma_d}} \E{\vw \tr{\vw}}_{d, d}^{(t + 1)} - \frac{1}{2} \log{\kappa_{\gamma_d}}
+							\end{align*}
+					\end{enumerate}
+				\item Return $\set{\vgamma, \sigma^2, \theta} = \set{\vgamma, \sigma^2, \theta}^{(T)}$ and $\prob{\vw \pipe \vy, \vX, {\sigma^2}^{(T - 1)}, \vgamma^{(T - 1)}}$
+			\end{enumerate}
+
+		\end{algo}
+
+	\end{qsection}
+
 
 \end{question}
 
@@ -141,17 +217,18 @@
 	\end{align*}
 
 	\begin{align*}
-	\cL(q)	&\eq	\int q(\mu) q(\tau) \para{- \frac{\tau}{2} \sum_{n = 1}^N \para{x_n - \mu}^2 - \frac{N}{2} \log{2 \pi} + \frac{N}{2} \log{\tau}} \id \mu \id \tau \\
-	&\hspace{1cm} + \ \int q(\mu) q(\tau) \para{- \frac{\lambda_0 \tau}{2} \para{\mu - \mu_0}^2 - \frac{1}{2} \log{2 \pi} + \frac{1}{2} \log{\lambda_0 \tau}} \id \mu \id \tau \\
-	&\hspace{1cm} + \ \int q(\mu) q(\tau) \para{a_0 \log{b_0} - \log{\Gamma(a_0)} + (a_0 - 1) \log{\tau} - b_0 \tau} \id \mu \id \tau \\
-	&\hspace{1cm} - \ \int q(\mu) q(\tau) \para{- \frac{\lambda_N}{2} \para{\mu - \mu_N}^2 - \frac{1}{2} \log{2 \pi} + \frac{1}{2} \log{\lambda_N}} \id \mu \id \tau \\
-	&\hspace{1cm} - \ \int q(\mu) q(\tau) \para{a_N \log{b_N} - \log{\Gamma(a_N)} + (a_N - 1) \log{\tau} - b_N \tau} \id \mu \id \tau
+		\cL(q)	&\eq	\int q(\mu) q(\tau) \para{- \frac{\tau}{2} \sum_{n = 1}^N \para{x_n - \mu}^2 - \frac{N}{2} \log{2 \pi} + \frac{N}{2} \log{\tau}} \id \mu \id \tau \\
+		&\hspace{1cm} + \ \int q(\mu) q(\tau) \para{- \frac{\lambda_0 \tau}{2} \para{\mu - \mu_0}^2 - \frac{1}{2} \log{2 \pi} + \frac{1}{2} \log{\lambda_0 \tau}} \id \mu \id \tau \\
+		&\hspace{1cm} + \ \int q(\mu) q(\tau) \para{a_0 \log{b_0} - \log{\Gamma(a_0)} + (a_0 - 1) \log{\tau} - b_0 \tau} \id \mu \id \tau \\
+		&\hspace{1cm} - \ \int q(\mu) q(\tau) \para{- \frac{\lambda_N}{2} \para{\mu - \mu_N}^2 - \frac{1}{2} \log{2 \pi} + \frac{1}{2} \log{\lambda_N}} \id \mu \id \tau \\
+		&\hspace{1cm} - \ \int q(\mu) q(\tau) \para{a_N \log{b_N} - \log{\Gamma(a_N)} + (a_N - 1) \log{\tau} - b_N \tau} \id \mu \id \tau
 	\end{align*}
 
 	We can simplify this as follows
 	\begin{align*}
-		\cL(q)	&\eq	- \frac{\E{\tau}}{2} \sum_{n = 1}^N \E{\para{x_n - \mu}^2} - \frac{\lambda_0 \E{\tau} - \lambda_N}{2} \E{\para{\mu - \mu_0}^2} + \frac{N + 1 + 2 a_0 - 2 a_N}{2} \E{\log{\tau}} \\
-		&\hspace{3cm} - \ (b_0 - b_N) \E{\tau} - \frac{1}{2} \log{\lambda_N} - a_N \log{b_N} + \log{\Gamma(a_N)} + constants
+		\cL(q)	&\eq	- \frac{\E{\tau}}{2} \sum_{n = 1}^N \E{\para{x_n - \mu}^2} - \frac{\lambda_0 \E{\tau}}{2} \E{\para{\mu - \mu_0}^2} + \frac{N + 1 + 2 a_0 - 2 a_N}{2} \E{\log{\tau}} \\
+		&\hspace{1.1cm} + \ \frac{\lambda_N}{2} \E{\para{\mu - \mu_N}^2} - (b_0 - b_N) \E{\tau} - \frac{1}{2} \log{\lambda_N} - a_N \log{b_N} + \log{\Gamma(a_N)} \\
+		&\hspace{1.1cm} + \ constants
 	\end{align*}
 
 	Therefore, we need to compute the expectations with respect to $q(\mu, \tau)$ in order to complete the ELBO.
@@ -159,7 +236,7 @@
 		\item Computing $\E{\log{\tau}}$
 
 			\begin{note}
-				Proof taken from \hyperlink{https://math.stackexchange.com/questions/138252/expected-value-of-ln-x-if-x-is-gammaa-b-distributed}{here}
+				Proof taken from \href{https://math.stackexchange.com/questions/138252/expected-value-of-ln-x-if-x-is-gammaa-b-distributed}{here}
 			\end{note}
 
 			From the definition of expectation, we have
@@ -195,31 +272,385 @@
 	Hence, we can now compute the ELBO in terms of $\set{\mu_N, \lambda_N, a_N, b_N}$ as follows
 	\begin{align*}
 		\cL(q)	&\eq	- \ \frac{a_N}{2 b_N} \para{N \frac{1}{\lambda_N} + \sum_{n = 1}^N \para{x_n - \mu_N}^2} \\
-		&\hspace{1.1cm} - \ \para{\frac{\lambda_0 a_N}{2 b_N} - \frac{\lambda_N}{2}} \para{\frac{1}{\lambda_N} + \para{\mu_N - \mu_0}^2} \\
+		&\hspace{1.1cm} - \ \frac{\lambda_0 a_N}{2 b_N} \para{\frac{1}{\lambda_N} + \para{\mu_N - \mu_0}^2} \\
 		&\hspace{1.1cm} + \ \frac{N + 1 + 2 a_0 - 2 a_N}{2} \para{\psi(a_N) - \log{b_N}} \\
 		&\hspace{1.1cm} - \ (b_0 - b_N) \frac{a_N}{b_N} - \frac{1}{2} \log{\lambda_N} - a_N \log{b_N} \\
 		&\hspace{1.1cm} + \ \log{\Gamma(a_N)} + constants
 	\end{align*}
 
-	We estimate the parameters iteratively, \ie we first assume some value of $\set{\mu_N, \lambda_N}$ and update $\set{a_N, b_N}$ and vice-versa.
+	Since we assume the Mean-Field Assumption holds, we estimate the parameters iteratively, \ie we first assume some value of $\set{\mu_N, \lambda_N}$ and update $\set{a_N, b_N}$ and vice-versa.
 
-	\begin{qsubsection}{\boldmath Update of $q(\tau)$}
+	\begin{qsection}{Variational Inference}
+
+		\begin{qsubsection}{\boldmath Update of $q(\tau)$}
+
+			Since we are maximizing w.r.t. to $a_N$ and $b_N$, therefore we have
+			\begin{align*}
+				0	&\eq	\derp{\cL(a_N, b_N, \mu'_N, \lambda'_N)}{a_N} \\
+				&\eq	- \ \frac{1}{2 b_N} \para{\frac{N + \lambda_0}{\lambda'_N} + \sum_{n = 1}^N \para{x_n - \mu'_N}^2 + \lambda_0 \para{\mu'_N - \mu_0}^2 + 2 b_0} \\
+				&\hspace{1.1cm} + \frac{N + 1 + 2 a_0 - 2 a_N}{2} \psi'(a_N) + 1
+			\end{align*}
+
+			\begin{equation}
+				\implies	\frac{N + 1 + 2 a_0 - 2 a_N}{2} \psi'(a_N)	\eq	\frac{\alpha}{2 b_N}
+				\label{eq:q2-pi-1}
+			\end{equation}
+			where
+			\begin{align*}
+				\alpha	\eq	\frac{N + \lambda_0}{\lambda'_N} + \sum_{n = 1}^N \para{x_n - \mu'_N}^2 + \lambda_0 \para{\mu'_N - \mu_0}^2 + 2 b_0 - 2 b_N
+			\end{align*}
+
+			Similarly for $b_N$
+			\begin{align*}
+				0	&\eq	\derp{\cL(a_N, b_N, \mu'_N, \lambda'_N)}{b_N} \\
+				&\eq	\frac{a_N \alpha}{2 b_N^2} - \frac{N + 1 + 2 a_0 - 2 a_N}{2 b_N}
+			\end{align*}
+			\begin{equation}
+				\implies \frac{a_N \alpha}{2 b_N}	\eq	N + 1 + 2 a_0 - 2 a_N
+				\label{eq:q2-pi-2}
+			\end{equation}
+
+			Since $\psi'(a_N) > 1$, using equations \ref{eq:q2-pi-1} and \ref{eq:q2-pi-2}, we get
+			\begin{align*}
+				\alpha	\eq	0	\eq	N + 1 + 2 a_0 - 2 a_N
+			\end{align*}
+
+			Hence, we have the updates for $a_N$ and $b_N$ as follows
+			\answer{
+				\begin{align*}
+					a_N	&\eq	a_0 + \frac{N + 1}{2} \\
+					b_N	&\eq	b_0 + \frac{N + \lambda_0}{2 \lambda'_N} + \frac{1}{2} \sum_{n = 1}^N \para{x_n - \mu'_N}^2 + \frac{\lambda_0}{2} \para{\mu'_N - \mu_0}^2
+				\end{align*}
+			}
+
+		\end{qsubsection}
+
+	\end{qsection}
+
+	\begin{qsubsection}{\boldmath Update of $q(\mu)$}
+
+		Similar to previous section, we find the updates of $\mu_N$ and $\lambda_N$ by equating the respective partial derivatives to 0.
+		\begin{align*}
+			0	&\eq	\derp{\cL(a'_N, b'_N, \mu_N, \lambda_N)}{\mu_N} \\
+			&\eq	\frac{a'_N}{2 b'_N} \sum_{n = 1}^N \para{x_n - \mu_N} + \frac{\lambda_0 a'_N}{2 b'_N} \para{\mu_0 - \mu_N} \\
+			\implies \mu_N	&\eq	\frac{\sum_{n = 1}^N x_n + \lambda_0 \mu_0}{N + \lambda_0}
+		\end{align*}
 
 		\begin{align*}
-			0	&\eq	\derp{\cL(a_N, b_N, \mu'_N, \lambda'_N)}{a_N} \\
-			&\eq	- \ \frac{1}{2 b_N} \para{\frac{N + \lambda_0}{\lambda_N} + \sum_{n = 1}^N \para{x_n - \mu_N}^2 + \lambda_0 \para{\mu_N - \mu_0} + 2 b_0} \\
-			&\hspace{1.1cm} + \frac{N + 1 + 2 a_0 - 2 a_N}{2} \psi'(a_N) + 1
+			0	&\eq	\derp{\cL(a'_N, b'_N, \mu_N, \lambda_N)}{\lambda_N} \\
+			&\eq	\frac{N a'_N}{2 b'_N \lambda_N^2} + \frac{\lambda_0 a'_N}{2 b'_N \lambda_N^2} - \frac{1}{2 \lambda_N} \\
+			\implies \lambda_N	&\eq	\frac{a'_N}{b'_N} \para{N + \lambda_0}
 		\end{align*}
-		\begin{equation}
-			\implies	\psi'(a_N)	\eq	
-			\label{<+label+>}
-		\end{equation}<++>
 
-	\end{qsubsection}<++>
+		\answer{
+			\begin{align*}
+				\mu_N	&\eq	\frac{\sum_{n = 1}^N x_n + \lambda_0 \mu_0}{N + \lambda_0} \\
+				\lambda_N	&\eq	\frac{a'_N}{b'_N} \para{N + \lambda_0}
+			\end{align*}
+		}
 
-\end{question}<++>
+	\end{qsubsection}
+
+	We can now write the final Variation Inference algorithm, which is given in algorithm \hyperlink{algo:2}{2}.
+
+	\begin{algo}[0.9\textwidth]{Variation Inference for Univariate Gaussian}
+
+		\bt{Input:} Input data $\vx$ \sbr
+
+		\bt{Output:} Approximate Posterior $q(\mu, \tau)$ \sbr
+
+		\bt{Steps:}
+		\begin{enumerate}
+			\item Initialize some values of $a_N$ and $b_N$ as $a_N^{(0)}$ and $b_N^{0}$
+			\item Compute $\overline{x} = \frac{1}{N} \sum_{n = 1}^N x_n$
+			\item For $t = 0, 1 \dots T - 1$
+				\begin{enumerate}
+					\item Update the parameters of $q(\mu)$ as
+						\begin{align*}
+							\mu_N^{(t + 1)}	&\eq	\frac{N \overline{x} + \lambda_0 \mu_0}{N + \lambda_0} \\
+							\lambda_N^{(t + 1)}	&\eq	\frac{a_N^{(t)}}{b_N^{t}} \para{N + \lambda_0}
+						\end{align*}
+					\item Update the parameters of $q(\tau)$ as
+						\begin{align*}
+							a_N^{(t + 1)}	&\eq	a_0 + \frac{N + 1}{2} \\
+							b_N^{(t + 1)}	&\eq	b_0 + \frac{N + \lambda_0}{2 \lambda_N^{(t + 1)}} + \frac{1}{2} \sum_{n = 1}^N \para{x_n - \mu_N^{(t + 1)}}^2 + \frac{\lambda_0}{2} \para{\mu_0 - \mu_N^{(t + 1)}}^2
+						\end{align*}
+				\end{enumerate}
+			\item Return $q(\mu, \tau) = q(\mu) q(\tau) = \ND{\mu \spipe \mu_N^{(T)}, {\lambda_N^{(T)}}^{-1}} \tfunc{Gamma}{\tau \pipe a_N^{(T)}, b_N^{(T)}}$
+		\end{enumerate}
+
+	\end{algo}
+
+\end{question}
+
+\begin{question}
+
+	Black Box Variational Inference extends the idea of Variational Inference \cite{vb1, vb2} which aims at approximating a ``difficult'' distribution using a family of simpler distributions, that is closest to the distribution in hand. 
+
+	Variational Inference, although provides a novel approach to approximating difficult to compute distributions, suffers from intractability in generic problems. That is, for specific classes of models where the conditional distributions have a convenient form, it is possible to do Variational Inference using Alternating Maximization, however, for cases where this is not true, model-specific approaches are required to obtain a closed form solution.
+
+	Black Box Variational Inference aims to tackle this problem by rewriting the gradient of the optimization objective as an expectation and approximate the gradient using Monte Carlo Estimation techniques. The objective is therefore reduced to optimizing an objective, therefore allowing us to extend the optimization to Stochastic Methods.
+
+	\begin{qsection}{Black Box Variational Inference}
+
+		Similar to vanilla Variational Inference, the objective to maximize is the Evidence Lower BOund (ELBO), which is given as
+		\begin{align*}
+			\cL(\vlambda) \qdeq \E[q_{\vlambda}]{\logp{p(\vX, \vZ)} - \logp{q(\vZ)}}
+		\end{align*}
+		where $p(\vZ \pipe \vX)$ is the distribution to be approximated and $q_{\vlambda}(\vZ)$ is the family of distributions which serve as the hypothesis space for the approximation distribution, with $\vlambda$ denoting the parameters for the hypothesis space.
+
+		The ELBO is optimized using Stochastic Gradient Ascent, with the gradient estimated as an expectation with respect to the proposal distribution, given as below
+		\begin{align*}
+			\nabla_{\vlambda} \cL(\vlambda) \eq \E[q_{\vlambda}]{\nabla_{\vlambda} \logp{q(\vZ \pipe \vlambda)} \para{\logp{p(\vX, \vZ) - \logp{q(\vZ \pipe \vlambda)}}}}
+		\end{align*}
+
+		The derivation of this equation was discussed in class, and therefore I do not present it here. We can now build an ``unbiased'' estimator of this gradient using Monte Carlo Estimation, which essentially requires us to sample from the proposal distribution and estimate the gradient as below
+		\begin{align*}
+			\nabla_{\vlambda} \cL(\vlambda) \qapprox \frac{1}{\sS} \sum_{\vZ_s \in \cS} {\nabla_{\vlambda} \logp{q(\vZ_s \pipe \vlambda)} \para{\logp{p(\vX, \vZ_s) - \logp{q(\vZ_s \pipe \vlambda)}}}}
+		\end{align*}
+		where $\sS = \abs{\cS}$ and $\cS \sim q_{\lambda}^{\sS}$ is sampled i.i.d. from the proposal distribution.
+
+		The method outlined above depends only on the individual components of the model, however remain independent of the structure of the underlying model. This is useful as it allows to plug in different models without changing the inherent structure of the inference model.
+
+	\end{qsection}
+
+	\begin{qsection}{Controlling the Variance}
+
+		As noted by the authors, the variance of the Monte Carlo Estimator can be very large, therefore the step size would have to be kept very small in order to guarantee convergence, therefore increasing the number of times steps to be taken to converge. The authors, therefore, give two techniques in order to control the variance of the estimator, while keeping the expectation constant, which is what is required.
+
+		\begin{enumerate}[label=\bt{\theenumi.}]
+				\ditem[Rao-Blackwellization]
+				Rao-Blackwellization reduces the variance of a random variable by replacing it with its conditional expectation with respect to a subset of the variables. The authors Rao-Blackwellize the estimator for each component without needing to compute model-specific integrals.
+
+				Rao-Blackwellization, in its simplest form states that $\E{J(X, Y)} = \E{\wJ(X)}$ where $\wJ(X) = \E{J(X, Y) \pipe X}$. Therefore
+				\begin{align*}
+					\var{\wJ(X)} = \var{J(X, Y)} - \E{\para{J(X, Y) - \wJ(X)}^2}
+				\end{align*}
+
+				Hence, $\wJ(X)$ has a lower variance than $J(X, Y)$ and is therefore a lower variance estimator than $J(X, Y)$. Applying this to the problem of estimating the ELBO derivative, where if we consider Mean-Field Assumption, then we have
+				\begin{align*}
+					q(\vZ \pipe \vlambda) \eq \prod_{m = 1}^M q(\vZ_m \pipe \vlambda_m)
+				\end{align*}
+
+				We can therefore write the gradient with respect to $\vlambda_m$ as an iterated conditional expectation as
+				\begin{align*}
+					\nabla_{\vlambda_m} \cL \eq \E[q_{\vlambda_m}]{\nabla_{\vlambda_m} \logp{q(\vZ_m \pipe \vlambda_m)} \para{\logp{p_m(\vX, \vZ_m) - \logp{q(\vZ_m \pipe \vlambda_m)}}}}
+				\end{align*}
+
+				Therefore, it is possible to construct a Monte Carlo Estimator for computing the gradient with respect to each paramter set $\vlambda_m$ under the mean-field assumption as
+				\begin{align*}
+					\nabla_{\vlambda_m} \cL \qapprox \frac{1}{\sS} \sum_{\vZ_s \in \cS} \nabla_{\vlambda_m} \logp{q(\vZ_s \pipe \vlambda_m)} \para{\logp{p_m(\vX, \vZ_s) - \logp{q(\vZ_s \pipe \vlambda_m)}}}
+				\end{align*}
+				where $\sS = \abs{\cS}$ and $\cS \sim q^{\sS}(\vZ_m \pipe \vlambda_m)$
+
+				\ditem[Control Variates]
+				A control variate is a family of functions with equivalent expectation, \ie for a function $f(.)$, the control variate of this function could be written as
+				\begin{align*}
+					\widehat{f}(z) \def f(z) - a \para{h(z) - \E{h(z)}}
+				\end{align*}
+
+				This can be used in BBVI by choosing $a$, given $h$, such that the variance of $\widehat{f}(z)$ is the lowest. The authors note that for a given $h$, the a such that $\widehat{f}(z)$ has minimum variance is as follows
+				\begin{align*}
+					a^{\ast} \eq \frac{\covar{f, h}}{\var{h}}
+				\end{align*}
+
+				In case of BBVI, the functions $f$ and $h$ is chosen for each component (in case of Mean-Field VI) as follows
+				\begin{align*}
+					f_m(\vZ) &\eq \nabla_{\vlambda_m} \logp{q(\vZ_m \pipe \vlambda_m) \para{\logp{p(\vX, \vZ_m)} - \logp{q(\vZ_m \pipe \vlambda_m)}}} \\
+					h_m(\vZ) &\eq \nabla_{\vlambda_m} \logp{q(\vZ_m \pipe \vlambda_m)}
+				\end{align*}
+				and the value of $a^{\ast}$ is approximated as
+				\begin{align}
+					\widehat{a}_m^{\ast} = \frac{\sum_{d = 1}^{D_m} \covare{f_m^d, h_m^d}}{\vare{h_m^d}}
+				\end{align}
+				where the covariance and variance is computed using the Monte Carlo samples itself, and $f_m^d$ and $h_m^d$ denote d\tth dimension of the functions respectively, corresponding to each dimension of the parameter $\vlambda_m$.
+		\end{enumerate}
+
+		The authors have also shown some extensions to the model using adaptive learning rates with Adagrad, as well as stochastic optimization using a sample of the data points in order to improve convergence. The overall method of BBVI provides good convergence and allows models to be learned without applying model specific approximations in order to achieve a closed form solution.
+
+	\end{qsection}
+
+\end{question}
+
+\begin{question}
+
+	\begin{qsection}{Generative Story}
+
+		\begin{align*}
+			\pi_k	&\qsim	\tfunc{Beta}{\alpha / K, 1}			& \mt{for} k = 1 \dots K \\
+			z_{nk}	&\qsim	\tfunc{Bernoulli}{\pi_k}			& \mt{for} n = 1 \dots N,\ k = 1 \dots K \\
+			\vw_{k}	&\qsim	\ND{\vzero, \sigma_w^2 \vI_D}		& \mt{for} k = 1 \dots K \\
+			\vx_{n}	&\qsim	\ND{\vW \vz_n, \sigma_x^2 \vI_D}	& \mt{for} n = 1 \dots N \\
+		\end{align*}
+
+	\end{qsection}
+
+	\begin{qsection}{Complete Data Likelihood}
+
+		We represent the $\vTheta$ as the tuple of all latent variables, \ie $\para{\vW, \vZ, \vpi}$, and $\vtheta$ as the tuple of all hyperparameters (known), \ie $\para{\sigma_w^2, \sigma_x^2, \alpha}$.
+
+		We can write the Complete Data Likelihood as
+		\begin{align*}
+			\prob{\vX, \vTheta \pipe \vtheta}	&\eq	\prob{\vX \pipe \vW, \vZ, \sigma_x^2} \prob{\vW \pipe \sigma_w^2} \prob{\vZ \pipe \vpi} \prob{\vpi \pipe \alpha} \\
+			\implies \logp{\prob{\vX, \vTheta \pipe \vtheta}} &\eq	\logp{\prob{\vX \pipe \vW, \vZ, \sigma_x^2}} + \logp{\prob{\vW \pipe \sigma_w^2}} + \logp{\prob{\vZ \pipe \vpi}} + \logp{\prob{\vpi \pipe \alpha}} \\
+		\end{align*}
+
+		We can now easily compute the log-probabilities individually. Note that we can treat all the terms that are not dependent on $\vTheta$. Therefore
+		\begin{align*}
+			\logp{\prob{\vX \pipe \vW, \vZ, \sigma_x^2}}	&\eq	- \frac{1}{2 \sigma_x^2} \sum_{n = 1}^N \tr{\para{\vx_n - \vW \vz_n}} \para{\vx_n - \vW \vz_n} + constants \\
+			\logp{\prob{\vW \pipe \sigma_w^2}}				&\eq	- \frac{1}{2 \sigma_w^2} \sum_{k = 1}^K \tr{\vw_k} \vw_k + constants \\
+			\logp{\prob{\vZ \pipe \vpi}}					&\eq	\sum_{n = 1}^N \logp{\prob{\vz_n \pipe \vpi}} \\
+			&\eq	\sum_{n = 1}^N \sum_{k = 1}^K \set{z_{nk} \log{\pi_k} + \para{1 - z_{nk}} \log{1 - \pi_k}} \\
+			\logp{\prob{\vpi \pipe \alpha}}					&\eq	\para{\frac{\alpha}{K} - 1} \sum_{k = 1}^K \log{\pi_k} + constants
+		\end{align*}
+
+	\end{qsection}
+
+	\begin{qsection}{Variational Inference}
+
+		We can now compute the updates for the latent variables, where the posterior approximation $q(\vW, \vZ, \vpi)$ is assumed to folow the Mean-Field Assumption, \ie
+		\begin{align*}
+			q(\vW, \vZ, \vpi)	\eq	\prod_{k = 1}^K \set{\prod_{n = 1}^N q(z_{nk}) \cdot q(\vw_k) q(\pi_k)}
+		\end{align*}
+
+		We can therefore compute the update of each latent variable in an iterative fashion
+
+		\begin{qsubsection}{\boldmath Update of $q(\vZ)$}
+
+			We do not actually update the value of $q(\vZ)$, but update $q(z_{nk})$ for each $n = 1 \dots N$, $k = 1 \dots K$. We know from the Mean-Feild Variational Inference updates
+			\begin{align*}
+				\logp{q(z_{nk})}	&\eq	\E[\vW, \overline{z}_{nk}, \vpi]{\logp{\prob{\vX, \vTheta \pipe \vtheta}}} \\
+				&\eq	\E{\logp{\prob{\vX \pipe \vW, \vZ, \sigma_x^2}}} + \E{\logp{\prob{\vW \pipe \sigma_w^2}}} \\
+				&\hspace{1.2cm} + \ \E{\logp{\prob{\vZ \pipe \vpi}}} + \E{\logp{\prob{\vpi \pipe \alpha}}} \\
+				&\eq	- \frac{1}{ 2\sigma_x^2} \E{z_{nk}^2 \tr{\vw_k} \vw_k - 2 z_{nk} \tr{\vw_k} \para{\vx_n - \underset{k' \ne k}{\sum_{k' = 1}^K} z_{nk'} \vw_{k'}}} \\
+				&\hspace{1.53cm} + \ \E{z_{nk} \log{\pi_k} + \para{1 - z_{nk}} \log{1 - \pi_k}} + constants
+			\end{align*}
+
+			Note that since $z_{nk}$ is a Bernoulli variable, we know $z_{nk}^2 = z_{nk}$. Due to mean-field assumption, we can write this as
+			\begin{align*}
+				\logp{q(z_{nk})}	&\eq	z_{nk} \bigg\{ \E{\log{\pi_k}} - \E{\log{1 - \pi_k}}  - \frac{1}{2 \sigma_x^2} \E{\tr{\vw_k} \vw_k} \\
+				&\hspace{1.1cm} + \ \frac{1}{\sigma_x^2} \E{\tr{\vw_k}} \para{\vx_n - \underset{k' \ne k}{\sum_{k' = 1}^K} \E{z_{nk'}} \E{\vw_{k'}}} \bigg\} + constants
+			\end{align*}
+
+			Hence, $q(z_{nk})$ is a Bernoulli distribution, given as follows
+			\begin{equation}
+				q(z_{nk})	\eq	\tfunc{Bernoulli}{z_{nk} \pipe \wpi_{nk}}
+				\label{eq:q4-q-z}
+			\end{equation}
+			where
+			\begin{align}
+				\wpi_{nk}	&\eq	\frac{\texp{\gamma_{nk}}}{1 + \texp{\gamma_{nk}}} \nonumber \\
+				\gamma_{nk}	&\eq	\E{\log{\pi_k}} - \E{\log{1 - \pi_k}}	- \frac{1}{2 \sigma_x^2} \E{\tr{\vw_k} \vw_k} \label{eq:q4-gamma} \\
+				&\hspace{1.1cm} + \ \frac{1}{\sigma_x^2} \E{\tr{\vw_k}} \para{\vx_n - \underset{k' \ne k}{\sum_{k' = 1}^K} \E{z_{nk'}} \E{\vw_{k'}}} \nonumber
+			\end{align}
+
+		\end{qsubsection}
+
+		\begin{qsubsection}{\boldmath Update of $q(\vW)$}
+
+			\begin{align*}
+				\logp{q(\vw_k)}	&\eq	\E[\overline{\vw}_k, \vZ, \vpi]{\logp{\prob{\vX, \vTheta \pipe \vtheta}}} \\
+				&\eq	\E{\frac{1}{\sigma_x^2} \tr{\vw_k} \sum_{n = 1}^N z_{nk} \para{\vx_n - \underset{k' \ne k}{\sum_{k' = 1}^K} z_{nk'} \vw_{k'}} - \para{\frac{1}{2 \sigma_x^2} \sum_{n = 1}^N z_{nk}^2 + \frac{1}{2 \sigma_w^2}} \tr{\vw_k} \vw_k} \\
+				&\hspace{1.1cm} + \ constants
+			\end{align*}
+			Since we can represent this as a gaussian, we say
+			\begin{equation}
+				q(\vw_k)	\eq	\ND{\vw_k \pipe \widehat{\vmu}_k, \widehat{\vSigma}_k}
+				\label{eq:q4-q-w}
+			\end{equation}
+			where
+			\begin{align*}
+				\widehat{\vSigma}_k	&\eq	\para{\frac{1}{\sigma_x^2} \sum_{n = 1}^N \E{z_{nk}} + \frac{1}{\sigma_w^2}}^{-1} \vI_D \\
+				\widehat{\vmu}_k	&\eq	\frac{1}{\sigma_x^2} \cdot \widehat{\vSigma}_k \set{\sum_{n = 1}^N \E{z_{nk}} \para{\vx_n - \underset{k' \ne k}{\sum_{k' = 1}^K} \E{z_{nk'}} \E{\vw_{k'}}}}
+			\end{align*}
+
+		\end{qsubsection}
+
+		\begin{qsubsection}{\boldmath Update of $q(\vpi)$}
+
+			\begin{align*}
+				\logp{q(\pi_k)}	&\eq	\E[\vW, \vZ, \overline{\pi}_k]{\logp{\prob{\vX, \vTheta \pipe \vtheta}}} \\
+				&\eq	\E{\sum_{n = 1}^N z_{nk} \log{\pi_k} + \para{1 - z_{nk}} \log{1 - \pi_k} + \para{\frac{\alpha}{K} - 1} \log{\pi_k}} + constants
+			\end{align*}
+
+			Clearly, $q(\pi_k)$ is a Beta distribution. Hence, we can write
+			\begin{equation}
+				q(\pi_k)	\eq	\tfunc{Beta}{\walpha_k, \wbeta_k}
+			\end{equation}
+			where
+			\begin{align*}
+				\walpha_k	&\eq	\frac{\alpha}{K} + \sum_{n = 1}^N \E{z_{nk}} \\
+				\wbeta_k	&\eq	1 + N - \sum_{n = 1}^N \E{z_{nk}} \\
+			\end{align*}
+
+		\end{qsubsection}
+
+		Now, we can write the expectation terms for all variables.
+
+		\begin{qsubsection}{Expectations}
+
+			\begin{align*}
+				\E{z_nk}				&\eq	\wpi_{nk} \\
+				\E{\vw_k}				&\eq	\widehat{\vmu}_k \\
+				\E{\tr{\vw_k} \vw_k}	&\eq	\E{\trace{\vw_k \tr{\vw_k}}} \\
+				&\eq	\trace{\widehat{\vSigma}_k + \widehat{\vmu}_k \tr{\widehat{\vmu}_k}} \\
+				&\eq	\trace{\widehat{\vSigma}_k} + \tr{\widehat{\vmu}_k} \widehat{\vmu}_k \\
+				\E{\log{\pi_k}}			&\eq	\func{\psi}{\walpha} - \func{\psi}{\walpha_k + \wbeta_k} \\
+				\E{\log{1 - \pi_k}}		&\eq	\func{\psi}{\wbeta} - \func{\psi}{\walpha_k + \wbeta_k}
+			\end{align*}
+
+			I have referred to \href{https://stats.stackexchange.com/questions/241993/pdf-of-y-logx-when-x-is-beta-distributed-the-expected-value-of-y/242020}{StackOverflow} for the expectation of $\log{\pi_k}$. For the last equality, we just need to realize that if $\pi$ is a beta distribution with parameters $\alpha$ and $\beta$, then $1 - \pi$ is also a beta distribution with parameters $\beta$ and $\alpha$.
+
+		\end{qsubsection}
+
+		I have given the final and complete algorithm in Algorithm \hyperlink{algo:3}{3}.
+
+		\begin{algo}[0.9\textwidth]{Variation Inference}
+
+			\bt{Input:} Input data $\vX$ and hyper-paramters $\alpha$, $\sigma_x^2$ and $\sigma_w^2$ \sbr
+
+			\bt{Output:} Approximate Posterior $q(\vW, \vZ, \vpi)$ \sbr
+
+			\bt{Steps:}
+			\begin{enumerate}
+				\item Initialize $q(z_{nk}) = \tfunc{Bernoulli}{z_{nk} \pipe \wpi_{nk}^{(0)}}$ for all $n \in \brac{N}$ and $k \in \brac{K}$
+				\item For $t = 0, 1 \dots T - 1$
+					\begin{enumerate}
+						\item Update $q(\vpi)$ as
+							\begin{align*}
+								\qforall k \in \brac{K}, \hspace{1cm} \walpha_k^{(t + 1)}	&\eq	\frac{\alpha}{K} + \sum_{n = 1}^N \wpi_{nk}^{(t)} & \hspace{3cm} & \\
+								\wbeta_k^{(t + 1)}	&\eq	N + 1 - \sum_{n = 1}^N \wpi_k^{(t)} \\
+								q(\pi_k)	&\eq	\tfunc{Beta}{\walpha_k^{(t + 1)}, \wbeta_k^{(t + 1)}}
+							\end{align*}
+						\item Update $q(\vW)$ as
+							\begin{enumerate}
+								\item For $n = 1 \dots N$, compute
+									\begin{align*}
+										\vdelta_n	&\eq	\sum_{k = 1}^K \wpi_{nk}^{(t)} \cdot \widehat{\vmu}_k^{(t)} &&
+									\end{align*}
+								\item For $k = 1 \dots K$, do
+									\begin{align*}
+										\qforall n \in \brac{N}, \quad \vdelta_n	&\eq	\vdelta_n - \wpi_{nk}^{(t)} \cdot \widehat{\vmu}_{k}^{(t)} \\
+										\widehat{\vSigma}_k^{(t + 1)}	&\eq	\para{\frac{1}{\sigma_x^2} \sum_{n = 1}^N \wpi_{nk}^{(t)} + \frac{1}{\sigma_w^2}}^{-1} \vI_D \\
+										\widehat{\vmu}_k^{(t + 1)}	&\eq	\frac{1}{\sigma_x^2} \cdot \widehat{\vSigma}_k^{(t + 1)} \set{\sum_{n = 1}^N \wpi_{nk}^{(t)} \para{\vx_n - \vdelta_n}} && \\
+										q(\vw_k)	&\eq	\ND{\widehat{\vmu}_k^{(t + 1)}, \widehat{\vSigma}_k^{(t + 1)}} \\
+										\qforall n \in \brac{N}, \quad \vdelta_n	&\eq	\vdelta_n + \wpi_{nk}^{(t)} \cdot \widehat{\vmu}_{k}^{(t + 1)} \\
+									\end{align*}
+							\end{enumerate}
+						\item Update $q(\vZ)$ as
+							\begin{align*}
+								\qforall n \in \brac{N}, k \in \brac{K}, \quad \wpi_{nk}	&\eq	\frac{\texp{\gamma_{nk}}}{1 + \texp{\gamma_{nk}}} && \\
+								q(z_{nk})	&\eq	\tfunc{Bernoulli}{\wpi_{nk}^{(t + 1)}}
+							\end{align*}
+							where $\gamma_{nk}$ is computed as in equation \ref{eq:q4-gamma}
+					\end{enumerate}
+				\item Return $q(\mu, \tau) = q(\mu) q(\tau) = \ND{\mu \spipe \mu_N^{(T)}, {\lambda_N^{(T)}}^{-1}} \tfunc{Gamma}{\tau \pipe a_N^{(T)}, b_N^{(T)}}$
+			\end{enumerate}
+
+		\end{algo}
+
+	\end{qsection}
+
+\end{question}
 
 \end{document}
-
-
-
