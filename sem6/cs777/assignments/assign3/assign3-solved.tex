@@ -1,0 +1,334 @@
+\documentclass{article}
+
+\usepackage{puru}
+
+\setcoursetitle{CS777: Statistical and Algorithmic Learning Theory}
+\setassigncode{3}
+\setauthname{Gurpreet Singh}
+\setauthroll{150259}
+\setheaddate{April 20, 2018}
+\setstartnewpage{TRUE}
+
+\newcommand{\x}[1]{\vx^{#1}}
+\newcommand{\xs}{\vx^{\ast}}
+
+\newcommand{\gf}[2][]{\nabla \func[#1]{f}{\x{#2}}}
+\renewcommand{\gg}[2][]{\nabla \func[#1]{g}{\x{#2}}}
+
+\begin{document}
+
+\begin{question}
+
+	\begin{qpart}{1}
+
+		We have
+		\begin{align*}
+			f(\vx) \eq \vc + \dotp{\vb}{\vx} + \frac{1}{2} \tr{\vx} \vA \vx
+		\end{align*}
+		where $\vA$ is symmetric.
+
+		The objective $\tr{\vx} \vA \vx$ would be convex if $\vA \succeq \vzero$. This suggests us that we could add a diagonal matrix with large enough diagonal elements to $\vA$ to make the objective convex. In fact, adding the matrix $\abs{\lambda_{\text{min}}} \cdot \vI$ to $\vA$ would make the matrix surely semi-positive definitive, since the eigenvalues of this matrix will be greater than $\lambda_{\text{min}} + \abs{\lambda_{\text{min}}}$. Therefore, we can rewrite the objective as
+		\begin{align*}
+			f(\vx) &\eq \vc + \dotp{\vb}{\vx} + \frac{1}{2} \tr{\vx} \para{\vA + \lambda \cdot \vI - \lambda \cdot \vI} \vx \\
+		&\eq \vc + \dotp{\vb}{\vx} + \frac{1}{2} \tr{\vx} \para{\vA + \lambda \cdot \vI} \vx - \frac{\lambda}{2} \tr{\vx} \vx
+		\end{align*}
+		where $\lambda \ge \abs{\lambda_{\text{min}}(\vA)}$.
+
+		Since adding linear terms does not hurt the convexity of any function, we can write this as
+		\begin{align*}
+			f(\vx) \eq g(\vx) - h(\vx)
+		\end{align*}
+		where
+		\begin{align*}
+			g(\vx) &\eq \vc + \dotp{\vb}{\vx} + \frac{1}{2} \tr{\vx} \para{\vA + \lambda \cdot \vI} \vx \\
+			h(\vx) &\eq \frac{\lambda}{2} \tr{\vx} \vx \\
+		\end{align*}
+
+		Since both the objectives $g$ and $h$ are convex, we can say that the objective $f$ is a DC function.
+
+	\end{qpart}
+
+	\begin{qpart}{2}
+
+		The update step of DCA can be written as
+		\begin{align*}
+			\vx^{t + 1} \eq \argmin{\vx} g(\vx) - \dotp{\nabla h(\vx^t)}{\vx}
+		\end{align*}
+
+		Due to the presence of $\argmin$, we are free to add any constants to the above optimization problem. Hence, the above objective is the same as
+		\begin{align*}
+			\vx^{t + 1} &\eq \argmin{\vx} g(\vx) - \dotp{\nabla h(\vx^t)}{\vx} + \dotp{\nabla h(\vx^t)}{\vx^t} - h(\vx^t) \\
+			&\eq \argmin{\vx} g(\vx) - \para{h(\vx^t) + \dotp{\nabla h(\vx^t)}{\vx - \vx^t}}
+		\end{align*}
+
+		Due to the convexity of the function $h$, we have
+		\begin{align*}
+			\qforall \vx \in \bR^d, \quad g(\vx) - \para{h(\vx^t) + \dotp{\nabla h(\vx^t)}{\vx - \vx^t}} \qge g(\vx) - h(\vx)
+		\end{align*}
+		Hence, we could say that the LHS in the above statement is a Majorization of the term on the RHS (the objective function). Hence, we are essentially minimizing the majorization of the objective function in each iteration, which is the idea of the MajMin Algorithm.
+
+	\end{qpart}
+
+	\begin{qpart}{3, 4}
+
+		Consider the update step of DCA. Since adding a linear term to a convex function does not hurt the convexity of the function, we know that $g(\vx) - \dotp{\vz^{t + 1}}{\vx}$ is convex, since $g(\vx)$ is convex.
+
+		Also, since $g(\vx)$ is differentiable at all points, its derivative will exist for all $\vx \in \bR$ and the differential will be continuous. This suggests that we can differentiate this function and set the derivative to zero in order to compute the optimal point.
+
+		Hence, the solution to $\argmin{\vx} g(\vx) - \dotp{\vz^{t + 1}}{\vx}$ is given by
+		\begin{align*}
+			\nabla \set{g(\vx) - \dotp{\vz^{t + 1}}{\vx}} &\eq 0 \\
+			\implies \nabla g(\vx) &\eq \vz^{t + 1}
+		\end{align*}
+
+		This will be true iff there exists a solution for the above expression. Assume there in fact does exist a solution. Then, we can say that the update step of DCA exactly mimics the update step for CCCP.
+
+		Therefore, if we initialize both the algorithms at the same starting point, say $\vx_1^0$ (for DCA) and $\vx_2^0$ (for CCCP) where $\vx_1^0 = \vx_2^0$, and if at the current time step $t$, the updates / points are equal, \ie $\vx_1^t = \vx_2^t$, then the subsequent update $\vx^{t + 1}$ would also be same as long as there exists a solution for the equation $\nabla g(\vx) = \nabla h(\vx^t)$.
+
+		Suppose at some time step, might even be the first, the solution to the above expression does not exist. At such a point, there are only two cases under which this can happen. These cases are discussed below.
+
+		\begin{note}
+			$\nabla h_i(\vx)$ represents the $i$\tth coordinate of the derivative of $h$ at point $\vx$.
+		\end{note}
+
+		\begin{enumerate}[label={}]
+			\ditem[Case 1] $\qexists i \in \brac{d}$ such that $\nabla h_i(\vx^t) < \min_{\vx} \nabla g_i(\vx)$
+
+				If this is the case, then there will be no solution to $\nabla g(\vx) = \nabla h(\vx^t)$. However, in this case, the difference of the function diverges as we decrease the value of the $i$\tth coordinate of $\vx$. That is, as we decrease the value of $\vx_i$, the value of the function $f$ decreases (because of positive gradient), and therefore the minimum is achieved at negative infinity, or we can say no solution exists for the objective function.
+
+			\ditem[Case 2] $\qexists i \in \brac{d}$ such that $\nabla h_i(\vx^t) > \max_{\vx} \nabla g_i(\vx)$
+
+			This case is similar to the previous case, but instead of the minimum achieved at negative infinity, the minimum would be achieved at positive infinity. However, even in this case, we can conclude that no finite solution exists to the minimization object.
+		\end{enumerate}
+
+		Therefore, the answer for Part 3 would be to conclude that no finite solution exists. This case is also similar to DCA since for DCA, we would keep on iterating until we (theoretically) reach positive or negative infinity, since the gradient's $i$\tth coordinate will remain positive and negative respectively, no matter what the updates (because of convexity of $h$). Hence, even in that case, our ultimate conclusion would be that no solution exists, or rather no finite solution exists. This also proves that the two algorithms are in fact essentially the same.
+
+	\end{qpart}
+
+\end{question}
+
+\begin{question}
+
+	A brief sketch of the algorithm is given in Algorithm \hyperlink{algo:1}{1}
+
+	\begin{algo}[0.9\textwidth]{A single Pixel Camera}
+
+		\begin{enumerate}[label=\bt{\arabic*.}]
+			\ditem[Design Matrix]
+
+				Sample each entry of Design Matrix $\vA$ from a Normal Gaussian.
+
+				\hspace{2em} $\vA = \tr{\brac{\tr{\va_1}, \tr{\va_2} \dots \tr{\va_k}}} \sim \cN^{k \times d}\para{0, 1}$
+
+			\ditem[Sparse Recovery]
+
+			\begin{enumerate}
+				\item Recover the sparse vector $\hat{\vx}$ using the Iterative Hard-Thresholding (IHT) Algorithm.
+				\item Compute the original vector $\vx$ as $\vx = \tr{\vF} \hat{\vx}$
+			\end{enumerate}
+		\end{enumerate}
+
+	\end{algo}
+
+	For the given algorithm, I have assumed that the matrix $\vF$ for Fourier transforming is known or given to us. The details of the algorithm and its convergence analysis is given in the following sections.
+
+	\begin{enumerate}[label=\bt{\arabic*.}]
+		\ditem[Estimating the Weights / Design Matrix]
+
+			The design matrix $\vA$ is given as the matrix with the weights $\set{\va_1, \va_2 \dots \va_k}$ as the rows of the matrix. This design matrix is used to compute the encoding of each pixel as required by the system. More specifically, the encoding $\vy$ is given as $\vy = \vA \vx$. From the concepts of sparse recovery, we know that a suitable Design Matrix must satisfy the Restricted Isometry Property (RIP), however deterministically generating such a matrix is NP-Hard, therefore, we sample this matrix instead.
+
+			I have used Theorem 7.1 and the settings described in \cite{puru}, with the sampling of the design matrix as an independent sampling of each of the entry from a Normal Gaussian, \ie $\qforall i \in \brac{k} j \in \brac{d}$, $\vA_{i, j} \sim \ND{0, 1}$.
+
+			From Theorem 7.1 \citep{puru} and the following details, we have that the matrix sampled, \ie $\vA$ satisfies the Restricted Isometry Property (RIP) at order $c$ with constant $\delta$ with high probability, \ie at least $1 - 2 \texp{- \Omega(d)}$, given $c < k / 2$ and $d \ge \func{\Omega}{\frac{c}{\delta^2} \logp{\frac{k}{c}}}$.
+
+		\ditem[Sparse Recovery of the original vectors]
+
+			Assuming we have sampled a design matrix which satisfies the RIP property at order $c$, we can now use the Iterative Hard-Thresholding (Algorithm \hyperlink{algo:2}{2}) \citep{puru, iht} to recover the sparse vectors.
+
+			\begin{algo}[0.9\textwidth]{Iterative Hard-Thresholding}
+				\begin{algorithm}[H]
+					\IncMargin{1em}
+					\Indm
+					\KwIn{Design Matrix $\vA$, encoding $\vy$, step length $\eta$ and projection sparsity level $l$ \sbr}
+					\KwOut{Sparse vector $\hat{\vx}$}
+					\Indp
+					Initialize $\vx^0 \la \vzero$
+
+					\For{$t = 0, 1 \dots T$}{
+						$\vz^{t + 1} \la \vx^{t} - \eta \cdot \tr{\vA} \para{\vA \vx^t - \vy} $
+
+						$\vx^{t + 1} \la \func[\cB_0(l)]{\Pi}{\vz^{t + 1}}$
+					}
+
+					return $\hat{\vx} = \vx^{T}$
+				\end{algorithm}
+
+			\end{algo}
+
+			Using the IHT Algorithm, we can generate the sparse vector $\hat{\vx}$ which can be then converted to the original vector using Inverse Fourier Transform (assuming the matrix $\vF$) is known.
+
+			We can use the standard convergence bound for the IHT Algorithm given in \cite{iht} as well as \cite{puru}. The bound is stated below.
+
+			For a design matrix $\vA$ which satisfies RIP at order $c$ and constant $\delta < 1 / 2$, the IHT Algorithm, if run with $\eta = 1$ and projection sparsity level $l = c / 3$ ensures $\norm{\vx^t - \vx}_2 \le \para{2 \delta}^t \norm{\vx^0 - \vx}_2^2$. Therefore, we have guaranteed convergence (for large number of iterations).
+	\end{enumerate}
+
+	From the above analysis, we can say that with probability at least $1 - \texp{- \Omega(d)}$, and parameters $c$ and $\delta$ which satisfy $c < k / 2$ and $d \ge \func{\Omega}{\frac{c}{\delta^2}\logp{\frac{k}{c}}}$, our algorithm, after $T$ steps of the IHT algorithm will output a sparse vector $\hat{\vx}$ such that $\norm{\hat{\vx} - \vF \vx} \le \para{2 \delta}^{T} \norm{\hat{\vx}^0 - \vF \vx}$. We can then approximate the original vector $\vx \qapprox \tr{\vF} \hat{\vx}$.
+
+\end{question}
+
+\begin{question}
+
+	We want to minimize $h(x) : \bR^d \ra \bR$ where
+	\begin{align*}
+		h(\vx) \eq \max \set{f(\vx), g(\vx)}
+	\end{align*}
+	where $f, g : \bR^d \ra \bR$ are convex functions.
+
+	\begin{claim}
+		The minimization objective, $h(\vx)$ is convex.
+
+		\begin{proof}
+			Consider two points $\vx, \vy \in \bR$, then from the convexity of the functions $f$ and $g$, we have
+			\begin{align*}
+				\qforall \alpha \in \brac{0, 1}, \quad & f(\alpha \cdot \vx + (1 - \alpha) \cdot \vy) \qle \alpha \cdot f(\vx) + (1 - \alpha) \cdot f(\vy) \\
+				& g(\alpha \cdot \vx + (1 - \alpha) \cdot \vy) \qle \alpha \cdot g(\vx) + (1 - \alpha) \cdot g(\vy)
+			\end{align*}
+
+			Since $\alpha$ and $1 - \alpha$ are positive, we have
+			\begin{align*}
+				f(\alpha \cdot \vx + (1 - \alpha) \cdot \vy) &\qle \alpha \cdot f(\vx) + (1 - \alpha) \cdot f(\vy) \\
+				&\qle \alpha \cdot h(\vx) + (1 - \alpha) \cdot h(\vy)
+			\end{align*}
+			and
+			\begin{align*}
+				g(\alpha \cdot \vx + (1 - \alpha) \cdot \vy) &\qle \alpha \cdot g(\vx) + (1 - \alpha) \cdot g(\vy) \\
+				&\qle \alpha \cdot h(\vx) + (1 - \alpha) \cdot h(\vy)
+			\end{align*}
+
+			Therefore, we have
+			\begin{align*}
+				h(\alpha \cdot \vx + (1 - \alpha) \cdot \vy) &\qle \alpha \cdot h(\vx) + (1 - \alpha) \cdot h(\vy) \\
+			\end{align*}
+		\end{proof}
+	\end{claim}
+
+	Since the objective is convex, we can use convex optimization techniques in order to minimize the given objective. I have chosen the method to be subgradient descent, with update step given as
+	\answer{
+	\begin{align*}
+			\x{t + 1} \eq \x{t} - \eta_t \cdot \vg^t
+		\end{align*}
+	}
+	where $\vg^t \ \in \ \partial h(\x{t})$
+
+	Suppose $\partial h(\vx)$ represents the set of subgradients at point $\vx \in \bR$, then using the definition of subgradients, $\qforall \vg^t \in \partial h(\x{t})$ we can write
+	\begin{align*}
+		h(\xs) \qge h(\x{t}) + \dotp{\vg^t}{\xs - \x{t}}
+	\end{align*}
+
+	We can now use the following properties discussed in class to obtain a bound on $\Phi_t$
+	\begin{property}
+		For any two vectors $\va, \vb \in \bR^d$,
+		\begin{equation}
+			\norm{\va + \vb}_2^2 - \norm{\va}_2^2 - \norm{b}_2^2	\oeq{a}	2\dotp{a}{b}	\oeq{b}	\norm{\va}_2^2 + \norm{b}_2^2 - \norm{\va - \vb}_2^2
+			\label{eq:dotp}
+		\end{equation}
+	\end{property}
+
+	Using property \hyperref[eq:dotp]{\ref*{eq:dotp}a}, we can write the above inequality as
+	\begin{align*}
+		h(\xs) - h(\x{t}) &\qge \frac{1}{2 \eta_t} \para{\norm{\xs - \x{t} + \eta_t \cdot \vg^t}_2^2 - \norm{\xs - \x{t}}_2^2 - \norm{\eta_t \cdot \vg^t}_2^2} \\
+		\implies h(\x{t}) - h(\xs) &\qle \frac{1}{2 \eta_t} \para{\norm{\xs - \x{t}}_2^2 + \norm{\eta_t \cdot \vg^t}_2^2 - \norm{\xs - \x{t} + \eta_t \cdot \vg^t}_2^2} \\
+		&\eq \frac{1}{2 \eta_t} \para{\norm{\xs - \x{t}}_2^2 + \norm{\eta_t \cdot \vg^t}_2^2 - \norm{\xs - \x{t+1}}_2^2}
+	\end{align*}
+
+	Adding for all $t = 0 \dots T$, we get
+	\begin{align*}
+		\sum_{t = 0}^T 2 \eta_t \para{h(\x{t}) - h(\xs)} &\qle \sum_{t = 0}^T \norm{\xs - \x{t}}_2^2 + \norm{\vg^t}_2^2 - \norm{\xs - \x{t+1}}_2^2 \\
+		&\qle \norm{\xs - \x{0}}_2^2 + T \norm{\vg^t}_2^2 \\
+		\implies \sum_{t = 0}^T \Phi_t &\qle \frac{1}{2 \eta_t} \norm{\xs - \x{0}}_2^2 + \frac{\eta_t}{2} \norm{\vg^t}_2^2
+	\end{align*}
+
+	Suppose if the subgradients are bounded, say by G, then for constant step length $\eta$, we can say
+	\begin{align*}
+		\implies \frac{1}{T} \sum_{t = 0}^T	\Phi_t	&\qle	\frac{1}{2 \eta \, T} \norm{\xs - \x{0}}_2^2 + \frac{\eta}{2} \cdot \sG^2
+	\end{align*}
+	Minimizing RHS with respect to $\eta$, we have
+	\begin{align*}
+		\frac{1}{T} \sum_{t = 1}^T \Phi_t	\qle	\frac{1}{\sqrt{T}} \norm{\xs - \x{0}}_2^2 \sG^2
+	\end{align*}
+
+	Note that the subgradients of the function $h$ at point $\vx \in \bR$ can be given by the subgradients of the functions $f$ or $g$ whichever is maximum at point $\vx$. Therefore, at every time step, in order to compute the subgradient, all we need is the subgradient of the maximum of the two functions at the time step, given that the gradients/subgradients of the functions $f$ and $g$ are bounded. This is given more formally below.
+
+	Define $\cS_f = \set{\vx \in \bR \pipe h(\vx) \eq f(\vx)}$, and similarly define $\cS_g$.
+
+	\begin{claim}
+		$\qforall \vx \in \cS_g$, $\qforall \vg \in \partial g(\vx) \implies \vg \in \partial h(\vx)$ and $\qforall \vx \in \cS_f$, $\qforall \vg \in \partial f(\vx) \implies \vg \in \partial h(\vx)$
+
+		\begin{proof}
+			At point $\vx \in \cS_g$, for any subgradient of $g(\vx)$, $\vg \in \partial g(\vx)$, from the definition of subgradients, we have $\qforall \vy \in \bR$,
+			\begin{align*}
+				g(\vy) \qge g(\vx) + \dotp{\vg}{\vy - \vx}
+			\end{align*}
+
+			Since $\vx \in \cS_g$, we know $h(\vx) = g(\vx)$ and from the definition of $h$, we have $\qforall \vy \in \bR$, $h(\vy) > g(\vy)$. Therefore, we can say $\vg$ is indeed a subgradient.
+
+			This can be similarly proved for $f$ and $\cS_f$
+		\end{proof}
+	\end{claim}
+
+	Since $\cS_g \bigcup \cS_f = \bR$, we have the subgradients at all points using the subgradients of $g$ and $f$.
+
+	Hence, we have found a convergence bound for the given objective using subgradient descent. More formally, for two convex functions $f, g : \bR^d \ra \bR$ with gradients and subgradients bounded by G, the regret bound using subgradient-descent for the objective $h(\vx) = \max \set{f(\vx), g(\vx)}$, using constant step length can be given as
+	\begin{align}
+		\frac{1}{T} \sum_{t = 1}^T \Phi_t	\qle	\frac{1}{\sqrt{T}} \norm{\xs - \x{0}}_2^2 \sG^2
+	\end{align}
+\end{question}
+
+\begin{question}
+
+	Suppose if we randomly sample some entries of the matrix $\vC$, with the coordinates given by the sample set $\cS$. Then we can wish to find a margin such that the sum of the productivity of land on both sides is as equal as possible.
+
+	Since the entries of the matrix are sparse, finding the margin is hard directly. What I propose is to complete the matrix (Matrix Completion) using Low-Rank Matrix Factorization, assuming that the matrix is actually low-rank, and then use this ``filled'' matrix for finding the best ``margin''. The sketch of the algorithm is given in Algorithm \hyperlink{algo:3}{3}.
+
+	\begin{algo}[0.9\textwidth]{Tale of Two Tracts of Land}
+
+		\begin{enumerate}
+			\item Sample $n$ coordinates uniformly i.i.d. from the complete set of coordinates $\brac{L} \times \brac{L}$
+			\item Find a factorization of the matrix $\vC = \vU \tr{\vV}$ using Alternating Minimization, minimizing the objective
+				\begin{align*}
+					\argmin{\vU \in \bR^{L \times k}, \vV \in \bR^{L \times k}} \sum_{(i, j) \in \cS} \norm{\tr{\vU_i} \vV_j  - \vC_{i, j}}
+				\end{align*}
+			\item Using $\vU$ and $\vV$, find the best margin which divides the matrix such that there is equal weight on each side of the margin. This is a deterministic step, where we fill the matrix completely and then find the best margin.
+		\end{enumerate}
+
+	\end{algo}
+
+
+	The matrix completion objective is solved using Alternating Minimization, as discussed in class, for which the aglgorithm is given in \hyperlink{algo:4}{4}.
+
+	\begin{algo}[0.9\textwidth]{AltMin for Matrix Completion}
+
+		\begin{algorithm}[H]
+			\IncMargin{1em}
+			\Indm
+			\KwIn{The sample data $\cS$ and $\sC$} \sbr
+			\KwOut{The estimates $\hat{\vU}$ and $\hat{\vV}$, which are the factors of the matrix} \sbr
+			\Indp
+			Initialize $\vU^0$
+
+			\For{$t = 0, 1 \dots T$}{
+				$\vV^{t + 1} \la \argmin{\vV \in \bR^{L \times k}} \sum_{(i, j) \in \cS} \norm{\tr{\vV_j} \vU_i^t  - \vC_{i, j}}$
+
+				$\vU^{t + 1} \la \argmin{\vV \in \bR^{L \times k}} \sum_{(i, j) \in \cS} \norm{\tr{\vU_i} \vV^{t + 1}_j  - \vC_{i, j}}$
+			}
+			return $\vU^{t + 1}$, $\vV^{t + 1}$
+		\end{algorithm}
+
+	\end{algo}
+
+\end{question}
+
+\bibliography{assign3-solved}
+\bibliographystyle{unsrtnat}
+
+\end{document}

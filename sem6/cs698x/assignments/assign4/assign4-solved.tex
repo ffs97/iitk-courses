@@ -1,0 +1,437 @@
+\documentclass{article}
+
+\usepackage{assign}
+
+\setcoursetitle{Topics in Probabilistic Modelling and Inference}
+\setassigncode{4}
+\setauthname{Gurpreet Singh}
+\setauthroll{150259}
+\setheaddate{April 20, 2018}
+\setstartnewpage{TRUE}
+
+\begin{document}
+\makeheader
+
+\begin{question}
+
+	Firstly, we need to write the conditional posteriors, and show that the distribution is conditionally conjugate, which is the required condition for Gibbs Sampling.
+
+	Using Bayes Rule, we can write,
+	\begin{align*}
+		\prob{\mu \pipe \vx, \tau}	&\eq	\frac{\prob{\vx \pipe \mu, \tau} \prob{\mu}}{\int \prob{\vx \pipe \mu, \tau} \prob{\mu} \id \mu} \\
+		&\qprop	\prob{\vx \pipe \mu, \tau} \prob{\mu} \\
+		&\eq	\ND{\vx \pipe \mu, \tau^{-1}} \cdot \ND{\mu \pipe \mu_o, s_o}
+	\end{align*}
+
+	Using Gaussian properties (from \href{http://tinyurl.com/on38cle}{http://tinyurl.com/on38cle}), we can directly write the posterior as
+	\begin{equation}
+		\prob{\mu \pipe \vx, \tau} \eq \ND{\mu \pipe \mu_N(\tau), s_N(\tau)}
+		\label{eq:q1-1}
+	\end{equation}
+	where
+	\begin{align*}
+		\mu_N(\tau)	&\eq	\frac{\mu_o + s_o \tau \sum_{n = 1}^N x_n}{1 + s_o N \tau} \\
+		s_N(\tau)	&\eq	\frac{1}{s_o} + N \tau
+	\end{align*}
+
+	Similarly, we can find the posterior for the variance paramter
+	\begin{align*}
+		\prob{\tau \pipe a, b} \qprop \ND{\vx \pipe \mu, \tau} \cdot \tfunc{Gamma}{\tau \pipe a, b}
+	\end{align*}
+
+	Since this is again a conjugate pair, we can write the form of the posterior (from \href{http://tinyurl.com/on38cle}{http://tinyurl.com/on38cle}) as follows
+	\begin{equation}
+		\prob{\tau \pipe \vx, \mu} \eq \tfunc{Gamma}{a_N(\mu), b_N(\mu)}
+		\label{eq:q1-2}
+	\end{equation}
+	where
+	\begin{align*}
+		a_N(\mu) &\eq a + \frac{N}{2} \\
+		b_N(\mu) &\eq b + \frac{\sum_{n = 1}^N \para{x_n - \mu}^2}{2}
+	\end{align*}
+
+	\begin{note}
+		Sampling from both Gaussian and Beta distributions is easy, and therefore there need not be any intermediate steps.
+	\end{note}
+
+	We can now write the Gibbs Sampling algorithm as given in Algorithm \hyperlink{algo:1}{1}.
+
+	\begin{algo}[0.9\textwidth]{Gibbs Sampler for Univariate Gaussian}
+
+		\bt{Input:} \quad Conditional Posteriors for parameters $(\mu, \tau)$ and set of data points $\vx = \brac{x_1 \dots x_N}$ \sbr
+
+		\bt{Output:} \quad Set of samples $\set{(\mu^{(t)}, \tau^{(t)})}_{t = T_o}^T$ \sbr
+
+		\bt{Steps:}
+
+		\begin{enumerate}[label=\bt{\theenumi.}]
+			\item Initialize an estimate $(\mu^{(0)}, \tau^{(0)})$
+			\item For $t = 1, 2 \dots T$, \sbr
+
+				\begin{addmargin}{1.2em}
+
+					Sample $\mu^{(t + 1)} \sim \prob{\mu \pipe \func[N]{\mu}{\tau^{(t)}}, \func[N]{s}{\tau^{(t)}}}$ ( \hyperlink{eq:q1-1}{Equation 1} )
+
+					Sample $\tau^{(t + 1)} \sim \prob{\mu \pipe \func[N]{a}{\mu^{(t + 1)}}, \func[N]{b}{\mu^{(t + 1)}}}$ ( \hyperlink{eq:q1-2}{Equation 2} )
+
+				\end{addmargin}
+
+		\end{enumerate}
+
+	\end{algo}
+
+\end{question}
+
+\begin{question}
+
+	\begin{qpart}{A}
+		In order to generate a Gibbs sampler, we need to find the conditional posteriors for all the parameters $(\vbeta_k, \vtheta_d, z_{d, n})$.
+
+		\begin{note}
+			I have represented $\vz_{d, n}$ and $z_{d, n}$ as the one-hot representation and the cluster index respectively. Similarly for $\vw_{d, n}$ and $w_{d, n}$
+		\end{note}
+
+		\begin{note}
+			$\vTheta$ represents the set $\set{\vtheta_d}_{d = 1}^D$ and $\vB$ represents $\set{\vbeta_k}_{k = 1}^K$
+		\end{note}
+
+		\begin{enumerate}
+			\ditem[Conditional Posterior for $\vbeta_k$]
+
+				Using Bayes Rule, we have
+				\begin{align*}
+					\prob{\vbeta_k \pipe \vW, \vbeta_{-k}, \vZ, \vTheta} \qprop \prob{\vW \pipe \vbeta_k, \vbeta_{-k}, \vZ} \prob{\vbeta_k}
+				\end{align*}
+
+				Since only the words where $z_{d,n} = k$ will depend on $\vbeta_k$, we can write this as
+				\begin{align*}
+					\prob{\vbeta_k \pipe \vW, \vbeta_{-k}, \vZ, \vTheta} \qprop \underset{z_{d, n} = k}{\prod_{d, n}} \prob{w_{d, n} \pipe \vbeta_k} \prob{\vbeta_k}
+				\end{align*}
+
+				Since Multinoulli and Dirichlet are conjugate priors, from the standard results, we can write the conditional posterior as
+				\begin{equation}
+					\prob{\vbeta_k \pipe \vW, \vbeta_{-k}, \vZ, \vTheta} \eq \tfunc{Dirichlet}{\eta_{k, 1} \dots \eta_{k, V}}
+				\end{equation}
+				where
+				\begin{align*}
+					\eta_{k, v} &\eq \eta + \sum_{d, n} \is{z_{d, n} = k} \is{w_{d, n} = v} \\
+					&\eq \eta + \sum_{d, n} \vz_{d, n}^{k} \vw_{d, n}^{v}
+				\end{align*}
+
+			\ditem[Conditional Posterior for $\vtheta_d$]
+
+				Using Bayes Rule, we have
+				\begin{align*}
+					\prob{\vtheta_d \pipe \vW, \vtheta_{-d}, \vZ, \vB} \qprop \prob{\vW \pipe \vtheta_k, \vtheta_{-d}, \vZ, \vB} \prob{\vZ \pipe \vtheta_d, \vtheta_{-d}} \prob{\vtheta_d}
+				\end{align*}
+
+				The likelihood, given $\vZ$ and $\vB$ is independent of $\vTheta$. Therefore, we have
+				\begin{align*}
+					\prob{\vtheta_d \pipe \vW, \vtheta_{-d}, \vZ, \vB} &\qprop \prob{\vZ \pipe \vtheta_d, \vtheta_{-d}} \prob{\vtheta_d} \\
+					&\qprop	\prod_{n} \prob{z_{d, n} \pipe \vtheta_d} \prob{\vtheta_d} \\
+					&\eq	\prod_{n} \tfunc{Multinoulli}{z_{d, n} \pipe \vtheta_d} \tfunc{Dirichlet}{\vtheta_d \pipe \alpha \dots \alpha}
+				\end{align*}
+
+				This is again a conjugate prior, and therefore we can directly write the conditional posterior as
+				\begin{equation}
+					\prob{\vtheta_d \pipe \vW, \vtheta_{-d}, \vZ, \vB} \eq \tfunc{Dirichlet}{\vtheta_d \pipe \alpha_{d, 1} \dots \alpha_{d, K}}
+				\end{equation}
+				where
+				\begin{align*}
+					\alpha_{d, k} \eq \alpha + \sum_{n} \vz_{d, n}^{k}
+				\end{align*}
+
+			\ditem[Conditional Posterior for $z_{d, n}$]
+
+				Since only the $n$\tth word of the $d$\tth document depends on $z_{d, n}$, using Bayes Rule, we can write
+				\begin{align*}
+					\prob{z_{d, n} \pipe \vW, z_{- d, n}, \vTheta, \vB} \qprop \prob{w_{d, n} \pipe z_{d, n}, \vB} \prob{z_{d, n} \pipe \vtheta_d} \\
+					\eq \tfunc{Multinomial}{w_{d, n} \pipe \vbeta_{z_{d, n}}} \tfunc{Multinoulli}{\vtheta_d} \\
+					\eq \prod_{k} \para{\beta_{k, w_{d, n}}}^{\vz_{d, n}^{k}} \prod_{k} \para{\theta_{d, k}}^{\vz_{d, n}^{k}}
+				\end{align*}
+
+				Therefore, we have the conditional posterior distribution of $z_{d, n}$ as
+				\begin{equation}
+					\prob{z_{d, n} \pipe \vW, z_{- d, n}, \vTheta, \vB}  \eq \tfunc{Multinoulli}{\gamma_{d, n}^1 \dots \gamma_{d, n}^K}
+				\end{equation}
+				where
+				\begin{align*}
+					\gamma_{d, n}^k \eq \frac{\beta_{k, w_{d, n}} \cdot \theta_{d, k}}{\sum_{k' = 1}^K \para{\beta_{k', w_{d, n}} \cdot \theta_{d, k'}}^{\vz_{d, n}^{k'}}}
+				\end{align*}
+
+		\end{enumerate}
+
+		We can now give the complete Gibbs Sampler as in Algorithm \hyperlink{algo:2}{2}
+
+		\begin{algo}[0.9\textwidth]{Gibbs Sampler for LDA Model}
+
+			\bt{Input:} \quad Conditional Posteriors for parameters $(\vbeta_k, \vtheta_d, z_{d, n})$ and set of words $\set{w_{d, n}}_{d, n}$ \sbr
+
+			\bt{Output:} \quad Set of samples $\set{\set{(\vbeta_k^{(t)}, \vtheta_d^{(t)}), z_{n, d}^{(t)}}_{d, n, k}}_{t = T_o}^T$ \sbr
+
+			\bt{Steps:}
+
+			\begin{enumerate}[label=\bt{\arabic*.}]
+				\item For all $k \in \brac{K}$, $d \in \brac{D}$, $n \in \brac{N}$, initialize the estimates as $(\vbeta_k^{(0)}, \theta_d^{(0)}, z_{n, d}^{(0)})$
+				\item For $t = 1, 2 \dots T$ \sbr
+
+					\begin{addmargin}{1.2em}
+
+						\begin{enumerate}[label=\bt{\alph*.}]
+							\item For all $k \in \brac{K}$, sample $\vbeta_k$ as
+								\begin{align*}
+									\set{\vbeta_k}^{(t + 1)} \sim \tfunc{Dirichlet}{\set{\eta_{k, 1}}^{(t + 1)} \dots \set{\eta_{k, V}}^{(t + 1)}}
+								\end{align*}
+								where
+								\begin{align*}
+									\qforall v \in \brac{V}, \quad \set{\eta_{k, v}}^{(t + 1)} \eq \eta + \sum_{d, n} \set{\vz_{d, n}^k}^{(t)} \vw_{d, n}^k
+								\end{align*}
+
+							\item For all $d \in \brac{D}$, sample $\vtheta_d$ as
+								\begin{align*}
+									\set{\vtheta_d}^{(t + 1)} \sim \tfunc{Dirichlet}{\set{\alpha_{d, 1}}^{(t + 1)} \dots \set{\alpha_{d, K}}^{(t + 1)}}
+								\end{align*}
+								where
+								\begin{align*}
+									\qforall k \in \brac{K}, \quad \set{\alpha_{d, k}}^{(t + 1)} \eq \alpha + \sum_{n} \set{\vz_{d, n}^k}^{(t)}
+								\end{align*}
+
+							\item For all $d \in \brac{D}$, $n \in \brac{N}$, sample $z_{d, n}$ as
+								\begin{align*}
+									\set{z_{d, n}}^{(t + 1)} \sim \tfunc{Multinoulli}{\set{\gamma_{d, n}^1}^{(t + 1)} \dots \set{\gamma_{d, n}^K}^{(t + 1)}}
+								\end{align*}
+								where
+								\begin{align*}
+									\qforall k \in \brac{K}, \quad \set{\gamma_{d, n}^k}^{(t + 1)} \eq \frac{\set{\beta_{k, w_{d, n}}}^{(t + 1)} \cdot \set{\theta_{d, k}}^{(t + 1)}}{\sum_{k' = 1}^K \para{\set{\beta_{k', w_{d, n}}}^{(t + 1)} \cdot \set{\theta_{d, k'}}^{(t + 1)}}^{\set{\vz_{d, n}^{k'}}^{(t + 1)}}}
+								\end{align*}
+						\end{enumerate}
+
+					\end{addmargin}
+
+				\item Return $\set{\set{(\vbeta_k^{(t)}, \vtheta_d^{(t)}), z_{n, d}^{(t)}}_{d, n, k}}_{t = T_o}^T$
+
+			\end{enumerate}
+
+		\end{algo}
+
+	\end{qpart}
+
+	\begin{qpart}{B}
+
+		\begin{enumerate}[label=\bt{\theenumi.}]
+			\ditem[Mean of conditional posterior of $\vbeta_k$]
+
+				We can use properties of the Dirichlet distribution to write the mean of $\vbeta_k$ using the conditional posterior as
+				\begin{align*}
+					\E{\vbeta_k} &\eq \frac{1}{\sum_{v = 1}^V \eta_{k, v}} \veta_k \\
+					&\eq \frac{1}{V \eta + \sum_{d, n} \vz_{d, n}^k} \veta_k
+				\end{align*}
+
+				The intuition behind this is that all other parameters fixed, we compute the posterior such that the probabilities are best representative of the words we expect to be generated for some topic, and therefore expected value of each topic probability is directly proportional to the number of times a word has occurred in that topic, along with some inclination to the prior.
+				The expectation is similar to what we see in a standard Mixture Model case.
+
+			\ditem[Mean of conditional posterior of $\vtheta_d$]
+
+				Similar to previous case
+				\begin{align*}
+					\E{\vtheta_d} &\eq \frac{1}{\sum_{k = 1}^K \alpha_{d, k}} \valpha_d \\
+					&\eq \frac{1}{N_d + K \alpha} \valpha_d
+				\end{align*}
+
+				The intuition behind this is that all other parameters fixed, we compute the posterior such that the probabilities are best representative of the topics, and therefore expected value of each topic probability is directly proportional to the population of that topic, along with some inclination to the prior.
+
+		\end{enumerate}
+
+	\end{qpart}
+
+\end{question}
+
+\begin{question}
+
+	\begin{qpart}{A}
+
+		We can write the marginal distribution as
+		\begin{align*}
+			\prob{\vZ \pipe \alpha} &\eq \int_{\vpi} \prob{\vZ, \vpi \pipe \alpha} \id \vpi \\
+			&\eq	\int_{\vpi} \prob{\vZ \pipe \vpi} \prob{\vpi \pipe \alpha} \id \vpi \\
+			&\eq	\prod_{k = 1}^K \int_{\pi_k} \prob{\vZ_{:, k} \pipe \pi_k} \prob{\pi_k \pipe \alpha} \id \pi_k \\
+			&\eq	\prod_{k = 1}^K \int_{\pi_k} \set{\prod_{n = 1}^N \prob{Z_{n, k} \pipe \pi_k}} \prob{\pi_k \pipe \alpha} \id \pi_k \\
+			&\eq	\prod_{k = 1}^K \frac{1}{\tfunc{B}{\alpha / K, 1}} \int_{\pi_k} \set{\prod_{n = 1}^N \pi_k^{Z_{n, k}} \para{1 - \pi_k}^{1 - Z_{n, k}}} \pi_k^{\alpha / K - 1} \id \pi_k \\
+			&\eq	\prod_{k = 1}^K \frac{1}{\tfunc{B}{\alpha / K, 1}} \int_{\pi_k} \para{\pi_k}^{\sum_{n = 1}^N Z_{n, k} + \alpha / K - 1} \para{1 - \pi_k}^{N - \sum_{n = 1}^N Z_{n, k}} \id \pi_k \\
+			&\eq	\prod_{k = 1}^K \frac{1}{\tfunc{B}{\alpha / K, 1}} \tfunc{B}{\sum_{n = 1}^N Z_{n, k} + \alpha / K, N + 1 - \sum_{n = 1}^N Z_{n, k}}\ \times \nl \hspace{2.5cm} \int_{\pi_k} \tfunc{Beta}{\sum_{n = 1}^N Z_{n, k} + \alpha / K, N + 1 - \sum_{n = 1}^N Z_{n, k}} \id \pi_k \\
+		\end{align*}
+
+		Since the integrals will evaluate to 1, we have
+		\answer[0.8\textwidth]{
+			\begin{equation}
+				\prob{\vZ \pipe \alpha} &\eq	\prod_{k = 1}^K \frac{1}{\tfunc{B}{\alpha / K, 1}} \tfunc{B}{\sum_{n = 1}^N Z_{n, k} + \alpha / K, N + 1 - \sum_{n = 1}^N Z_{n, k}}
+				\label{eq:q3-1}
+			\end{equation}
+		}
+
+	\end{qpart}
+
+	\begin{qpart}{B}
+
+		We can write the desired quantity as
+		\begin{align*}
+			\prob{Z_{n, k} \pipe Z_{- n, k}, \alpha} &\eq \frac{\prob{\vZ \pipe \alpha}}{\prob{Z_{- n, k} \pipe \alpha}} \\
+			&\eq	\frac{\tfunc{B}{\sum_{n' = 1}^N Z_{n', k} + \alpha / K, N + 1 - \sum_{n' = 1}^N Z_{n', k}}}{\sum_{Z_{n', k} \in \set{0, 1}} \tfunc{B}{\sum_{n' = 1}^N Z_{n', k} + \alpha / K, N + 1 - \sum_{n' = 1}^N Z_{n', k}}} \\
+			&\eq	\frac{\func{\Gamma}{\sum_{n' = 1}^N Z_{n', k} + \alpha / K} \func{\Gamma}{N + 1 - \sum_{n' = 1}^N Z_{n', k}}}{\sum_{Z_{n', k} \in \set{0, 1}} \func{\Gamma}{\sum_{n' = 1}^N Z_{n', k} + \alpha / K} \func{\Gamma}{N + 1 - \sum_{n' = 1}^N Z_{n', k}}} \\
+		\end{align*}
+
+		Suppose $S_{n, k} = \underset{n \ne n'}{\sum_{n = 1}^N} Z_{n', k}$. Using the property that $\Gamma(a) = (a - 1) \Gamma(a - 1)$, then we can write
+		\begin{align*}
+			\prob{Z_{n, k} = 0 \pipe Z_{- n, k}, \alpha} &\eq	\frac{1}{1 + \frac{N - S_{n, k}}{S_{n, k} + \alpha / K}} \\
+			&\eq	\frac{S_{n, k} + \alpha / K}{N + \alpha / K}
+		\end{align*}
+
+		Therefore, we can write the distribution as a Bernoulli, given as follows.
+		\answer[0.7\textwidth]{
+			\begin{equation}
+				\prob{Z_{n, k} \pipe Z_{- n, k}, \alpha} \eq \tfunc{Bernoulli}{\frac{S_{n, k} + \alpha / K}{N + \alpha / K}}
+			\end{equation}
+		}
+
+		Clearly, as $K \ra \infty$,
+		\answer[0.7\textwidth]{
+			\begin{align*}
+				\prob{Z_{n, k} \pipe Z_{- n, k}, \alpha} \eq \tfunc{Bernoulli}{\frac{S_{n, k}}{N}}
+			\end{align*}
+		}
+
+	\end{qpart}
+
+	\begin{qpart}{C}
+
+		We can write the number of ones in a column as the sum of the entries in that column (since each entry is a Bernoulli Random Variable). Suppose $S_k$ denotes the number of ones in column $k$, \ie $S_k = \sum_{n = 1}^N Z_{n, k}$, we can write
+		\begin{align*}
+			\E{S_k \pipe \alpha} &\eq \E{\sum_{n = 1}^N Z_{n, k} \pipe \alpha}
+		\end{align*}
+
+		From the law of iterated expectations, we have
+		\begin{align*}
+			\E{S_k \pipe \alpha} &\eq \E{\E{\sum_{n = 1}^N Z_{n, k} \pipe \pi_k} \pipe \alpha} \\
+			&\eq \E{\sum_{n = 1}^N \E{Z_{n, k} \pipe \pi_k} \pipe \alpha} \\
+			&\eq \E{\sum_{n = 1}^N \pi_k \pipe \alpha} \\
+			&\eq \frac{\alpha \cdot N}{\alpha + K}
+		\end{align*}
+
+		Therefore the expected value of number of ones for column $k$ is given as
+		\answer{
+			\begin{align*}
+				\E{S_k} \eq \frac{\alpha \cdot N}{\alpha + K}
+			\end{align*}
+		}
+
+		Total expected number of ones, denoted by $S$, can simply be calculated as the sum of expected number of ones for each column, since using equation \ref{eq:q3-1}, we can say that the entries are independent across columns. Therefore,
+		\answer{
+			\begin{align*}
+				\E{S} \eq K\frac{\alpha \cdot N}{\alpha + K}
+			\end{align*}
+		}
+
+	\end{qpart}
+
+\end{question}
+
+\begin{question}
+
+	With the assumptions that $\sA$ is symmetric, we can formulate the generative story using a combination of the Mixed Membership Stochastic Blockmodel (MMSB) with the Latent Dirichlet Allocatiion (LDA) Model as given in Algorithm \hyperlink{algo:3}{3}
+
+	\begin{algo}[0.9\textwidth]{Generative Story}
+
+		\begin{enumerate}
+			\item For $k = 1 \dots K$, sample \sbr
+
+				\hspace{1.5em} $\vbeta_k \qsim \tfunc{Dirichlet}{\eta \dots \eta}$ \sbr
+
+			\item For $d = 1 \dots D$, sample \sbr
+
+				\hspace{1.5em} $\vtheta_d \qsim \tfunc{Dirichlet}{\alpha \dots \alpha}$ \sbr
+
+			\item For $d = 1 \dots D$,
+
+				\begin{addmargin}{1em}
+					For $d' = 1 \dots d$, sample \sbr
+
+					\begin{addmargin}{1.5em}
+						$r_{d \ra d'} \qsim \tfunc{Multinoulli}{\vtheta_d}$
+
+						$r_{d' \ra d} \qsim \tfunc{Multinoulli}{\vtheta_{d'}}$
+
+						$A_{d, d'} \ \qsim \tfunc{Bernoulli}{\gamma_{r_{d \ra d'}, r_{d' \ra d}}}$
+
+						$A_{d', d} \ \eq A_{d, d'}$
+
+					\end{addmargin}
+				\end{addmargin}
+
+			\item For $d = 1 \dots D$,
+
+				\begin{addmargin}{1em}
+					For $n = 1 \dots N_d$, sample \sbr
+
+					\begin{addmargin}{1.5em}
+						$z_{d, n} \qsim \tfunc{Multinoulli}{\vtheta_d}$
+
+						$w_{d, n} \qsim \tfunc{Bernoulli}{\vbeta_{z_{d, n}}}$
+
+					\end{addmargin}
+				\end{addmargin}
+
+		\end{enumerate}
+
+	\end{algo}
+
+	Another alternative approach to modelling this could be to consider the matrix $\gamma$ to be computed as a function of the words in the documents. The alternative algorithm is given in Algorithm \hyperlink{algo:4}{4}
+
+	\begin{algo}[0.9\textwidth]{Generative Story (Alternate)}
+
+		\begin{enumerate}
+			\item For $k = 1 \dots K$, sample \sbr
+
+				\hspace{1.5em} $\vbeta_k \qsim \tfunc{Dirichlet}{\eta \dots \eta}$ \sbr
+
+			\item For $d = 1 \dots D$, sample \sbr
+
+				\hspace{1.5em} $\vtheta_d \qsim \tfunc{Dirichlet}{\alpha \dots \alpha}$ \sbr
+
+			\item For $d = 1 \dots D$,
+
+				\begin{addmargin}{1em}
+					For $n = 1 \dots N_d$, sample \sbr
+
+					\begin{addmargin}{1.5em}
+						$z_{d, n} \qsim \tfunc{Multinoulli}{\vtheta_d}$
+
+						$w_{d, n} \qsim \tfunc{Bernoulli}{\vbeta_{z_{d, n}}}$ \sbr
+
+					\end{addmargin}
+				\end{addmargin}
+
+			\item For $d = 1 \dots D$,
+
+				\begin{addmargin}{1em}
+					For $d' = 1 \dots d$, sample \sbr
+
+					\begin{addmargin}{1.5em}
+
+						$\gamma_{d, d'} \eq \frac{\abs{\vw_{d} \bigcap \vw_{d'}}}{\abs{\vw_{d} \bigcup \vw_{d'}}}$
+
+						$A_{d, d'} \qsim \tfunc{Bernoulli}{\gamma_{d, d'}}$
+
+						$A_{d', d} \eq A_{d, d'}$
+
+					\end{addmargin}
+				\end{addmargin}
+
+		\end{enumerate}
+
+	\end{algo}
+
+	The second model allows the link between documents to be based on the number of common words the two documents have. We can also propose more complex models, for example have embeddings for the words and compute similarity with more complex functions.
+
+\end{question}
+
+\end{document}
