@@ -1,0 +1,53 @@
+Gurpreet Singh
+Roll - 150259
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Question 1 (q1.py)
+	-	This step is preceded by a preprocessing step to clean the data files
+	-	The script uses functionalities from utils.py for cleaning, reading csv,
+		etc
+	-	Reads all csv's, parse them, and replace all missing values with the
+		average from the data available for the same region
+	-	If there are any missing states, the script adds them in each csv
+	-	Finally, it creates a common features.csv file which contains all the
+		features for each state (for use in further questions)
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Question 2 (q2.py)
+	-	Uses features.csv created in the previous step
+	-	Gets the feature vector for each state and computes the euclidian norm
+		of the distance between the feature vector for this state and the
+		feature vector for India
+	-	Sorts by distance and reports the closest points
+	-	Also possible to view closeness in terms of correlation
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Question 3 (q3.py)
+	-	Reads the features.csv file as a pandas dataframe
+	-	Computes correlation between every feature
+	-	Reports data as required
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Question 4 (q4-q6.py)
+	-	Get hit-miss for each state depending on whether two states are in the
+		same region or not
+	-	Get top features by computing score for each feature based on relief
+		algorithm
+	-	Report top features
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Question 5 (q4-q6.py)
+	-	Plots scatter plot for 2 top features using matplotlib
+	-	Plots quantile-quantile plots for 2 top features using statsmodels
+	-	Saves plots to "plots" directory
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+Question 6 (q4-q6.py)
+	-	Partitions data for the top two features using Intuitive Partitioning as
+		discussed in class
+	-	Prints partitioned data removing empty partitions
