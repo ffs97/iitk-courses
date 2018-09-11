@@ -84,27 +84,27 @@ pprint.pprint(top_features, indent=4)
 if not os.path.exists("plots"):
     os.makedirs("plots")
 
-# for label in top_features:
-#     features = top_features[label]
-#     plt.scatter(data[features[0]], data[features[1]], s=7)
-#     plt.xlabel(features[0].title())
-#     plt.ylabel(features[1].title())
-#     plt.title("Top Features (" + label + ")")
-#     plt.savefig("plots/scatter-plot-" + label.lower() + ".png")
-#     plt.clf()
+for label in top_features:
+    features = top_features[label]
+    plt.scatter(data[features[0]], data[features[1]], s=7)
+    plt.xlabel(features[0].title())
+    plt.ylabel(features[1].title())
+    plt.title("Top Features (" + label + ")")
+    plt.savefig("plots/scatter-plot-" + label.lower() + ".png")
+    plt.clf()
 
-#     plot_feature1 = gofplots.ProbPlot(data[features[0]])
-#     plot_feature2 = gofplots.ProbPlot(data[features[1]])
-#     fig = gofplots.qqplot_2samples(
-#         plot_feature1, plot_feature2, line="r", xlabel=features[0], ylabel=features[1])
+    plot_feature1 = gofplots.ProbPlot(data[features[0]])
+    plot_feature2 = gofplots.ProbPlot(data[features[1]])
+    fig = gofplots.qqplot_2samples(
+        plot_feature1, plot_feature2, line="r", xlabel=features[0], ylabel=features[1])
 
-#     dots = fig.findobj(lambda x: hasattr(
-#         x, 'get_color') and x.get_color() == 'b')
-#     [d.set_ms(3) for d in dots]
+    dots = fig.findobj(lambda x: hasattr(
+        x, 'get_color') and x.get_color() == 'b')
+    [d.set_ms(3) for d in dots]
 
-#     plt.title("Probability Plot (" + label + ")")
-#     plt.savefig("plots/pp-plot-" + label.lower() + ".png")
-#     plt.clf()
+    plt.title("Probability Plot (" + label + ")")
+    plt.savefig("plots/pp-plot-" + label.lower() + ".png")
+    plt.clf()
 
 
 def intuitive_partion(data, clip=True):
