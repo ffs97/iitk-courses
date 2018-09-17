@@ -1,0 +1,180 @@
+# Network Layer
+
+The network layer has three main roles
+
+  1. Routing
+	- Correctness
+	- Simplicity
+	- Robustness
+	- Stability
+	- Fairness
+	- Optimality
+  2. Inter-networking
+  3. Congestion Control
+
+## Routing
+
+### Address Scheme - Internet Protocol
+
+Internet Protocol (IP) Addresses are used, which are of 4 bytes, and consist of
+  - the network address
+  - the host address
+
+Types of addresses
+  1. Class A (Large Networks)
+	- Composition: '0' + 7-bits + 24-bits
+	- 126 networks (as 0 is reserved for use as the default route and 127 is
+	  reserved for the loop back function)
+	- 2^24 - 2 hosts (as 0 is to identify the network itself and all 1s for
+	  broadcast)
+  2. Class B (Medium Networks)
+	- Composition: '1 0' + 14-bits + 16-bits
+  3. Class C (Small Networks)
+	- Composition: '1 1 0' + 21-bits + 8-bits
+  4. Class D (For multi-cast messages)
+	- Composition: '1 1 1 0' + 28-bits (for some group address)
+  5. Class E (Currently unused)
+	- Composition: '1 1 1 1' + 28-bits
+
+Special IP Addresses
+  1. Broadcast Addresses
+	- Limited Broadcast: All 1's; for only local networks
+	- Directed Broadcast: Network address + all 1's; for external networks; not
+	  used, such packets are simply dropped (due to security)
+  2. Network ID = 0: This network; if host id = 0, then it is a local broadcast
+  3. Host ID = 0: Used to refer to the entire network in the routing table
+  4. Loop-Back Address: 127.x.y.z; It goes down to the IP Layer and comes back
+	 to the Application Layer
+
+### Packet Structure
+
+ ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+| Version Number | Header Length |		 Type of Service	   |						   Total Length						   |
+|     4 bits     |     4 bits    |           8 bits            |							  8 bits						   |
+|––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––|
+|							  ID							   |  Flags  |					  Flag Offset					   |
+|						   16 bits							   |  3 bits |						13 bits						   |
+|––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––|
+|			Time to Live		 |			Protocol		   |						  Header Checksum					   |
+|			   8 bits			 |			 8 bits			   |							   16 bits						   |
+|––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––|
+|														 Source (32 bits)													   |
+|––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––|
+|													  Destination (32 bits)													   |
+|––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––|
+|															Options															   |
+ ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+  1.  **Version Number**: Current version number is 4
+  2.  **Header Length**: Header size is always a multiple of 4 bytes, therefore,
+	  we can have a header of maximum length 60 bytes (and 20 is the minimum)
+  3.  **Type of Service (ToS)**
+	 - First three bits - specify priority of the packets
+	 - Next three bits
+	   * Delay (D) - If 1, packet is delay sensitive
+	   * Throughput (T) - If 1, packet is throughput sensitive
+	   * Reliability (R) - If 1, packet should be routed through a more reliable
+		 network
+	 - Last two bits are never used
+  4.  **ID Field**: Represents the source and fragments of a unique packet. Each
+	  fragment has a different ID
+  5.  **Offset**: Represents offset of a fragment in a packet. Since this is of
+	  13 bits, and the step is of 8 bytes, the packet size can be at most 64kB.
+	  In order to prevent some amount of fragmentation, Maximum Transmission Unit
+	  (MTU) for a route is calculated and the size of a packet is limited by that
+	  amount.
+  6.  **Flags**:
+	 - M bit - If on, there are more fragments on the way
+	 - DF bit - If on, then we ought not to fragment this packet
+	 - Reserved bit - not used
+  7.  **Total Length**: Includes the IP header and everything after that
+  8.  **Time to Live (TTL)**: If a packet hops for more than TTL, the packet is
+	  destroyed
+  9.  **Protocol**: Specifies the module to which the packet should be handed
+	  over (TCP or UDP)
+  10. **Header Checksum**
+  11. **Source**: IP Address
+  12. **Destination**: IP Address
+  13. **IP Options**
+	 - Security: Tells how secret the information is. Not usually used
+	 - Source Routing:
+	   * Loose Source Record Routing (LSRR) - Requires packet traverses through
+		 a list of specified routers, in the order mentioned.
+	   * Strict Source Record Routing (SSRR) - Requires packet traverses only
+		 through the list of specified routers, in the order mentioned.
+	 - Record Routing: Intermediate routers put their IP addresses in the
+	   header. Option contains code, length and pointer.
+	 - Time Stamp Routing: Each intermediate router puts (based on flags)
+	   * 0 - only the time stamp
+	   * 1 - both time stamp and IP address
+	   * 2 - source specifies the IP addresses that should enter their
+			 time stamp. If IP2 comes before IP1, then IP2 will not enter its
+			 time stamp
+	   Contains code, length, pointer, overflow (number of nodes unable to add
+	   their time stamps, maximum 15) and flags
+	 - Code part for an option: Copy Bity | Type of Option | Option Number
+	   * Copy Bit - Says whether the option is to be copied to each fragment or
+		 not
+	   * Type - 2 Bit field, which specifies the option type, 0 means option is
+		 a control option while 2 means the option is for measurement
+	   * Option Number - 5 bit field specifying the option number
+	 - Each option provides a length field so that if a router does not
+	   recognize the option, it can skip over it. Therefore, an option looks like
+	   Code | Length | Value
+
+## Address Resolution Protocol (ARP)
+
+In the same network, a machine needs the Medium Access Control (MAC) address of
+another machine to successfully send over packets. If A wants the MAC of B, ARP
+follows the following steps
+
+  - A broadcasts an ARP Request with the IP Address of B
+  - B finds the request, and replies (only to A) with its MAC Address
+  - A stores the binding in a local cache
+
+**ARP Refinements**
+  - When B receives ARP from A, it also store the binding
+  - Since ARP of A is broadcast, every router can store the binding
+  - When a node joins, it broadcasts its own binding
+
+Example - ping
+
+## Reverse Address Resolution Protocol (RARP)
+
+If a machine does not have a permanent attached disk to store its bound IP
+Address, it might need to request it from the network nodes. The network admin
+creates a table in a LAN's gateway router that maps the physical machine
+addresses to corresponding IP addresses.
+
+Steps
+  - **Request**: Requester broadcasts a RARP Request, along with a unique id - CPU serial
+    number or physical network address (which is more beneficial as it is always
+    available and does not have to be bound into bootstrap code, and because the
+    identify information depends on the network and not on the CPU vendor, all
+    machines on a given network will supply unique identifiers)
+  - **Reply**: The type of packet is changed to signify a RARP Reply and the
+    RARP server includes the IP of the requester along with a message. All
+    requesters are assigned one primary and some secondary servers (who respond
+    with a random delay) to avoid overloading the network, which could occur if
+    multiple servers respond together.
+
+Drawbacks
+  - Since it operates at a low level and requires direct network addresses, a
+    programmer might have difficulties in building a server
+  - A 32-bit address is sent over large frames
+
+## Internet Control Message Protocol (ICMP)
+
+Geteways and hosts use ICMP to communicate control and error information. This
+is an augmentation over TCP/IP Protocols to allow two applications on different
+machine communicate effectively.
+
+???????? An exception is made to the error handling procedures if an IP datagram
+carrying an ICMP messages are not generated for errors that result from datagrams
+carrying ICMP error messages. ?????????
+
+**ICMP Message Format**
+Contains 3 parts, 8-bit TYPE Field (identifies the message), 8-bit CODE Field
+(provides further information on the type of message) and a 16-bit Checksum.
+Additionally, it contains header and first 64 bits of the datagram causing the
+error.
