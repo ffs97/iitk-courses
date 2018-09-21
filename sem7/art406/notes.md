@@ -491,3 +491,14 @@ Examples
   juxtaposition of multiple rhythms, with a loud and strong, resounding beat for
   the foreground, contrasted by a light, soft and muted rhythm created by the
   hazy trees in the background.
+
+## Line
+
+In art, line is considered as tool which has both a width and a length. We
+consider line to be a moving dot, with the ability to create dynamism in a
+composition, rather than a static element.
+
+A line can convey emotions such as joy, anxiety, calm, etc. An artist can
+endorse the emotions in his artwork using the right type of lines.
+
+### Line and Shape
