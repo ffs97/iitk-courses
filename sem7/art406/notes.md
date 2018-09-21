@@ -139,6 +139,8 @@ There are multiple types of emphasis
     high import. Another point to note is that the gaze of this figure is
     towards the main area of operation contrasting this focal point and
     therefore giving the figure accents.
+  * ***Edger Degas (Dancers Practicing at the Bar)*** puts emphasis on the small
+    water can using Isolation.
 - **Emphasis By Placement**
   * If many elements point to one item, our attention is directed there, and an
     emphasis point is created. Placing elements in the center of the composition
@@ -502,3 +504,285 @@ A line can convey emotions such as joy, anxiety, calm, etc. An artist can
 endorse the emotions in his artwork using the right type of lines.
 
 ### Line and Shape
+
+Line is an artistic shorthand, as using lines, one can depict an object with
+fewer number of strokes. In real life, there are no lines, but only objects
+which are linear in feeling. However, line can be used to describe these same
+objects by simply drawing it in the same shape as the object, only showing
+contours.
+
+Examples
+- ***George Grosz, Friedrich Ebert (Life of a Socialist)*** shows two human
+  figures and a few other elements by only using line shaped as the elements,
+  This shows the power of line and implies that line is a self-sufficient tool.
+
+Line can also define form more than as a mere outline, such as in showing
+terrain or graduated differences. This form is known as *cross contour*.
+
+### Types of Lines
+
+In addition to actual lines used to contouring,
+
+- **Implied Line**: An implied line is created when a series of points are lined
+  such that the viewer's eyes unintentionally and automatically follow them as a
+  line,
+- **Psychic Line**: This occurs when although this is no real line, yet we
+  interpret there to be a mental connection between the characters, which
+  persuades us to believe the existence of a hypothetical line. For example,
+  when each figure is looking at a particular object, then our eyes follow in
+  the same direction, in the direction of the psychic line.
+
+The purpose of such lines is, not much different than actual lines, to visually
+unify and bind different characters in a composition.
+
+Examples
+- ***Pietro Perugino (The Crucifixion of the Virgin)*** shows implied and
+  physchic lines at work. The eyes of the characters are at the same level,
+  therefore creating an implied line, and each of the character is looking at
+  the eyes of the virgin, creating psychic lines.
+
+### Line Direction
+
+The visual literacy in the viewer usually goads the viewers to interpret
+horizontal lines as carriers of repose, vertical lines as sign of a standing
+body, but with the potential for activity, whereas diagonal lines as indices of
+motion, indicating gesticulation or literal movement.
+
+The horizontal and vertical lines within a design are called stabilizers,
+elements that reduce any feeling of movement.
+
+Examples
+- ***Nicholas Poussin (The Funeral of Phocion)*** makes use of mainly vertical
+  and horizontal lines. This is considered to a classical work, a sign of
+  static, serene and unchanging image.
+- ***Henri Matiss (Decorative Figure on an Ornamental Ground)*** defies the
+  tradition by showing serenity and calm in the foreground by using mainly
+  horizontal and vertical lines, whereas makes the background dynamic by using
+  many curves and diagonal lines.
+
+### Contour and Gesture
+
+Any composition with the main element being a line is called a drawing. There
+are two types of drawings
+- **Contour**: When line are used to form a shape and describe the accurately
+  observed outlines of elements in a composition, the result is called a contour
+  drawing. These can be as detailed as possible, or may even be spontaneous and
+  more sketchy.
+- **Gesture**: When lines are used to denote gesture and are not majorly
+  concerned with defining boundaries for elements, we call such drawings as
+  gesture drawings. Gesture drawings only remotely capture the nuances of the
+  objects' forms, but more thoroughly captures the momentary aspects of the
+  subjects.
+
+### Line Quality
+
+Different kinds of lines exist, heavy and bold lines done with brush and ink
+with varying thickness, rapid scribbling lines down with a dry brush.
+
+The linear technique one chooses can produce emotional or expressive qualities
+in the final pattern. Solid and bold, quiet and flowing, delicate and dainty,
+jagged and nervous, or countless other possibilities will influence the effect
+on the viewer of the design or drawing.
+
+### Line as Value
+
+A single line can only show the shape of the object, however will fail to
+delineate the volume of the object. By varying the number of lines and their
+proximity in to create areas of gray, artists can achieve the latter as well,
+using only lines.
+
+Examples
+- ***Durer (Adam and Eve)*** uses the technique of cross-hatching to include
+  areas of gray, therefore adding more texture to the figures, and giving them,
+  in a sense, some volume.
+
+### Line in Paintings
+
+A painter might deliberately add lines in a painting for contouring, as outlines
+of forms. The use of line, though, may vary, such as use of heavy and bold
+lines, as in a comic was employed by ***Roy Lichtenstein (Crying Girl)***
+whereas a more subtle use of lines for showing texture and contrast was
+employed by ***Sandro Botticelli (The Birth of Venus)***.
+
+Some paintings can be categorized as linear despite the absence of any actual
+lines. An example for this would be ***Jacques Louis David (The Death of
+Socrates)*** who created clear contrasts using only paint, and the viewer can
+clearly establish the forms of each figure, thereby creating the illusion of
+contours.
+
+Linear techniques can be even used in applying colours, such as demonstrated by
+***Toulouse Laturec (Cafe)***, who actually drew with his brush. He created
+contrast by use lines of different shades, moving in varying directions.
+A similar but more dynamic use of this technique was employed by ***Van Gogh
+(The Starry Night)*** who used more curvy and diagonal lines implying motion.
+
+### Lost and Found Contour
+
+In some paintings, the artists reveal only part of the elements using a sharp
+contour, but then the edge disappears. This technique is known as lost-and-found
+contour. The viewer fills in the rest of the image himself, using his visual
+perception.
+
+Although lost-and-found contour has lesser relative clarity, however it hits
+home harder, as in natural scenarios, our mind knows what we are ought to be
+seeing before we even start to examine the object in front of us. Therefore,
+intermittent contour gives us more excitement and a sense of satisfaction,
+despite the absence of closure.
+
+This effect is also present in photography. With the right selection of light
+and shadow, a photograph can express the same emotions as a lost-and-found
+contour would in case of a painting.
+
+## Balance
+
+As humans, we tend to look for balance, and if we fail to find it, a vague
+uneasiness or dissatisfaction results. In assessing visual balance, we always
+assume a centre vertical axis as a fulcrum for the canvas, which functions as a
+scale, and the elements of the composition objects on the scale. Our innate
+search for balance is satisfied only when theses objects form an equilibrium on
+the virtual scale.
+
+### Imbalance
+
+Balance makes a composition more calm and serene, and in absence of equilibrium,
+we feel the need to rearrange the elements. However, an artist may deliberately
+introduce imbalance in a picture, perhaps to create anxiety commensurate to the
+motif presented in the composition.
+
+Imbalance, in this sense, can be a useful tool that may intrigue viewers and
+attracts their attention for exactly this unexpected quality.
+
+Examples
+- ***Paul Klee (Whimsical Tight Rope Walker)*** uses the technique of imbalance
+  to induce anxiety within the viewers, a fraction of the same anxiety as one
+  would feel watching a rope walker in reality.
+
+### Symmetrical Balance
+
+Symmetrical balance, in which both sides of the vertical fulcrum look exactly
+alike is the simplest type of balance to create and to recognize. One side of
+the axis acts as a mirror image to the other side. This is also called
+*bilateral symmetry*, and is more common in architecture than in paintings.
+Symmetry is yet another technique that unifies compositions.
+
+Many religion paintings intended to be altarpieces employed symmetrical balance
+so as to not interrupt the prevailing tenor of the architectural setting.
+
+On one hand, symmetrical balance can emanate vibes of placidity, and a viewer
+can understand the patterns easily, however, they can easily become moderate,
+and even humdrum. Usually, symmetry If the individual design elements are busy
+and complex, then symmetry helps moderate the effect of these complex items, and
+therefore keeps the viewers interested in the artwork.
+
+Perfect symmetry is often called formal balance, and are mostly present only in
+architecture.
+
+### Asymmetrical Balance
+
+In this case, balance is achieved by dissimilar objects, having equal visual
+weight or in other words, equal eye attraction. This brings about a more
+informal feeling than symmetrical balance, while avoiding the problem of
+monotony.
+
+Examples
+- ***Katsushika Hokusai (South Wind and Clearing Weather)*** uses asymmetrical
+  balance in his painting, where the large mountain mass on the right is
+  intricately balanced by the light cloud patter over a dark sky on the left,
+  and the forest at the foot of the mountain acting as concomitant to the clouds
+  to weight off the mountain.
+
+#### Balance by Colour
+
+A small area of bright colour can balance a much larger are of a duller, more
+neutral colour. This is employed by a number of paintings, and one such example
+is the painting by ***Gauguin (Two women on a Beach)***. The woman on the right
+of the canvas is much larger in size, and there seems to imbalance with respect
+to weight or value, however, the dull colour of the larger woman's dress is
+perfectly balanced by the bright red colour on the left.
+
+#### Balance by Value
+
+Asymmetrical balance is based on equal eye attraction; dissimilar objects are
+equally interesting to the eye. One element that attracts our attention is value
+difference, a contrast of light and dark. Black against white gives a stronger
+contrast than gray against white; therefore, a smaller amount of black is needed
+to visually balance a larger amount of gray. This is precisely exemplified in
+the painting by ***Jeremy Sutton (Moment in Time)***
+
+#### Balance by Shape
+
+A more neutral and temperate shaped object can be balanced by an intricate,
+more dynamic shaped object of a much lesser size. This is seen in a modern day
+DSLR camera, where the large simple shape of the lenses is balanced by the many
+smaller intricate shapes around the lenses.
+
+#### Balance by texture
+
+A finer and more intricate texture can balance off a much larger planar surface.
+For example, in the famous painting by Mary Cassatt, the plain figures on the
+left are much larger in size, but are still balanced by the finer pattern shown
+in the reflections from the silver tea set.
+
+#### Balance by Position
+
+A visual design does not betray the general laws defined by physics. A small
+object put far away from the fulcrum can balance out a larger object kept closer
+to the axis. In visual design, this means that a large object placed near the
+center can be balanced by a smaller item placed out toward the edge.
+
+Examples
+- ***Edger Degas (Dancers Practicing at the Bar)*** puts emphasis on the small
+  water can on the left using isolation, and the distance from the axis
+  balanced the weight of the much larger dancers towards the center.
+
+#### Balance by Eye Direction
+
+A single small space can be as important as many larger ones if it is made the
+focal point of the design.
+
+Asymmetrical balance is based on equal eye attraction, and here the large
+elements themselves make a small element the focal point. This also includes the
+directions in which the characters of the design look, as we also tend to look
+the same way.
+
+Examples
+- ***Georges Seurat (Le Chahut)*** employs balance by eye direction, throwing
+  focus on small, seemingly unimportant gaslight. All the figures in the
+  painting point towards this light, such as the man with points the cello
+  toward the lamp, the other man is directly looking towards the lamp, and the
+  dancers are extending their feet in the direction of this lamp, and parallel
+  to the cello.
+
+### Radial Balance
+
+When all the elements seem to emanate out from a common central point, radial
+balance is established. This is different from perfect symmetry, as the elements
+emanating from the center need not be repetitions of the same element, however
+their eye attraction would feel to be the same. This is exhibited naturally by a
+snowflake.
+
+One point perspective designs may also afford such balance, however this is in
+general rare in narrative painting.
+
+### Crystallographic Balance
+
+When an artist puts equal emphasis over the whole design, that is tantamount eye
+attraction almost everywhere, it is known as crystallographic balance, or
+colloquially, *allover pattern*. This is a special refinement over symmetrical
+balance.
+
+A uniform pattern is present over the whole canvas, and there is no starting or
+no end, and there is no-focal point, if the whole picture itself is not a focal
+point. Even with a seemingly irregular pattern, such as graduated values (of
+colour) over the pattern or subtle changes in the pattern (repetition with
+variety), crystallographic balance can be achieved.
+
+Examples
+- ***Lee Krasner (White Squares)*** uses this technique, where small white
+  squares filled with irregular patterns are spread over the canvas. There is no
+  focal point and the eyes of the viewer simply float over the whole picture
+  before falling out of the frame.
+
+This technique is often employed in fabrics.
+
+
