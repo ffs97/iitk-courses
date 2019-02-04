@@ -82,8 +82,6 @@ test_files = glob(os.path.join(test_dir, "*.jpg"))
 if not os.path.exists("output"):
     os.makedirs("output")
 
-a = []
-
 print("Computing matches for test data")
 for ts_file in test_files:
     print("\t", ts_file)
@@ -112,8 +110,6 @@ for ts_file in test_files:
         )[:maj_score_num])
         for class_ in classes
     }
-
-    a.append((ts_file, sorted(classes, key=lambda x: -scores_cw[x])[:5]))
     
     ranked_classes = sorted(
         [class_ for class_ in classes],
@@ -136,6 +132,3 @@ for ts_file in test_files:
         f.write("\n".join(ranked_files))
 
 print("Time Taken:", time.time())
-
-for x in a:
-    print(x[0], "& &", ",".join(x[1]).replace("_", " "))
