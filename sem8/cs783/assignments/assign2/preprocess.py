@@ -4,20 +4,19 @@ import os.path as path
 
 from glob import glob
 
-from includes.config import pad_color, data_dir, req_w, req_h
+req_w = 400
+req_h = 350
 
+data_dir = "./data/"
 
-course_classes = sorted(os.listdir(data_dir))
+pad_color = [0, 0, 0]
 
-fine_classes = {
-    course_class: sorted(os.listdir(path.join(data_dir, course_class)))
-    for course_class in course_classes
-}
+for phase in ["train", "test"]:
+    path_ = path.join(data_dir, phase)
 
-data = list()
-for c in course_classes:
-    for f in fine_classes[c]:
-        for p in glob(path.join(data_dir, c, f, "*.jpg")):
+    data = list()
+    for c in os.listdir(path_):
+        for p in glob(path.join(path_, c, "*.jpg")):
             im = cv2.imread(p)
 
             h, w = im.shape[:2]
