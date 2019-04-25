@@ -1,0 +1,476 @@
+\documentclass{article}
+
+\usepackage{paper}
+
+\setpapertitle{Stochastic Games and their Applications}
+\setauthor{Gurpreet Singh}{150259}
+
+\begin{document}
+\makeheader
+
+\begin{psection}{Introduction}
+
+	Most of the models we have concerned ourselves with in class are simplistic
+	models unrepresentative of the complexities and possibilities of the
+	real-world. In most realistic problems, there are multiple agents acting in
+	an environment with each other, competing against each other, or both.
+	\cite{rl} provides some examples of multiple RL agents existing in the same
+	environment. Exploration and mapping is an example of cooperating
+	multi-agent system in which multiple agents are trying to find the map of
+	an unknown environment. A game of chess between two agents is an example of
+	a competitive environment, whereas a game of soccer between two teams of
+	robots could be considered as an example of an environment in which agents
+	exhibit both cooperative as well as competitive behaviour.
+
+	These examples cannot be modeled as simple dynamic or bayesian games,
+	however require to be formulated using more complex models. Stochastic
+	games deliver such models to extricate us out of this situation.  The
+	examples discussed above can infact be formulated as stochastic games in
+	which agents perform actions in a state of the environment, thereby
+	transitioning the environment to new states with the transition modeled as
+	a stochastic process. The promise of stochastic games is to simulate an
+	agent or multiple agents in an environment on the notion of utility
+	(rewards) based on a set of game characteristics. Stochastic games find
+	applications in many fields, such as Industrial Organization,
+	Macroeconomics and Political Economy.
+
+	A stochastic game is an extensive game played by one or more players in a
+	sequence of stages. The characteristics of the game at each stage are
+	described by a state, a set of player strategies, and transition
+	probabilities. In a general sense, a stochastic game is a collection of
+	normal-form games played by a set of agents (players) repeatedly. The
+	particulars of the game played at any time depend probabilistically on the
+	previous game played and the actions of the agents in that game. Stochastic
+	games, in this sense, extend Markov Decision Processes to involve multiple
+	agents and simulate them simultaneously in a defined environment.
+
+	At the beginning of each stage, the game is in some state. The players
+	select actions and each player receives a payoff that depends on the
+	current state and the chosen actions. The game then moves to a new random
+	state whose distribution depends on the previous state and the actions
+	chosen by the players. The procedure is repeated at the new state and play
+	continues for a finite or infinite number of stages. The total payoff to a
+	player is often taken to be the discounted sum of the stage payoffs or the
+	limit inferior of the averages of the stage payoffs. Stochastic games
+	generalize both Markov decision processes and repeated games.
+
+	In this review, I survey some of the methods used in stochastic games and
+	discuss some of the common applications of stochastic games in economics.
+	The rest of the survey is organized as follows: Section 2 provides some
+	background on the formal definition of a stochastic game and discusses some
+	of the preliminaries used in the rest of the survey; Section 3 talks about
+	the early works on developing Algorithms for solving Stochastic games
+	categorized with different conditions; Section 4 is devoted to discussion
+	on applications of stochastic processes to some problems in economics and
+	game theory in general.
+
+\end{psection}
+
+\begin{psection}{Stochastic Games}
+
+	Here I formally define what a stochastic game is and what it consists of.
+
+	\begin{definition}
+		A \et{stochastic game} is defined by
+		\begin{enumerate}
+			\item A finite set of states $\cS = \set{s_1, s_2, \dots s_m}$ with a stage game defined for each state
+			\item A finite set of agents or players $\cI = \set{1, 2, \dots, n}$
+			\item A set of strategies $\cA_i$ for each agent $i$. Define $\cA = \cA_1 \times \dots \times \cA_n$
+			\item A \bt{transition probability} $\vpi : \cS \times \cA \times \cS \ra \brac{0, 1}$ where $\func{\vpi}{s' \pipe s, \va}$ denotes the probability of transitioning to state $s'$ if the strategy profile $\va = \para{a_1, \dots, a_n}$ is used when the environment is at state $s$
+			\item A set of payoff functions for each agent $i$ given by $u_i : \cS \times \cA \ra \bR$
+		\end{enumerate}
+	\end{definition}
+
+	In a more general setting, we can have different sets of strategies/actions for each agent at different states of the game, however our definition makes the inessential but simplifying assumption that each agent's strategy space is the same in all games.
+
+	We make two additional simplifying assumptions: the set of states is finite; all strategies are \et{Stationary Strategies} \ie the distribution over actions (mixed strategy) depends only on the current state $s$ and is independent on the stage or the time-step. We can extend the definition by removing such assumptions assuming however for the sake of this review we contrain to this simplified definition of a stochastic game.
+
+	\ditem{Example of a Stochastic Game: The Romeo-Juliet Game}
+
+	Suppose two players Romeo (R) and Juliet (J) are trying to decide what kind of movie they want to see. They will go for a movie only if both of them choose to watch the same kind of movie.
+
+	\begin{table}[htpb]
+		\centering
+		\begin{tabularx}{0.4\textwidth}{c c c c}
+			& & \multicolumn{2}{c}{\ut{Juliet}} \\
+			& & \bt{A} & \bt{R} \\
+			\cline{3-4}
+			\multirow{2}{*}{\ut{Romeo}} & \bt{A} & \multicolumn{1}{|c}{a, a} & \multicolumn{1}{|c|}{b, c} \\
+			\cline{3-4}
+			& \bt{R} & \multicolumn{1}{|c}{c, b} & \multicolumn{1}{|c|}{d, d} \\
+			\cline{3-4}
+			\\
+			& & \multicolumn{2}{c}{\bt{State}: Meet}
+		\end{tabularx}
+		\begin{tabularx}{0.4\textwidth}{c c c c}
+			& & \multicolumn{2}{c}{\ut{Juliet}} \\
+			& & \bt{A} & \bt{R} \\
+			\cline{3-4}
+			\multirow{2}{*}{\ut{Romeo}} & \bt{A} & \multicolumn{1}{|c}{a, a} & \multicolumn{1}{|c|}{b, c} \\
+			\cline{3-4}
+			& \bt{R} & \multicolumn{1}{|c}{c, b} & \multicolumn{1}{|c|}{d, d} \\
+			\cline{3-4}
+			\\
+			& & \multicolumn{2}{c}{\bt{State}: Avoid}
+		\end{tabularx}
+		\caption{Romeo-Juliet Game: Utility Table}
+		\label{tab:rj-game}
+	\end{table}
+
+	We attempt to formulate this as a stochastic game. Suppose there are two states for the game $\cS = \set{\text{Avoid}, \text{Meet}}$. The Avoid state describes a scenario where Juliet wants to avoid Romeo and Meet state describes a scenario where Juliet wants to meet Romeo. Suppose they can go for either an Action Movie (AM) or Romantic Movie (RM), \ie $\cA_{\text{R}} = \cA_{\text{J}} = \set{AM, RM}$. The utility functions are given as matrices in Table \ref{tab:rj-game} for both the states.
+
+	We also need to give the transition probabilities from each state and each strategy profile. These are also represented using matrices and are given in Table \ref{tab:rj-game-pi}. The tuples represent the transition probabilites for a certain strategy profile and a state in the order (Meet, Avoid), \ie the first value at any cell represents the probability of the game moving to the Meet state.
+
+	\begin{table}
+		\centering
+		\begin{tabularx}{0.4\textwidth}{c c c c}
+			& & \multicolumn{2}{c}{\ut{Juliet}} \\
+			& & \bt{A} & \bt{R} \\
+			\cline{3-4}
+			\multirow{2}{*}{\ut{Romeo}} & \bt{A} & \multicolumn{1}{|c}{0.5, 0.5} & \multicolumn{1}{|c|}{1.0, 0.0} \\
+			\cline{3-4}
+			& \bt{R} & \multicolumn{1}{|c}{0.0, 1.0} & \multicolumn{1}{|c|}{0.5, 0.5} \\
+			\cline{3-4}
+			\\
+			& & \multicolumn{2}{c}{\bt{State}: Meet}
+		\end{tabularx}
+		\begin{tabularx}{0.4\textwidth}{c c c c}
+			& & \multicolumn{2}{c}{\ut{Juliet}} \\
+			& & \bt{A} & \bt{R} \\
+			\cline{3-4}
+			\multirow{2}{*}{\ut{Romeo}} & \bt{A} & \multicolumn{1}{|c}{0.5, 0.5} & \multicolumn{1}{|c|}{0.0, 1.0} \\
+			\cline{3-4}
+			& \bt{R} & \multicolumn{1}{|c}{1.0, 0.0} & \multicolumn{1}{|c|}{0.5, 0.5} \\
+			\cline{3-4}
+			\\
+			& & \multicolumn{2}{c}{\bt{State}: Avoid}
+		\end{tabularx}
+		\caption{Romeo-Juliet Game: Transition Table}
+		\label{tab:rj-game-pi}
+	\end{table}
+
+	The intuitive explanation of the transition probabilities is that if they go for a movie, there's a 50\% chance that the state will change and a 50\% chance that the sate will remain the same. If they do not go for a movie, the state remains the same almost surely (\ie with probability 1).
+
+	Since the game would be repeated (possibly) infinite number of times (with different states), the net reward for each agent would be an accumulation of rewards (defined formally later) over each stage or repetition. Therefore, the notion of Nash Equilibrium does not hold directly in this context. However, under certain conditions, we can say something about the equilibria in such games.
+
+	\begin{psubsection}{Preliminaries}
+
+		\ditem{Reward.} Before talking about the equilibria in infinitely repeated games such as any stochastic game, we need to define a notion of reward. Unline finite games, we cannot assign the total reward to be a sum of rewards at all stages as that could potentially be infinite. Instead, we define two different kinds of rewards: average reward and discounted reward.
+
+		\begin{definition}
+			Given an infinite sequence of payoffs $\para{r_1, r_2 \dots}$ for agent $i$, the \et{average reward} of $i$ is given as
+			\begin{align}
+				\lim_{k \ra \infty} \sum_{j = 1}^k \frac{r_j}{k}
+				\label{eq:avg-reward}
+			\end{align}
+		\end{definition}
+
+		\begin{definition}
+			Given an infinite sequence of payoffs $\para{r_1, r_2 \dots}$ for agent $i$, the \et{future discounted reward} of $i$ is given as
+			\begin{align}
+				\lim_{k \ra \infty} \sum_{j = 1}^k \delta^{j} r_j
+				\label{eq:dis-reward}
+			\end{align}
+			where $\delta \in \brac{0, 1}$ is the discount factor.
+		\end{definition}
+
+		An agent with discounted reward cares more about the immediate reward than the reward he will obtain in the future. This is representative of standard human nature and makes intuitive sense, therefore discounted reward is used very often in many literatures.
+
+		\ditem{Markov Perfect Equilibrium.} Markov Perfect Equilibrium is a refinement on the concept of the subagame perfect equilibrium. \cite{def} define Markov perfect equilibrium to be a set of mixed strategies for each of the players which satisfy the following criteria:
+
+		\begin{enumerate}
+			\item The strategies have the Markov property of memorylessness, meaning that each player's mixed strategy can be conditioned only on the state of the game. These strategies are called Markov reaction functions.
+			\item The state can only encode payoff-relevant information. This rules out strategies that depend on non-substantive moves by the opponent. It excludes strategies that depend on signals, negotiation, or cooperation between the players (e.g. cheap talk or contracts).
+			\item The strategies form a subgame perfect equilibrium of the game.
+		\end{enumerate}
+
+		For the sake of brevity within this review, I use Equilibrium and Markov Perfect Equilibrium exchangeably.
+
+	\end{psubsection}
+
+	<++>
+
+	Since the literature of Stochastic games itself is quite vast, leaving out methods and applications is inevitable. I restrict the discussion to Two-Player Zero-Sum games for the following sections. The review consists of different algorithms used in previous works to solve Two-Player Zero-Sum Stochastic games under categorized under different conditions/classes.
+
+\end{psection}
+
+\begin{psection}{Two Player Zero-Sum Games}
+
+	Zero-Sum games are purely competitive in which there are two agents and the payoff of one player is the negative of the other. $u_1 = - u_2$. These are called zero-sum games as the payoff functions sum to zero.
+
+	Although zero-sum games are simplistic games not representative of the real-world challenges, they have an extensive theory.
+
+	\ditem{Solving a Zero-Sum Matrix Game}
+	We describe a Zero-Sum Matrix Game as a game between two players with each player possessing a finite number of strategies. The matrix $\sA = \norm{a_{ij}}$ where $a_{ij}$ is the payoff of player 1 if she chooses to play strategy $i$ and player 2 chooses to play strategy $j$. Since it is a zero-sum game, the payoff of player 2 for the same strategy profile is given by $-a_{ij}$ gives the utility values for player 2.
+
+	The general optimality principle in a two-person zero-sum game declares that player 1 tends to choose a strategy $i^\ast0$ such that
+	\begin{align}
+		i^\ast \eq \argmax{i} \min_{j}\ a_{ij} \hspace{5mm} \mt{and} \hspace{5mm} \ut{v} = \min_{j}\ a_{i^\ast j}
+	\end{align}
+	whereas player 2 tends to choose a strategy $j^\ast$
+	\begin{align}
+		j^\ast \eq \argmin{j} \max_{i}\ a_{ij} \hspace{5mm} \mt{and} \hspace{5mm} \overline{v} = \max_{i}\ a_{i j^\ast}
+	\end{align}
+	If $\ut{v} = \overline{v}$, then the pair $\para{i^\ast, j^\ast}$ is called a \et{saddle point} of the game and the value $a_{i^\ast j^\ast}$ is called the \et{value} of the game. In case such a saddle point does not exist, then there exists no solution in pure strategies and we always have $\ut{v} < \overline{v}$. We alternately define an optimal profile using mixed strategies. Suppose the two players play mixed strategies with the distribution given by two probability vectors $\vx^\ast$ and $\vy^\ast$ then, for player 1, we have
+	\begin{align}
+		\vx^\ast \eq \argmax{\vx} \min_{\vy}\ \vx \sA \tr{\vy} \hspace{5mm} \mt{and} \hspace{5mm} \ut{v} = \min_{\vy}\ \vx^\ast \sA \tr{\vy}
+	\end{align}
+	and, for player 2,
+	\begin{align}
+		\vy^\ast \eq \argmin{\vy} \max_{\vx}\ \vx \sA \tr{\vy} \hspace{5mm} \mt{and} \hspace{5mm} \overline{v} = \min_{\vx}\ \vx \sA \tr{\vy^\ast}
+	\end{align}.
+	The solution to this is given using linear programming and is not discussed in this review.
+
+	The minimax principle claims that the values $\ut{v}$ and $\overline{v}$ are equal and defined as the \et{value} of the matrix game. This is true for all finite zero-sum matrix games. The formal definition of the minimax principle is as given below.
+
+	\begin{theorem}[Minimax Principle]
+		Given a real $n \times m$ matrix $\sA = \norm{a_{ij}}$, there exists a pair of probability vectors $\vx^\ast = \para{x_1^\ast, x_2^\ast, \dots, x_m^\ast}$ and $\vy^\ast = \para{y_1^\ast, y_2^\ast, \dots, y_m^\ast}$ such that for a unique constant $n$
+		\begin{align}
+			\sum_{i'} a_{i'j} x_{i'}^\ast \ge v \ge \sum_{j'} a_{ij'} y_{j'}^\ast \hspace{3mm} \mt{for all} i,j
+			\label{eq:minimax}
+		\end{align}
+		where $v$ is the value of the matrix game as defined earlier.
+		\label{th:minimax}
+	\end{theorem}
+
+	In the following sections, I discuss multiple algorithms to solve differenct cases of Zero-Sum Stochastic Games that originated early in the literature of Stochastic Games. For this, I borrow content presented by \cite{survey} and \cite{rl}.
+
+	\begin{psubsection}{Iterative Algorithms for Discounted Zero-Sum Stochastic Games}
+
+		\ditem{Algorithm 1: Shapley}
+
+		\cite{shapley} showed that there exist an optimal solution for $\delta$-discounted stochastic zero-sum games using stationary strategies. The algorithm for finding the solution to such a stochastic game comes from Shapley's proof for the prior statement (for details, refer \citep{shapley}). This algorithm is given in Algorithm \hyperlink{algo:1}{1}
+
+		\begin{algo}[0.9\textwidth]{Shapley's Algorithm for Stochastic Games}
+			\begin{enumerate}
+				\item Start with a arbitrary approximation for the true value $\vv$ of the stochastic game, say $\vv^{(0)} = \para{v^{(0)}(s)}_{s \in \cS}$
+				\item Repeat until convergence
+					\begin{enumerate}
+						\item For each state $s \in \cS$ compute the matrix
+							\begin{align*}
+								\sG_s^{(t)} \eq \brac{a^s_{ij} + \delta \sum_{s' \in \cS} \func{\vpi}{s' \pipe s, (i, j)} v^{(t)}(s') : (i, j) \in \cA}
+							\end{align*}
+						\item For each state $s \in \cS$ update
+							\begin{align*}
+								v^{(t + 1)}(s) \eq \tfunc{Value}{\sG_s^{(t)}}
+							\end{align*}
+							where the Value(G) function gives the value of the matrix game G.
+					\end{enumerate}
+				\item Compute the optimal stationary strategies $\vX^\ast, \vY^\ast$ as
+					\begin{align*}
+						\vx_1, \vy_1 \eq \tfunc{Solve}{G_s^{(T)}}
+					\end{align*}
+					where the Solve(G) function gives the optimal strategy profile for the matrix game G.
+			\end{enumerate}
+		\end{algo}
+
+		In his algorithm, Shapley attempts to define the complete stochastic game as one zero-sum matrix game by approximating the expected gain/reward if the player starts playing at a particular state. This is the reason the update step in the algorithm given by Shapley (Algorithm \hyperlink{algo:1}{1}) is analogous to the \et{Bellman equation} or the \et{optimality equation} of dynamic programming. The matrix $G_s^{(t)}$ at any step $t$ approximates the expected gain matrix for each player if he starts playing at that state and as $t \ra \infty$, the matrix $G_s^{(t)}$ converges to the actual gain matrix. At this point, solving the gain matrices for each state would afford us the optimal solution to the Stochastic Game.
+
+		Shapley proves that given an optimal stationary strategy $\vX^\ast$ of player 1 the expected discounted reward $r(s, \vX^\ast, \vY)$ is at least $v(s)$ against any strategy $\vy$ of player 2. Similarly for an optimal stationary strategy $\vy^\ast$ of player 2, the expected discounted reward $r(\vx, \vy^\ast)$ is at most $v(s)$ against all strategies $\vx$ of player 1.
+
+		\ditem{Algorithm 2: Pollatschek and Avi-Itzhak}
+
+		Although Shapley's algorithm derives near-optimal stationary strategies when $\vv^{(t)} \approx \vv$, it fails to utilize the information contained in the optimal strategies of $\func{\cA^s}{\vv^{(t)}}$ at each iteration. \cite{poll-avi} proposed another algorithm that is based on utilizing both the approximate value vectors and the associated optimal strategies of the matrix games constructed at the intermediate steps.
+
+		\begin{algo}[0.9\textwidth]{Pollatschek and Avi-Itzhak's Algorithm for Stochastic Games}
+			\begin{enumerate}
+				\item Start with an arbitrary approximation for the true value $\vv$ of the stochastic game, say $\vv^{(0)} = \para{v^{(0)}(s)}_{s \in \cS}$
+				\item Repeat until convergence
+					\begin{enumerate}
+						\item For each state $s \in \cS$ compute the matrix
+							\begin{align*}
+								\sG_s^{(t)} \eq \brac{a^s_{ij} + \delta \sum_{s' \in \cS} \func{\vpi}{s' \pipe s, (i, j)} v^{(t)}(s') : (i, j) \in \cA}
+							\end{align*}
+						\item For each state $s \in \cS$, solve the matrix games $\sG^{(t)}$ to find optimal strategies $\para{\vx^{(t)}_s, \vy^{(t)}_s}$. Define $\vX^{(t)} = \para{\vx^{(t)}_1, \dots, \vx^{(t)}_m}$ and $\vY^{(t)} = \para{\vy^{(t)}_1, \dots, \vy^{(t)}_m}$. Update
+							\begin{align*}
+								\vv^{(t+1)} \eq \brac{\vI - \delta \func{Q}{\vX^{(t)}, \vY^{(t)}}}^{-1} \func{r}{\vX^{(t)}, \vY^{(t)}}
+							\end{align*}
+							where $Q(\vX, \vY)$ gives an $m \times m$ transition matrix for mixed stationary strategies given by $(\vX, \vY)$ and $r(\vX, \vY)$ represents the total expected reward when the actions are dictated by the strategy profiles $\vX, \vY$ are chosen at every state.
+					\end{enumerate}
+			\end{enumerate}
+		\end{algo}
+
+		Although the algorithm given by Pollatschek and Avi-Itzhak has special importance because of its relationship with the classical Newton-Raphson procedure \citep{survey}, the convergence of the algorithm is proven only under some restrictive conditions.
+
+		\ditem{Algorithm 3: Van der Wal}
+
+		\begin{algo}[0.9\textwidth]{Van der Wal's Algorithm for Stochastic Games}
+			\begin{enumerate}
+				\item Start with an arbitrary approximation for the true value $\vv$ of the stochastic game, say $\vv^{(0)} = \para{v^{(0)}(s)}_{s \in \cS}$ and an integer $k > 0$
+				\item Repeat until convergence
+					\begin{enumerate}
+						\item For each state $s \in \cS$ compute the matrix
+							\begin{align*}
+								\sG_s^{(t)} \eq \brac{a^s_{ij} + \delta \sum_{s' \in \cS} \func{\vpi}{s' \pipe s, (i, j)} \sV^{(t)}(s') : (i, j) \in \cA}
+							\end{align*}
+						\item For each state $s \in \cS$, find the optimal strategy $\vy_s^{(t)}$ for player 2 in the matrix game $\sG^{(t)}$.
+						\item Since we have an estimate of the optimal strategy of one player, the problem is reduced to a MDP\footnote{MDP stands for Markov Decision Process, here and in the following text}. Since it is possible to solve this MDP using the Bellman Equation (updates such as in Shapley's algorithm, we compute the $m$-th iterate of the value function, $\vv^{m}$ for the one player MDP and assign $\vv^{(t + 1)} = \vv^m$
+					\end{enumerate}
+			\end{enumerate}
+		\end{algo}
+
+		\cite{van-der-wal} gives an algorithm (Algorithm \hyperlink{algo:3}{3}) which uses the concepts of stopping times and successive approximations. Van der Wal has provided a detailed analysis on the convergence guarantees of his algorithm, however, since the maths is quite extensive, I exclude that analysis from this survey.
+
+		Note that if we fix $m = 1$, then Van der Wal's algorithm reduces to Shapley's algorithm (Algorithm \hyperlink{algo:1}{1}) as finding the $m$-th iterate of the MDP problem is simply making updates using the Bellman equation.
+
+		The problem with the above algorithms is that they are not finite step algorithms. More particularly, Algorithms 1-3 provide only asymptotic convergence guarantees, however cannot guarantee convergence in finite steps. The reason for this, as highlighted by \cite{survey}, is the lack of \et{ordered field properties} in general stochastic games. The ordered field property states that the optimal stationary strategies and the value functions be in the same Archimedian field, however, this is not always true for stochastic games. For this reason, it is not possible to formulate finite step algorithms.
+
+		Although the above remarks stand true, there has been extensive research to find classes of stochastic games which afford the ordered field property. \cite{survey} further discuss these classes and certain finite step algorithms to deal with each class.
+
+	\end{psubsection}
+
+	\begin{psubsection}{Algorithms for Undiscounted Zero-Sum Games}
+
+		The problem with finding optimal strategies for undiscounted zero-sum games us that the players might not possess optimal stationary strategies \cite{gillette}. This raises two questions in the literature -
+		\begin{enumerate}
+			\item Do undiscounted stochastic games possess the value vector?
+			\item What characterizes the class of undiscounted stochastic games solvable in optimal stationary strategies?
+		\end{enumerate}
+
+		\cite{mertens-neyman} proved that we can find value vectors for undiscounted stochastic games, therefore, answering the first question. Following Gillette, there was extensive researching on finding sufficient conditions for the existence of optimal stationary strategies. In this survey, I discuss only two of these cases and look at one algorithm to solve the games in each of these categories.
+
+		\ditem{The Single-Controller Undiscounted Game}
+
+		In single-controller games, we assume player 2 to be single controller of states, \ie $\vpi(s' \pipe s, (a_1, a_2))$ is independent of $a_1$. The solution to such a game in the undiscounted case follows from the following theorem.
+
+		\begin{theorem}
+			Let $\vx_i, \vy_j$ represent a pair of pure stationary strategies in an undisounted single-controller game. Construct an alternate matrix game $\sH(s)$ for each state $s$ such that the $(i,j)$-th entry of this matrix is equal to $r(s, \vx_i, \vy_j)$, where $r(s, \vx_i, \vy_j)$ gives the total expected reward given that we play $(\vx_1, \vy_j)$ at that particular state. Then, for every state $s$, we have $\tfunc{val}{\sH(s)} = v(s)$, the value of the stochastic game. Moreover, there exists a common optimal strategy for player 1 of the matrix games $\sH(s)$ and this common optimal strategy is the same as the optimal strategy for player 1 in the stochastic game.
+		\end{theorem}
+
+		Based on the above theorem, \cite{vrieze} and \cite{hodijk} independently proposed an algorithm to solve the single-controller undiscounted game. The algorithm is given in Algorithm \hyperlink{algo:4}{4}. In order to understand this algorithm better, one can refer to \citep{single-controller} which gives a detailed derivation of the algorithm and \cite{survey} present the working of the algorithm using an example of a rather simple stochastic game.
+
+		\begin{algo}[0.9\textwidth]{Solving a Single-Controller Undiscounted Game}
+
+			\begin{enumerate}
+				\item Let $\para{\vv^{\ast}, \vw^{\ast}, \vx^{\ast}}$ be any optimal solution to the linear program
+					\begin{align*}
+						\max_{\vv, \vx, \vw} \sum_{s} v(s)
+					\end{align*}
+					subject to the following conditions for all $s, j$
+					\begin{enumerate}
+						\item $v(s) \ge \sum_{s'} \vpi(s' \pipe s, j)v(s')$
+						\item $v(s) + w(s) \ge \sum_{i} u(s, i, j) x_i(s) + \sum_{s'} \vpi(s' \pipe s, j) w(s')$
+						\item $\sum_{i} x_i(s) = 1$
+						\item $x_i(s) \ge 0$
+					\end{enumerate}
+				\item Compute the dual solution $\para{\vf, \vg, \vh}$, where $\vf$, $\vg$, and $\vh$ are the dual variables (or the Lagrange multipliers) respectively for conditions (a)-(c) given above. We compute the optimal strategy $\vy^\ast$ as
+					\begin{align*}
+						y_j^\ast(s) \eq \begin{cases}
+							\nicefrac{g_j(s)}{g_s} & \text{for all $j$, if $s \notin S'$} \\
+							f_j(s) + \nicefrac{g_j(s)}{d_s} & \text{for all $j$, if $s \in S'$}
+						\end{cases}
+					\end{align*}
+					where $g_s = \sum_{j} g_j g_j(s)$ and $d_s = \sum_{j} f_j(s) + g_j(s)$ for every $s$, and set $S' = \set{s \pipe f_s = 0}$. The optimal stationary strategy profile, therefore, is given as $\para{\vx^\ast, \vy^\ast}$
+			\end{enumerate}
+
+		\end{algo}
+
+		\ditem{The SER-SIT Undiscounted Game}
+
+		In the SER-SIT game, we assume that the rewards are separable, \ie $u(s, i, j) = c(s) + q(i, j)$ for all $s, i, j$. We further assume that the transitions are state independent, \ie $\vpi(s, i, j, s') = \vpi(i, j, s')$. \cite{parthasarathy} showed that the Undiscounted SER-SIT game has a closed form solution and can be solved in a one-step finite algorithm as well. This algorithm is given in \hyperlink{algo:5}{5}.
+
+		\begin{algo}[0.9\textwidth]{Solving a SER-SIT Undiscounted Game}
+
+			\begin{enumerate}
+				\item Solve the matrix game $\sW(\vc) = \brac{q(i, j) + \sum_{s'} \vpi(i, j, s') c(s')}$ and let $\vf, \vg$ denote the optimal strategy profile for this game. Let $u$ denote the value of the matrix game $\sU(\vc)$.
+				\item Compute the value vector as $\vv^\ast = u \bt{1}$, where $\bt{1}$ denotes a vector of ones, $\vx^\ast(s) = \vf$ and $\vy^\ast(s)$ for all $s$ for optimal stationary strategies for both players.
+			\end{enumerate}
+
+		\end{algo}
+
+	\end{psubsection}
+
+	\begin{psubsection}{General-Sum Stochastic Games}
+
+		Again we consider only the case of two player games. Similar to the zero-sum case, we denote the expected $\delta$-discounted payoff for player $k$ as $r_\delta^k(\vx, \vy)$ when strategy profile $(\vx, \vy)$ is used. Although solving such games is still an open problem, there are certain classes of games for which it is possible to find Nash Equilibria. A rather recent work by \cite{gensum} show, however, that it is possible to find sufficient as well as necessary conditions that would categorize the existence of Nash Equlibria.
+
+		\begin{theorem}
+			\citep{survey}
+			Under the following conditions/cases, a general-sum stochastic game has equilibria in stationary strategies.
+			\begin{enumerate}
+				\item The transition matrix is irreducible for any set of stationary strategy choice by the players.
+				\item There is a special state $s^\ast$ which is visited infinitely often with probability 1.
+				\item There exists a non-empty set of states A and a positive integer N such that from any state $s$, the game moves to some state in A with an expected waiting time of at most $T$.
+				\item Single-controller stochastic games
+				\item SER-SIT games
+			\end{enumerate}
+		\end{theorem}
+
+		There have been recent works which attempt to find out optimal strategies for the general-sum case as well. One of the recently popular algorithms is the Nash-Q algorithm proposed by \cite{nashq}.
+
+	\end{psubsection}
+
+\end{psection}
+
+\begin{psection}{Applications of Stochastic Games in Economics}
+
+	\begin{psubsection}{Features of Economic Applications}
+
+		There are a variety of reasons Stochastic Games are popular. The motivations behind applying stochastic games to economis are because of the features of the general models used in economics. These features are briefly listed below \citep{economic}
+		\begin{enumerate}
+			\item \ditem{Discounted Payoffs} Situations where finite-time events are irrelevant are unnatural in economics. The presence of positive rate of interest is ubiquitous in economic life. For example, if someone offered you Rs. 100 today or Rs. 110 a year from now, the obvious choice is the former. This is because for beings, short-term profits outweight long-term profits.
+			\item \ditem{Pure Strategies} Mixed strategies have limited acceptance due to lack of compelling universal interpretation and their inherent ex-post regret property. They are considered only in cases where pure strategy equilibria do not exist.
+			\item \ditem{Uncountable state and action sets} Most models in economics have infinite state and action states however there are many applications of game theory in economics which use finite sets, for example models following discrete pricing.
+			\item \ditem{Simplicity} Most economic models assume simple action sets to avoid complications and allow closed-form equilibrium strategies.
+			\item \ditem{Predicitive power of models} Most applications are motived by the search of clear-cut conclusions. For this reason, most models are formulated using a highly structured and relatively aggregated models of stochastic games. This is another reason to motivate the study of Stochastic Games in different categorizations.
+		\end{enumerate}
+
+	\end{psubsection}
+
+	\begin{psubsection}{Examples of Economic Applications of Stochastic Games}
+
+		This section briefs on a few applications of Stochastic Games without discussing much on finding the optimal strategies for the said games.
+
+		\ditem{Strategic Resource Extraction or Capital Accumulation}
+
+		\cite{cap-acc} formulated a game between two agents who noncooperatively exploit a natural resource. Two agents compete to consume a natural resource with stock $z^{(t)}$ at time step $t$. We represent Agent $i$'s consumption at time $t$ using $a^{(t)}_i$ and $\delta_i$ denoting his discount factor ($i = 1, 2$). To model this as a stochastic game, we need to find the state and action sets, the payoff function and the state transition function. We give them as follows
+		\begin{enumerate}
+			\item The state set is given as the possible values of the resource stock at any point of time, \ie $\set{z \pipe z > 0}$
+			\item The action set for both the players is the set of possible amounts they can consume. Since these are state dependent, we can say for each agent $i = 1, 2$, we have the action set $\cA(z) = \set{(a_1, a_2) \pipe a_1, a_2 \ge 0\ \mt{and} a_1 + a_2 \le z}$
+			\item Since the transitions are deterministic, the transition probability function assigns zero probability to all states other than the one given by the stock update equation. The stock update equation says $z^{(t + 1)} = \para{z^{(t)} - a^{(t)}_1 - a^{(t)}_2}^{\alpha}$ \ie we have
+				\begin{align*}
+					\func{\vpi}{z, a_1, a_2, z'} = \begin{cases}
+						1 & \mt{if} z' = (z - a_1 - a_2)^\alpha \\
+						0 & \mt{else}
+					\end{cases}
+				\end{align*}
+			\item The payoff functions for both the players are equal and defined as $u_1(a) = u_2(a) = \logp{a}$. The discounted reward, therefore, is given as $r^i(\va_i) = \sum_t \delta_i^t \logp{a_i^{(t)}}$ for $i=1,2$.
+		\end{enumerate}
+
+		\cite{cap-acc} showed, using induction, the existence of Markovian equilibiria with linear consumption strategies and logarithmic value functions. Furthermore, the equilibirum resource stock converges to a unique globally stable steady-state level given by $\overline{z} = \para{\frac{1}{\alpha\delta_1} + \frac{1}{\alpha \delta_2} - 1}^{\frac{\alpha}{\alpha - 1}}$. This problem, solved using Stochastic games, has seen many applications and analysis in the literature, such as in works by \cite{dutta-sun1, dutta-sun2, dutta-sun3} or cases in continuous time.
+
+	\end{psubsection}
+
+	\begin{psubsection}{The Class of Linear-Quadratic Games}
+
+		General linear-quadratic games are categorized by a quadtratic cost function that the agents want to minimize (or maximize the negative of the cost function). This cost function is given as
+		\begin{align*}
+			J_i(\va_1, \va_2) \eq \sum_{t = 1}^{T} \set{\vz^{(t + 1)} \sQ^{(t + 1)}_i \tr{\vz^{(t + 1)}} + \sum_{j} \va_j^{(t)} \sR_{ij}^{(t)} \tr{\va_i^{(t)}}}
+		\end{align*}
+		where the matrices $\sR_{ij}^{(t)}$ are positive-definite and the matrices $\sQ_i^{(t + 1)}$ are symmetric and positive semi-definite. It is also possible to have a continuous time space in which case the cost function would be converted to an integral. The state vector in this case, again, is given as a deterministic transform from the previous state
+		\begin{align*}
+			\vz^{t + 1} = \sA^{(t)} \vz^{(t)} + \sum_j \sB^{(t)}_j \va_j^{(t)}
+		\end{align*}
+
+		One can formulate the conditions under which a Markov equilibrium can be given in closed form. These are discussed in detail in a work by \cite{lin-quad}. Such games have found many applications in Game Theory and Economics, such as The Game of Defending a Target \citep{game-defend}, Resource Extraction \citep{lin-quad-re}, etc.
+
+	\end{psubsection}
+
+	\begin{psubsection}{Applications to Dynamic Oligopoly}
+
+		Among models with dynamic strategic competition, there is a certain class which is categorized by the price competition and involvement of the constumers. \cite{rosenthal} considered a duopology competition under complete customer loyalty from where significant research emerged. With one firm's market share as the natural state variable, Rosenthal classified a Markov-stationary equilibrium where prices remained above marginal costs indefinitely.
+
+		In a follow-up work on this, \cite{chen-rosenthal} considered and showed a closed form mixed-strategy equilibrium. Some part of the literature is also concerned with long-run price competition when customers face costs for switching between producers.
+
+		\cite{cabral-riordan} characterize the long-term consequences of reducing production cost with production experience within a  Markov-stationary framework with firms' cumulative sales as the natural state variables. Another source of strategic dynamic competition also arises due to technological progressions.
+
+	\end{psubsection}
+
+\end{psection}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}
+
+
