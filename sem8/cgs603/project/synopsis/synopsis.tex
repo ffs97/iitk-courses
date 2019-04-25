@@ -1,0 +1,237 @@
+\documentclass{article}
+
+\usepackage{paper}
+
+\setpapertitle{CGS603: Experiment Synopsis\\McGurk Effect across Sexes}
+\setauthor{Gargi Singh}{160259}
+\addauthor{Aviraj Mishra}{150170}
+\addauthor{Mugdha Arora}{150427}
+\addauthor{Mohit Duseja}{150419}
+\addauthor{Gurpreet Singh}{150259}
+
+
+\begin{document}
+\makeheader
+
+
+\begin{psection}{Hypothesis}
+
+	The McGurk effect has been consistently used as an argument for the involvement of visual stimuli in speech perception. However, the level of influence of this effect varies by factors such as gender, linguistic and cultural background, age, bilingual/monolingual etc. Most reports showing this difference have been inconsistent. We aim to show this difference between different sexes by using a strict inclusion criteria to avoid other factors introducing biases in our reportings.
+
+	In order to study the difference in the influence of the McGurk effect we formulate our hypothesis as given below.
+
+	\ditem{Null Hypothesis}
+	There is no difference in the occurrence of McGurk effect across genders. 
+	\begin{equation}
+		\pi_F-\pi_M=0
+	\end{equation}
+	where $\pi_F$ is defined as the proportion of \textbf{women} exhibiting McGurk effect and $\pi_M$ is defined as the proportion of \textbf{men} exhibiting McGurk effect.
+
+	\ditem{Alternate Hypothesis}
+	There is a difference in the occurrence of McGurk effect across genders with women exhibiting the effect more than men.
+	Following the same convention as in 1.1, this translates to:
+	\begin{equation}
+		\pi_F \neq \pi_M
+	\end{equation}
+\end{psection}
+
+
+\begin{psection}{Literature Review}
+	\begin{psubsection}{The McGurk Effect}
+
+		The McGurk effect is a perceptual phenomenon that demonstrates an interaction between hearing and vision in speech perception. The illusion occurs when the auditory component of one sound is paired with the visual component of another sound, leading to the perception of a third sound. 
+
+		The effect was first described in 1976 in a paper by Harry McGurk and John MacDonald, titled "Hearing Lips and Seeing Voices" \cite{original} in Nature (23 Dec 1976). Speech perception was regarded as a purely auditory process before this paper, which confirms an observation that, on being shown a video clip, in which repeated utterances of the syllable [ba] had been dubbed on to lip movements for [ga], normal adults reported hearing [da]. With the reverse dubbing process, a majority reported hearing [bagba] or [gaba].
+		However, without visual input, the subjects reported the syllables accurately.
+
+		To further confirm and generalise the original observation, new materials were prepared. Videos and audios of four utterances: [ba-ba], [ka-ka], [pa-pa], [ga-ga] were mixed. A correct response was defined as an accurate repetition of the auditory component of each recording. Under the auditory-only condition accuracy was high, with averages of 91\%, 97\% and 99\%  for pre-school, school age and adult subjects respectively, while under the auditory-visual condition, where subjects heard the original soundtrack, errors were substantial. For pre-school subjects average error rate was 59\%, for school children 52\% and for adults 92\%.
+
+		This paper showed that the contemporary, auditory-based theories of speech perception were inadequate to explain these new observations and there was a certain need to incorporate a role for vision i.e. perceived lip movements in the perception of speech. 
+
+	\end{psubsection}
+
+	\begin{psubsection}{Common Problems with analyzing the McGurk Effect}
+
+		\cite{40-years} point out some of the common problems faced across studies experimenting with the McGurk effect. These are highlighted in brief in this section. We aim to design our experiment taking into consideration such issues and suggestions mentioned by the authors in order to obtain significant and representative results.
+
+		\begin{pssubsection}{Validating the Visual Influence}
+
+			The original definition of the McGurk effect overlooked many deviations or instances in which the visual information overrides the auditory component in speech processing. For example, reporting `ga' in response to $\sA_{ba} + \sV_{ga}$ and similar instances are overlooked as part of the McGurk effect.
+
+			More researchers have lately opted for a more liberal and lesser theory-bound scoring method. Later researchers defined the effect to be an instance of an incongruent visual speech resulting in an incorrect perception of the auditory information.
+
+			Secondly, it is difficult to validate the visual influence as it is non-trivial to attribute an incorrect perception directly to incongruent visual information as there might be other factors affecting the listener's speech perceptiveness. In order to avoid this, as suggested by \cite{40-years}, we ought to add baseline unimodal conditions to ensure that illusory reports are explained by genuine integration mechanisms.
+
+			\et{Error-correction} \cite{40-years} suggest a corrective method to minimize such biases in the collected data by subtracting the total number of fused responses by the number of auditory misidentifications for each subject \ie
+			\begin{align*}
+				\text{Illusory percepts = Fused percepts - Auditory Misidentifications}
+			\end{align*}
+
+			We plan on using this correction while collecting data to ensure low biases while studying the McGurk effect.
+
+		\end{pssubsection}
+
+		\begin{pssubsection}{Quality of the Auditory and Visual Information}
+
+			Noise factors within the auditory signals such as release bursts, aspiration and voiced format transitions negatively affect the speech perception of the listeners. Similar factors which enhance the effects of incongruent visual information can induce bias within our data. Such issues have been prominent in many earlier studies, however it is not of much significance to us because of the advancements in technology since the time the original paper on the McGurk effect was published.
+
+		\end{pssubsection}
+
+		\begin{pssubsection}{Clarity of the Task Instructions and Structure}
+
+			Different task instructions can lead to subtle differences in the way subjects approach the task. An instruction that says ``report what you heard'' might potentially increase the perceptual weight of the auditory cue and thus lead to less illusory percepts. We aim to ensure presenting an objective instruction set saying ``report what the talker said'' to avoid such biases in collecting data.
+
+			The structure of the task can also pose a problem as there could be priming, selective adaptation, and/or visual recalibration that could potentially affect the categorization decision process. In order to avoid such problems, we need to choose an appropriate gap between two tests. There is a tradeoff as choosing a short gap can cause the aforementioned problems whereas a larger gap would hinder the data collection as the subjects would not be able to submit a lot of responses.
+
+		\end{pssubsection}
+
+		\begin{pssubsection}{Response Structure}
+
+			There are two categorizations to the response structures -- open set, in which subjects can respond with any syllable, and closed sets, in which subjects have to choose from specific response options. Many earlier experiments were conducted with closed set responses however, as \cite{40-years} point out, elicit substantially more illusory responses. This variability was observed across studies and is believed to be because of the subject's innate tendency to equalize the number of responses between choices.
+
+			Moreover, closed set responses might not be able to capture the actual response a the perceptual utterance experienced by the listener. We plan on using open set responses to ensure no bias is induced within the perception of the subjects because of irrelevant factors.
+
+		\end{pssubsection}
+
+		\begin{pssubsection}{Variability in Inner-Subject Perception}
+
+			Many studies have reported varying scales of the McGurk effect based on natural factors such as linguistic and cultural background, gender, age, etc. Subjects belonging to one set of natural factors might be more susceptible to the McGurk effect.
+
+			For these reasons, we choose a strict inclusion criteria to avoid large variability within such factors. This inclusion criteria is discussed in the next section.
+
+		\end{pssubsection}
+
+	\end{psubsection}
+
+	\begin{psubsection}{Variation across Sexes}
+
+		A few studies have indicated that women are more influenced by visual information than are men when presented with incongruent auditory and visual McGurk stimuli. However, reports of sex difference in language processing are inconsistent and are thought to vary by task type and difficulty. 
+
+		A number of fMRI studies have shown sex differences in the pattern of neurological activation in the brain for tasks that require phonological processing. It is believed that the differences emerge as more difficult tasks are encountered, with women performing better at them.
+
+		In their paper titled ``A Sex Difference in Visual Influence on Heard Speech'' \cite{sex difference}, Fowler, Irwin and Whalen investigate this difference with brief (100msec) and full (temporally equivalent to the auditory) incongruent consonant-vowel stimuli. They report that females experience visually influenced percepts in 8.8\% more instances than males for brief visual stimuli (considered the difficult task). There were no such significant effects for full video stimuli (considered the easier task). However, there were differences amongst what were considered easier and more difficult voices when it came to the brief visual stimuli. 
+
+	\end{psubsection}
+
+\end{psection}
+
+
+\begin{psection}{Experiment Design}
+	The experiment will be an attempt to replicate the work by Fowler et al. \cite{sex difference}  to examine the influence of visual information on heard speech in male and female perceivers  in setting of native Hindi speakers instead of native English speakers.
+	\begin{psubsection}{Sample}
+		\begin{itemize}
+			\item \textbf{Sample Size:} Around 40 males and 40 females
+			\item \textbf{Inclusion criteria:} 
+				\begin{enumerate}
+					\item Subjects should belong to the age group of 18-30 years
+					\item Subjects should be native speakers of Hindi
+					\item Subjects should be multilingual
+					\item Subjects should have proper or corrected vision
+					\item Subjects should have proper or corrected auditory sense
+				\end{enumerate}
+		\end{itemize}
+	\end{psubsection}
+
+	\begin{psubsection}{Stimuli}
+		The subjects will be shown a series of speech stimuli (50 trials), each of which will be of four kinds:
+		\begin{enumerate}
+			\item has all visual frames of utterance of syllable
+			\item has three static visual frames of utterance of syllable with clearest indication; other frames are clear
+			\item has three dynamic visual frames of utterance of syllable with consonant closure and release; other frames are clear
+			\item has two dynamic visual frames of utterance of syllable made by deletion of middle frame of the three dynamic frames mentioned before
+		\end{enumerate}
+		All these stimuli will be made with visual /ba/, /va/ and /ga/, and audio /ba/. The series will be a random combination of these.
+	\end{psubsection}
+
+	\begin{psubsection}{Variables}
+		\begin{itemize}
+			\item \textbf{Independent Variables:} Stimuli kind and gender
+			\item \textbf{Dependent Variables:} Response for each trial
+			\item \textbf{Control Variables:} Number of trials for each subject for both experiments and time for each trial
+		\end{itemize}
+	\end{psubsection}
+
+	\begin{psubsection}{Division between Subjects}
+		Since the trials are short we would not face the common issues usually faced while conducting within-subject experiments. Moreover, such a division would allow us to collect more data as compared to a between-subject division. Therefore, we opt a \bt{within-subject division} and each subject will be shown trials of each stimulus.
+	\end{psubsection}
+
+	\begin{psubsection}{Procedure}
+		Two experiments will be performed on each subject, one with full stimuli (stimulus kind 1) only and the other with brief stimuli(stimulus kind 2, 3, 4) only. In both, same methodology will be followed.
+
+		We will design a webapp which would allow the subjects to mark their answers for corresponding trials among given options of `/ba/', `/da/', `/tha/' and `others' (in order to ensure open-set responses, as mentioned earlier). They will be shown a series of audio and visual samples with a warning of "ready" before each stimuli to warn the person about the onset.
+
+		The task instruction for each stimulus will be ``report what the talker said'' and the subject will be asked to choose his response corresponding to the syllable perceived by clicking on one of the options displayed on the screen. The messages will be displayed for 1 and 5 seconds respectively. The participants will be instructed to pay attention to the screen for each trial and mark whatever sound they believe the talker uttered.
+	\end{psubsection}
+
+	\begin{psubsection}{Data}
+		The data will be collected into a database (MySQL or MongoDB) with each response submitted by the participants mentioning the sound they perceive for each trial. This would allow for easy data processing and analysis which is discussed in detail in the next section.
+	\end{psubsection}
+\end{psection}
+
+
+\begin{psection}{Data Analysis}
+
+	The first step shall be to obtain the proportion values ( $\pi_F$ \& $\pi_M$) for each of the experiment settings stated in 3.2. A subject will be considered a \textbf{non-perceiver} of the effect if he/she is incorrect less than 15\% times in a trial of 50.
+
+	The following data analysis plan shall be used separately for each setting. 
+
+	\textbf{Significance value} for determining whether to accept or reject $H_0$ is taken as \textbf{0.05}.
+
+	\textbf{2 - tailed t-test} is used to determine if the observed difference in proportions differ significantly from the hypothesized difference in proportions.
+
+	\begin{psubsection}{Computing P Value}
+		We shall calculate the sample standard error as:
+		\begin{equation}
+			\sigma_{d_{sd}} = \sqrt{ \frac{\pi_F(1-\pi_F)}{n_F} + \frac{\pi_M(1-\pi_M)}{n_M}}
+		\end{equation}
+		where $n_M$ and $n_F$ are the number of observations for the corresponding genders.
+
+		Now let $\pi_d = \pi_F-\pi_M$, then our test statistic: t* will be calculated as:
+		\begin{equation}
+			t^* = \frac{(\pi_F - \pi_M) - 0}{\sigma_{d_{sd}}} = \frac{\pi_d}{\sigma_{d_{sd}}}
+		\end{equation}
+
+		Now finally, P Value, the probability of observing a sample statistic as extreme as $t^*$, can be obtained from $t$-Table as the probability associated with $t^*$ taking the degree of freedom as ($n_F + n_M -2$).
+	\end{psubsection}
+
+	\begin{psubsection}{Interpreting the Results}
+		Finally, we shall compare the P value of our test with the significance level (0.05). 
+
+		If $P<0.05$, we will reject our Null Hypothesis $H_0$ and accept that our Alternate hypothesis $H_a$ is statistically significant.
+
+		Otherwise, we have failed to observe any difference in proportions and we shall accept the Null Hypothesis $H_0$.
+	\end{psubsection}
+\end{psection}
+
+
+\begin{psection}{Model to expain the McGurk Effect}
+	The work by Magnotti et al. \cite{model} describes McGurk effect by a noisy encoding of disparity. It determines the probability that the measured disparity for a given stimulus is below a participant’s threshold by:
+	\begin{equation}
+		p(x < T_j | D_i) = \int_{-\infty}^{T_j} N(x;D_i,\sigma_j) dx 
+	\end{equation}
+	where N is the Normal (Gaussian) distribution with mean $D_i$ and standard deviation $\sigma_j$ for stimuli i and participant j. $T_j$ is the measure of each participant's prior probability for fusing the auditory and visual components of the syllable. If the measured disparity is smaller than $T_j$ for a participant j, the audio and visual are fused and not otherwise. The threshold $T_j$ can be modelled to accommodate attribute of gender if alternate hypothesis is accepted to predict difference in McGurk effect across genders.
+\end{psection}
+
+\begin{psection}{Possible Confounds}
+	\begin{itemize}
+		\item The sample in the original experiment consisted of native English speakers unlike in the proposed experiment design. The occurrence of McGurk effect might differ because of different linguistic nativity.
+		\item The sample in the proposed experiment design will consist of multilingual people but the original experiment does not account for multi-lingual capabilities and corresponding effect on results.
+		\item Some people included in the sample might find it relatively difficult to access short visual or audio signals.
+		\item The number of trials have been reduced to 50 per person as opposed to 70 and 90 respectively for the two experiments in the referred paper. This might lessen deliberate answers but also might interfere with assessment of perceptual capabilities.
+		\item Age might not just be a number when assessing perceptual capabilities, the age of the participants might affect results.
+	\end{itemize}
+\end{psection}
+
+\begin{thebibliography}{}
+	\bibitem{original} Harry McGurk, John MacDonald: Hearing Lips and Seeing Voices [Nature]
+
+	\bibitem{40-years}Agnès Alsius, Martin Paré and Kevin G. Munhall: Forty Years After Hearing Lips and Seeing Voices: the McGurk Effect Revisited https://doi.org/10.1163/22134808-00002565
+
+	\bibitem{tribute}John MacDonald: Hearing Lips and Seeing Voices: the Origins and Development of the McGurk Effect and Reﬂections on Audio-Visual Speech Perception Over the Last 40 Years https://doi.org/10.1163/22134808-00002548
+
+	\bibitem{sex difference}Irwin, J.R., Whalen, D.H. & Fowler, C.A. Perception & Psychophysics (2006) 68: 582 https://doi.org/10.3758/BF03208760
+
+	\bibitem{model}John F. Magnotti, Michael S. Beauchamp, The Noisy Encoding of Disparity Model of the McGurk Effect (2015) https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4370809/
+
+\end{thebibliography}
+\end{document}
